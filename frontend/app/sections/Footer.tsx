@@ -1,20 +1,102 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { siteConfig } from "@/utils/site";
-import Logo from "@/components/logo";
 import { useLogger } from "@/utils/useLogger";
 import socialLinks from "@/utils/socialLinks";
 
 export default function Footer() {
-  // instantiate logger
   const logger = useLogger("sections/Footer");
   const router = useRouter();
+  const sloganRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const animateSlogan = () => {
+      if (!sloganRef.current) return;
+
+      // Split the slogan text into individual characters
+      const text = sloganRef.current.textContent || "";
+
+      sloganRef.current.innerHTML = text
+        .split("")
+        .map((char, index) => {
+          if (char === " ") {
+            return `<span class="slogan-char" data-index="${index}">&nbsp;</span>`;
+          }
+
+          return `<span class="slogan-char" data-index="${index}">${char}</span>`;
+        })
+        .join("");
+
+      const chars = sloganRef.current.querySelectorAll(".slogan-char");
+
+      // Set initial state for all characters
+      gsap.set(chars, {
+        color: "#9ca3af", // gray-400
+        textShadow: "none",
+      });
+
+      // Create the wave animation
+      const tl = gsap.timeline({
+        repeat: -1,
+        repeatDelay: 3, // Wait 3 seconds between cycles
+        scrollTrigger: {
+          trigger: sloganRef.current,
+          start: "top bottom-=100",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animate each character with a stagger
+      chars.forEach((char, index) => {
+        tl.to(
+          char,
+          {
+            color: "#10b981", // green-500
+            textShadow:
+              "0 0 20px rgba(16, 185, 129, 0.8), 0 0 40px rgba(16, 185, 129, 0.4)",
+            duration: 0.3,
+            ease: "power2.out",
+          },
+          index * 0.05,
+        ) // Stagger timing
+          .to(
+            char,
+            {
+              color: "#9ca3af", // back to gray-400
+              textShadow: "none",
+              duration: 0.3,
+              ease: "power2.out",
+            },
+            index * 0.05 + 0.3,
+          ); // Return to original after highlight
+      });
+    };
+
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      animateSlogan();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      gsap.killTweensOf(".slogan-char");
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.trigger === sloganRef.current) {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
 
   const handleNavClick = (href: string) => {
     logger.info("[Footer] - Nav clicked:", href);
-
     router.push(href);
   };
 
@@ -28,19 +110,16 @@ export default function Footer() {
   return (
     <footer className="py-12 bg-gray-900 border-t border-gray-800">
       <div className="mx-auto w-full px-16">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 lg:gap-0">
           {/* Brand Section */}
-          <div className="text-center md:text-left mb-6 md:mb-0">
-            <button
-              aria-label="Syncwave"
-              className="cursor-pointer mb-6 md:mb-0"
-              onClick={handleLogoClick}
+          <div className="text-center md:text-left mb-6 md:mb-0 italic">
+            <p
+              ref={sloganRef}
+              className="text-gray-400 text-sm max-w-xs select-none cursor-default"
             >
-              <Logo showImage={false} />
-            </button>
-            <p className="text-gray-400 text-sm max-w-xs">
-              Transfer your playlists seamlessly between Spotify and YouTube.
+              {siteConfig.slogan}
             </p>
+            <p className="text-gray-400 text-sm mt-2">{siteConfig.name}</p>
           </div>
 
           <div className="flex gap-6 items-center mb-6 md:mb-0 lg:mr-56">
@@ -75,29 +154,29 @@ export default function Footer() {
             })}
           </div>
         </div>
+      </div>
 
-        <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
-          <p>© {new Date().getFullYear()} Syncwave. All rights reserved.</p>
-          <div className="flex justify-center gap-6 mt-4">
-            <button
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => handleNavClick("/privacy")}
-            >
-              Privacy Policy
-            </button>
-            <button
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => handleNavClick("/terms")}
-            >
-              Terms of Service
-            </button>
-            <button
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => handleNavClick("/support")}
-            >
-              Support
-            </button>
-          </div>
+      <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>© {new Date().getFullYear()} Syncwave. All rights reserved.</p>
+        <div className="flex justify-center gap-6 mt-4">
+          <button
+            className="hover:text-gray-300 transition-colors"
+            onClick={() => handleNavClick("/privacy")}
+          >
+            Privacy Policy
+          </button>
+          <button
+            className="hover:text-gray-300 transition-colors"
+            onClick={() => handleNavClick("/terms")}
+          >
+            Terms of Service
+          </button>
+          <button
+            className="hover:text-gray-300 transition-colors"
+            onClick={() => handleNavClick("/support")}
+          >
+            Support
+          </button>
         </div>
       </div>
     </footer>

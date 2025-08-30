@@ -160,7 +160,7 @@ export default function PrivacyPolicy() {
                 </p>
                 <ul className="text-gray-300 space-y-2 ml-6">
                   <li>
-                    • OAuth tokens are deleted immediately after transfer
+                    • OAuth tokens are deleted couple hours after transfer
                     completion
                   </li>
                   <li>
