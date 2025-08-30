@@ -1,10 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { siteConfig } from "@/utils/site";
 import Logo from "@/components/logo";
 import { useLogger } from "@/utils/useLogger";
 import socialLinks from "@/utils/socialLinks";
-import { useRouter } from "next/navigation";
 
 export default function Footer() {
   // instantiate logger
@@ -19,12 +20,14 @@ export default function Footer() {
 
   const handleLogoClick = () => {
     logger.log("[Footer] - Logo clicked, navigating to home");
-    window.location.href = "/";
+    if (window.location.pathname === "/")
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    else router.push("/");
   };
 
   return (
     <footer className="py-12 bg-gray-900 border-t border-gray-800">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto w-full px-16">
         <div className="flex flex-col md:flex-row justify-between items-center">
           {/* Brand Section */}
           <div className="text-center md:text-left mb-6 md:mb-0">
@@ -73,7 +76,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
           <p>© {new Date().getFullYear()} Syncwave. All rights reserved.</p>
           <div className="flex justify-center gap-6 mt-4">
             <button

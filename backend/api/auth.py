@@ -17,6 +17,21 @@ from backend.models.oauth import (
     OAuthError
 )
 
+import logging
+
+# Setup a logger instance for this module
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Add a basic console handler
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# Add handler only if not already added
+if not logger.handlers:
+    logger.addHandler(console_handler)
+
 
 router = APIRouter()
 backend_dir = Path(__file__).parent.parent.resolve()
@@ -33,7 +48,7 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
         SpotifyTokenResponse: Contains the access token, refresh token, user info, and other details
     """
     try:
-        print(f"[SpotifyOAuth] - Received callback request: code={request.code[:10]}..., redirect_uri={request.redirect_uri}")
+        logger.info(f"[SpotifyOAuth] - Received callback request: code={request.code[:10]}..., redirect_uri={request.redirect_uri}")
         
         # Spotify token exchange endpoint
         token_url = "https://accounts.spotify.com/api/token"
@@ -47,21 +62,21 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
             "client_secret": os.getenv("SPOTIFY_CLIENT_SECRET"),
         }
         
-        print(f"[SpotifyOAuth] - Exchanging code for token with Spotify")
+        logger.info(f"[SpotifyOAuth] - Exchanging code for token with Spotify")
         
         # Exchange code for token
         response = requests.post(token_url, data=token_data)
         
         if not response.ok:
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
-            print(f"[SpotifyOAuth] - Token exchange failed: {response.status_code}, {error_data}")
+            logger.error(f"[SpotifyOAuth] - Token exchange failed: {response.status_code}, {error_data}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Spotify token exchange failed: {error_data.get('error_description', response.text)}"
             )
         
         token_response = response.json()
-        print(f"[SpotifyOAuth] - Token exchange successful")
+        logger.success(f"[SpotifyOAuth] - Token exchange successful")
         
         # Get user info using the access token
         user_info = None
@@ -79,9 +94,9 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
                     "image": user_data["images"][0]["url"] if user_data["images"] else None,
                     "platform": "spotify"
                 }
-                print(f"[SpotifyOAuth] - Retrieved user info for: {user_info['name']}")
+                logger.info(f"[SpotifyOAuth] - Retrieved user info for: {user_info['name']}")
         except Exception as e:
-            print(f"[SpotifyOAuth] - Failed to get user info: {e}")
+            logger.error(f"[SpotifyOAuth] - Failed to get user info: {e}")
         
         return SpotifyTokenResponse(
             access_token=token_response["access_token"],
@@ -95,7 +110,7 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[SpotifyOAuth] - Unexpected error: {e}")
+        logger.errpr(f"[SpotifyOAuth] - Unexpected error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"OAuth callback failed: {str(e)}"
@@ -111,7 +126,7 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
         YouTubeTokenResponse: Contains the access token, refresh token, user info, and other
     """
     try:
-        print(f"[YouTubeOAuth] - Received callback request: code={request.code[:10]}..., redirect_uri={request.redirect_uri}")
+        logger.info(f"[YouTubeOAuth] - Received callback request: code={request.code[:10]}..., redirect_uri={request.redirect_uri}")
         
         # Load Google client secrets (resolve relative paths to backend_dir)
         google_secrets_env = os.getenv("YOUTUBE_CLIENT_JSON")
@@ -153,21 +168,21 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
             "client_secret": client_info["client_secret"],
         }
         
-        print(f"[YouTubeOAuth] - Exchanging code for token with Google")
+        logger.info(f"[YouTubeOAuth] - Exchanging code for token with Google")
         
         # Exchange code for token
         response = requests.post(token_url, data=token_data)
         
         if not response.ok:
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
-            print(f"[YouTubeOAuth] - Token exchange failed: {response.status_code}, {error_data}")
+            logger.error(f"[YouTubeOAuth] - Token exchange failed: {response.status_code}, {error_data}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Google token exchange failed: {error_data.get('error_description', response.text)}"
             )
         
         token_response = response.json()
-        print(f"[YouTubeOAuth] - Token exchange successful")
+        logger.success(f"[YouTubeOAuth] - Token exchange successful")
         
         # Get user info using the access token
         user_info = None
@@ -185,9 +200,9 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
                     "image": user_data.get("picture"),
                     "platform": "youtube"
                 }
-                print(f"[YouTubeOAuth] - Retrieved user info for: {user_info['name']}")
+                logger.info(f"[YouTubeOAuth] - Retrieved user info for: {user_info['name']}")
         except Exception as e:
-            print(f"[YouTubeOAuth] - Failed to get user info: {e}")
+            logger.error(f"[YouTubeOAuth] - Failed to get user info: {e}")
         
         return YouTubeTokenResponse(
             access_token=token_response["access_token"],
@@ -201,7 +216,7 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[YouTubeOAuth] - Unexpected error: {e}")
+        logger.error(f"[YouTubeOAuth] - Unexpected error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"OAuth callback failed: {str(e)}"
@@ -219,11 +234,11 @@ async def auth_status():
             "message": "OAuth configuration status"
         }
         
-        print(f"[AuthStatus] - Configuration check: {status_info}")
+        logger.info(f"[AuthStatus] - Configuration check: {status_info}")
         return status_info
         
     except Exception as e:
-        print(f"[AuthStatus] - Error checking status: {e}")
+        logger.error(f"[AuthStatus] - Error checking status: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to check auth status: {str(e)}"

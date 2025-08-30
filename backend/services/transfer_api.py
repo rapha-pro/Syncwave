@@ -106,7 +106,7 @@ def transfer_playlist_api(
         message = f"Successfully transferred {transferred_songs} out of {total_songs} songs ({match_rate:.1f}% match rate)"
         
         # Log final summary
-        logger.info("=== RANSFER COMPLETE ===")
+        logger.info("=== TRANSFER COMPLETE ===")
         logger.info(f"Playlist: {playlist_name}")
         logger.info(f"Total songs: {total_songs}")
         logger.info(f"Successfully transferred: {transferred_songs}")

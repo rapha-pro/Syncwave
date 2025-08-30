@@ -38,6 +38,7 @@ export interface LogoProps {
   size?: number;
   showText?: boolean;
   showImage?: boolean;
+  text_size?: string;
 }
 
 export interface PlaylistTransferRequestProps {

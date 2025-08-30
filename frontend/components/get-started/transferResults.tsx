@@ -180,7 +180,7 @@ export default function TransferResults({
         </div>
       </div>
 
-      {/* Stats Overview - INCREASED OPACITY */}
+      {/* Stats Overview */}
       <div className="grid md:grid-cols-4 gap-4">
         <Card className="stats-card bg-green-500/30 backdrop-blur-md border border-green-500/40">
           <CardBody className="p-4 text-center">
@@ -271,7 +271,7 @@ export default function TransferResults({
         </Button>
       </div>
 
-      {/* Songs List - INCREASED OPACITY */}
+      {/* Songs List */}
       <Card className="bg-gray-800/80 backdrop-blur-md border border-gray-600/60">
         <CardBody className="p-6">
           <div className="flex items-center justify-between mb-6">
@@ -431,7 +431,7 @@ export default function TransferResults({
         </CardBody>
       </Card>
 
-      {/* Performance Stats - INCREASED OPACITY */}
+      {/* Performance Stats */}
       <Card className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-md border border-blue-500/50">
         <CardBody className="p-6">
           <h4 className="text-lg font-semibold text-white mb-3">
@@ -461,10 +461,10 @@ export default function TransferResults({
         </CardBody>
       </Card>
 
-      {/* Tips Card - INCREASED OPACITY */}
+      {/* Tips Card */}
       <Card className="bg-gradient-to-r from-green-500/20 to-blue-500/20 backdrop-blur-md border border-green-500/50">
         <CardBody className="p-6">
-          <h4 className="text-lg font-semibold text-white mb-3">💡 Pro Tips</h4>
+          <h4 className="text-lg font-semibold text-white mb-3">Tips</h4>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="p-3 bg-gray-700/50 rounded-lg border border-gray-600/40 backdrop-blur-sm">
               <p className="font-medium text-green-400 mb-1">Missing songs?</p>

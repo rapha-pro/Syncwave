@@ -3,12 +3,112 @@ import json
 import pickle
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build, Resource
+from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from typing import List
 from backend.models.transfer import YouTubeVideo
+import logging
+
+
+# Setup a logger instance for this module
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Add a basic console handler
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# Add handler only if not already added
+if not logger.handlers:
+    logger.addHandler(console_handler)
+
+
+backend_dir = Path(__file__).parent.parent
+load_dotenv(backend_dir / ".env")
+
+def get_authenticated_service_with_token(access_token: str) -> Resource:
+    """
+    Creates a YouTube API service instance using the user's access token.
+
+    Args:
+        access_token (str): The user's OAuth access token from frontend
+
+    Returns:
+        Resource: Authenticated YouTube API client resource.
+    """
+    try:
+        logger.info(f"[YouTubeAPI] - Creating service with user access token")
+        
+        # Load client configuration for token refresh capability
+        client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON")
+        
+        with open(client_secrets_file, 'r') as f:
+            client_config = json.load(f)
+        
+        client_info = client_config.get("web") or client_config.get("installed")
+        
+        # Create credentials object from the access token
+        # Note: For refresh capability, we'd need the refresh token too
+        creds = Credentials(
+            token=access_token,
+            client_id=client_info["client_id"],
+            client_secret=client_info["client_secret"],
+            token_uri=client_info["token_uri"],
+        )
+        
+        # Test if credentials are valid
+        if not creds.valid:
+            if creds.expired and creds.refresh_token:
+                logger.info("[YouTubeAPI] - Refreshing expired token")
+                creds.refresh(Request())
+            else:
+                logger.info("[YouTubeAPI] - Invalid credentials")
+                return None
+        
+        # Build and return the service
+        service = build("youtube", "v3", credentials=creds)
+        
+        # Test the service with a simple API call
+        test_request = service.channels().list(part="id", mine=True, maxResults=1)
+        test_request.execute()
+        
+        logger.info("[YouTubeAPI] - Successfully authenticated with user token")
+        return service
+        
+    except Exception as e:
+        logger.info(f"[YouTubeAPI] - Authentication failed: {str(e)}")
+        return None
+
+
+def create_credentials_from_token_data(token_data: dict) -> Credentials:
+    """
+    Creates Google credentials from token data received from frontend.
+    
+    Args:
+        token_data: Dictionary containing access_token, refresh_token, etc.
+    
+    Returns:
+        Credentials: Google OAuth2 credentials object
+    """
+    client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON")
+    
+    with open(client_secrets_file, 'r') as f:
+        client_config = json.load(f)
+    
+    client_info = client_config.get("web") or client_config.get("installed")
+    
+    return Credentials(
+        token=token_data.get("access_token"),
+        refresh_token=token_data.get("refresh_token"),
+        client_id=client_info["client_id"],
+        client_secret=client_info["client_secret"],
+        token_uri=client_info["token_uri"],
+        scopes=token_data.get("scope", "").split(" ")
+    )
 
 
 def get_authenticated_service(scopes: list[str] = None) -> Resource:
@@ -25,11 +125,7 @@ def get_authenticated_service(scopes: list[str] = None) -> Resource:
     if scopes is None:
         scopes = [os.getenv("YOUTUBE_SCOPE")]
 
-    # Get the backend directory (root) path
-    backend_dir = Path(__file__).parent.parent
-    load_dotenv(backend_dir / ".env")
-
-    print(f"Using client secrets file: {scopes}, {os.getenv("YOUTUBE_PLAYLIST_URL")}, {os.getenv("YOUTUBE_CLIENT_JSON")}")
+    logger.info(f"Using client secrets file: {scopes}, {os.getenv("YOUTUBE_PLAYLIST_URL")}, {os.getenv("YOUTUBE_CLIENT_JSON")}")
 
     client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON")
     token_path = backend_dir / "credentials/youtube_token.pickle"

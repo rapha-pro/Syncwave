@@ -3,6 +3,7 @@ import { CheckCircle, ArrowRightLeft, TvMinimalPlay } from "lucide-react";
 import { areaProps } from "@/types";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
+import Logo from "./logo";
 
 export default function Phone(area: areaProps) {
   const { width = 280, height = 500 } = area;
@@ -25,10 +26,7 @@ export default function Phone(area: areaProps) {
           <div className="h-full w-full flex flex-col">
             {/* App Header */}
             <div className="p-4 border-b border-gray-800 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="h-6 w-6 bg-gradient-to-r from-green-500 to-purple-600 rounded-full" />
-                <span className="text-white font-medium">Syncwave</span>
-              </div>
+              <Logo height={8} size={14} text_size="text-md" width={8} />
               <div className="h-6 w-6 rounded-full bg-gray-800" />
             </div>
 

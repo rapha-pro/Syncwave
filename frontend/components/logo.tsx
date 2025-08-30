@@ -11,6 +11,7 @@ export default function Logo(LogoProps: LogoProps) {
     size = 16,
     showText = true,
     showImage = true,
+    text_size = "text-xl",
   } = LogoProps;
 
   // Ensure at least one of image or text is shown. If both false, fall back to showing text.
@@ -33,7 +34,9 @@ export default function Logo(LogoProps: LogoProps) {
       )}
 
       {textVisible && (
-        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-purple-500">
+        <h1
+          className={`${text_size} font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-purple-500`}
+        >
           {siteConfig.name}
         </h1>
       )}

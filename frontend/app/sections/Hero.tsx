@@ -5,6 +5,7 @@ import { Button } from "@heroui/react";
 import { TvMinimalPlay, Check, LogOut, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRouter } from "next/navigation";
 
 import { SpotifyIcon } from "@/components/icons";
 import Phone from "@/components/phone";
@@ -30,6 +31,7 @@ export default function Hero() {
     message: string;
   } | null>(null);
 
+  const router = useRouter();
   // instantiate logger
   const logger = useLogger("sections/Hero");
 
@@ -115,29 +117,22 @@ export default function Hero() {
     };
   }, []);
 
+  const canProceed = authStatus.spotify && authStatus.youtube;
+  var hasPlayedAnimation = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+
   // Trigger celebration animation when both accounts are connected
   useEffect(() => {
-    if (authStatus.spotify && authStatus.youtube && celebrationRef.current) {
-      const hasPlayedCelebration = sessionStorage.getItem(
-        "heroAuthenticationCelebrationPlayed",
-      );
+    if (canProceed && celebrationRef.current) {
+      const hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+      if (hasPlayedCelebration) return;
 
-      if (hasPlayedCelebration) {
-        logger.log(
-          "[Hero] - Celebration animation already played this session, skipping",
-        );
-
-        return;
-      }
       triggerCelebration();
-
-      // Mark celebration as played in session storage to avoid repeating
-      sessionStorage.setItem("heroAuthenticationCelebrationPlayed", "true");
     }
-  }, [authStatus.spotify, authStatus.youtube]);
+  }, [canProceed]);
 
   const triggerCelebration = () => {
-    logger.log("[Hero] - Triggering celebration animation");
+    // Mark celebration as played in session storage to avoid repeating
+    sessionStorage.setItem("heroAuthenticationCelebrationPlayed", "true");
 
     // Create floating particles
     if (celebrationRef.current) {
@@ -159,6 +154,7 @@ export default function Hero() {
           ease: "power2.out",
           onComplete: () => {
             particle.remove();
+            router.push("/get-started");
           },
         });
       }
@@ -183,7 +179,7 @@ export default function Hero() {
               duration: 0.5,
               ease: "power2.in",
             });
-          }, 3000);
+          }, 2000);
         },
       },
     );
@@ -253,8 +249,6 @@ export default function Hero() {
     checkAuthStatus();
   };
 
-  const canProceed = authStatus.spotify && authStatus.youtube;
-
   // Add useEffect for heartbeat animation
   useEffect(() => {
     if (canProceed) {
@@ -274,14 +268,14 @@ export default function Hero() {
 
       return () => heartbeat.kill();
     }
-  }, [canProceed]);
+  }, []);
 
   return (
     <section
       ref={heroRef}
       className="pt-32 pb-24 px-4 lg:px-16 md:pt-40 md:pb-32"
     >
-      <div className="mx-auto w-full grid gap-12 items-center px-4 lg:grid-cols-[45%_1fr] lg:px-16 lg:max-w-7xl">
+      <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
           <h1 className="hero-title w-full text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
             <span className="block">Transfer Your</span>
@@ -304,7 +298,7 @@ export default function Hero() {
             ref={celebrationRef}
             className="relative mb-6 flex justify-center h-0"
           >
-            {canProceed && (
+            {canProceed && hasPlayedAnimation && (
               <div className="celebration-text absolute flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 backdrop-blur-md rounded-full border border-green-500/30 -top-12">
                 <Sparkles className="text-yellow-400 animate-pulse" size={20} />
                 <span className="text-white font-medium">
@@ -356,10 +350,12 @@ export default function Hero() {
                   variant="shadow"
                   onPress={handleSpotifyLogin}
                 >
-                  <SpotifyIcon
-                    className="group-hover:scale-110 transition-transform"
-                    size={20}
-                  />
+                  {!isLoading.spotify && (
+                    <SpotifyIcon
+                      className="group-hover:scale-110 transition-transform"
+                      size={20}
+                    />
+                  )}
                   <span>Login with Spotify</span>
                 </Button>
               )}
@@ -402,10 +398,12 @@ export default function Hero() {
                   variant="shadow"
                   onPress={handleYouTubeLogin}
                 >
-                  <TvMinimalPlay
-                    className="group-hover:scale-110 transition-transform"
-                    size={20}
-                  />
+                  {!isLoading.youtube && (
+                    <TvMinimalPlay
+                      className="group-hover:scale-110 transition-transform"
+                      size={20}
+                    />
+                  )}
                   <span>Login with YouTube</span>
                 </Button>
               )}
@@ -413,7 +411,7 @@ export default function Hero() {
           </div>
 
           {/* Help Text */}
-          <p className="text-gray-400 text-sm mt-4 mb-12 lg:mb-0 heartbeat-text">
+          <p className="text-gray-400 text-sm mt-4 mb-16 lg:mb-0 heartbeat-text">
             {!canProceed &&
               "Connect both accounts to start transferring your playlists"}
             {canProceed &&

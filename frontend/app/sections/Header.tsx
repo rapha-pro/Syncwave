@@ -50,13 +50,12 @@ export default function Header() {
       );
     }
 
-    // Cleanup function
     return () => {
       if (headerRef.current) {
         gsap.killTweensOf(headerRef.current);
       }
     };
-  }, []); // Empty dependency array - only run on mount
+  }, []);
 
   const handleGetStarted = () => {
     logger.log("[Header] - Navigating to get-started");
@@ -97,7 +96,7 @@ export default function Header() {
           className="cursor-pointer"
           onClick={handleLogoClick}
         >
-          <Logo />
+          <Logo size={14}/>
         </button>
 
         <div className="hidden md:flex gap-6 items-center">

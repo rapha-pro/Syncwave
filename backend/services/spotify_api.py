@@ -6,8 +6,52 @@ from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from typing import Optional, List, Dict, Any, Tuple
 from backend.models.transfer import SpotifyTrack, YouTubeVideo, SongResult
+import logging
+
+# Setup a logger instance for this module
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Add a basic console handler
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# Add handler only if not already added
+if not logger.handlers:
+    logger.addHandler(console_handler)
 
 load_dotenv()
+
+
+def get_spotify_client_with_token(access_token: str) -> spotipy.Spotify:
+    """
+    Creates a Spotipy client instance using the user's access token.
+
+    Args:
+        access_token (str): The user's Spotify access token from frontend
+
+    Returns:
+        spotipy.Spotify: Authenticated Spotify client using user's token.
+    """
+    try:
+        logger.info(f"[SpotifyAPI] - Creating client with user access token")
+        
+        # Create Spotify client with user's access token
+        sp = spotipy.Spotify(auth=access_token)
+        
+        # Test the token by getting current user info
+        try:
+            user_info = sp.current_user()
+            logger.info(f"[SpotifyAPI] - Successfully authenticated user: {user_info['display_name']} ({user_info['id']})")
+            return sp
+        except Exception as e:
+            logger.info(f"[SpotifyAPI] - Token validation failed: {str(e)}")
+            return None
+            
+    except Exception as e:
+        logger.info(f"[SpotifyAPI] - Failed to create Spotify client: {str(e)}")
+
 
 def get_spotify_client(scope: str = None) -> spotipy.Spotify:
     """

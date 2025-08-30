@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { config } from "../config";
+import { createLogger } from "../useLogger";
 
 import {
   PlaylistTransferRequestProps,
@@ -8,6 +9,7 @@ import {
 } from "@/types";
 
 const API_BASE_URL = config.apiBaseUrl;
+const logger = createLogger("utils/api");
 
 // Create axios instance with default config
 const api = axios.create({
@@ -20,7 +22,7 @@ const api = axios.create({
 
 // Request interceptor for logging
 api.interceptors.request.use((config) => {
-  console.log(
+  logger.info(
     `[API] - Making ${config.method?.toUpperCase()} request to ${config.url}`,
   );
 
@@ -31,7 +33,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("[API] - Error:", error.response?.data || error.message);
+    logger.error("[API] - Error:", error.response?.data || error.message);
 
     return Promise.reject(error);
   },
@@ -47,7 +49,7 @@ export const authAPI = {
     youtube_configured: boolean;
     message: string;
   }> => {
-    console.log("[authAPI] - Checking backend OAuth status");
+    logger.log("[authAPI] - Checking backend OAuth status");
     const response = await api.get("/auth/status");
 
     return response.data;
@@ -67,7 +69,7 @@ export const authAPI = {
     scope: string;
     user_info?: any;
   }> => {
-    console.log("[authAPI] - Exchanging Spotify authorization code");
+    logger.log("[authAPI] - Exchanging Spotify authorization code");
     const response = await api.post("/auth/spotify/callback", {
       code,
       redirect_uri: redirectUri,
@@ -90,7 +92,7 @@ export const authAPI = {
     scope: string;
     user_info?: any;
   }> => {
-    console.log("[authAPI] - Exchanging YouTube authorization code");
+    logger.log("[authAPI] - Exchanging YouTube authorization code");
     const response = await api.post("/auth/youtube/callback", {
       code,
       redirect_uri: redirectUri,
@@ -103,7 +105,7 @@ export const authAPI = {
    * Generate Spotify OAuth URL
    */
   generateSpotifyAuthUrl: (state: string): string => {
-    console.log("[authAPI] - Generating Spotify OAuth URL");
+    logger.log("[authAPI] - Generating Spotify OAuth URL");
 
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri = `http://127.0.0.1:3000/auth/spotify/callback`;
@@ -133,7 +135,7 @@ export const authAPI = {
    * Generate YouTube OAuth URL
    */
   generateYouTubeAuthUrl: (state: string): string => {
-    console.log("[authAPI] - Generating YouTube OAuth URL");
+    logger.warn("[authAPI] - Generating YouTube OAuth URL");
 
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     const redirectUri = `http://127.0.0.1:3000/auth/youtube/callback`;
@@ -167,7 +169,7 @@ export const tokenManager = {
     spotify: boolean;
     youtube: boolean;
   } => {
-    console.log("[tokenManager] - Checking stored auth tokens");
+    logger.log("[tokenManager] - Checking stored auth tokens");
 
     const spotifyToken = localStorage.getItem("spotify_access_token");
     const youtubeToken = localStorage.getItem("youtube_access_token");
@@ -186,7 +188,7 @@ export const tokenManager = {
     refresh_token?: string;
     user_info?: any;
   }): void => {
-    console.log("[tokenManager] - Storing Spotify tokens");
+    logger.log("[tokenManager] - Storing Spotify tokens");
 
     localStorage.setItem("spotify_access_token", data.access_token);
     if (data.refresh_token) {
@@ -205,7 +207,7 @@ export const tokenManager = {
     refresh_token?: string;
     user_info?: any;
   }): void => {
-    console.log("[tokenManager] - Storing YouTube tokens");
+    logger.log("[tokenManager] - Storing YouTube tokens");
 
     localStorage.setItem("youtube_access_token", data.access_token);
     if (data.refresh_token) {
@@ -220,7 +222,7 @@ export const tokenManager = {
    * Clear Spotify tokens
    */
   clearSpotifyTokens: (): void => {
-    console.log("[tokenManager] - Clearing Spotify tokens");
+    logger.log("[tokenManager] - Clearing Spotify tokens");
 
     localStorage.removeItem("spotify_access_token");
     localStorage.removeItem("spotify_refresh_token");
@@ -231,7 +233,7 @@ export const tokenManager = {
    * Clear YouTube tokens
    */
   clearYouTubeTokens: (): void => {
-    console.log("[tokenManager] - Clearing YouTube tokens");
+    logger.log("[tokenManager] - Clearing YouTube tokens");
 
     localStorage.removeItem("youtube_access_token");
     localStorage.removeItem("youtube_refresh_token");
@@ -254,7 +256,7 @@ export const oauthFlow = {
    * Start Spotify OAuth flow
    */
   startSpotifyAuth: (): void => {
-    console.log("[oauthFlow] - Starting Spotify OAuth flow");
+    logger.log("[oauthFlow] - Starting Spotify OAuth flow");
 
     try {
       const state = Math.random().toString(36).substring(2, 15);
@@ -265,7 +267,7 @@ export const oauthFlow = {
 
       window.location.href = authUrl;
     } catch (error) {
-      console.error("[oauthFlow] - Failed to start Spotify auth:", error);
+      logger.error("[oauthFlow] - Failed to start Spotify auth:", error);
       throw error;
     }
   },
@@ -274,7 +276,7 @@ export const oauthFlow = {
    * Start YouTube OAuth flow
    */
   startYouTubeAuth: (): void => {
-    console.log("[oauthFlow] - Starting YouTube OAuth flow");
+    logger.log("[oauthFlow] - Starting YouTube OAuth flow");
 
     try {
       const state = Math.random().toString(36).substring(2, 15);
@@ -285,7 +287,7 @@ export const oauthFlow = {
 
       window.location.href = authUrl;
     } catch (error) {
-      console.error("[oauthFlow] - Failed to start YouTube auth:", error);
+      logger.error("[oauthFlow] - Failed to start YouTube auth:", error);
       throw error;
     }
   },
@@ -298,7 +300,7 @@ export const oauthFlow = {
     code: string,
     state: string,
   ): Promise<void> => {
-    console.log(`[oauthFlow] - Handling ${platform} OAuth callback`);
+    logger.info(`[oauthFlow] - Handling ${platform} OAuth callback`);
 
     // Verify state parameter for security
     const storedState = localStorage.getItem("oauth_state");
@@ -323,10 +325,10 @@ export const oauthFlow = {
       // Clean up OAuth state
       localStorage.removeItem("oauth_state");
 
-      console.log(`[oauthFlow] - ${platform} authentication successful`);
+      logger.success(`[oauthFlow] - ${platform} authentication successful`);
       // No return - function completes successfully
     } catch (error) {
-      console.error(`[oauthFlow] - ${platform} authentication failed:`, error);
+      logger.error(`[oauthFlow] - ${platform} authentication failed:`, error);
       throw error;
     }
   },
@@ -344,14 +346,14 @@ export const callbackHandlers = {
     message: string;
   }> => {
     try {
-      console.log("[callbackHandlers] - Processing Spotify OAuth callback");
+      logger.log("[callbackHandlers] - Processing Spotify OAuth callback");
 
       // Extract URL parameters
       const code = searchParams.get("code");
       const state = searchParams.get("state");
       const error = searchParams.get("error");
 
-      console.log("[callbackHandlers] - URL parameters:", {
+      logger.info("[callbackHandlers] - URL parameters:", {
         code: !!code,
         state,
         error,
@@ -374,7 +376,7 @@ export const callbackHandlers = {
         message: "Successfully connected to Spotify!",
       };
     } catch (error) {
-      console.error(
+      logger.error(
         "[callbackHandlers] - Spotify authentication failed:",
         error,
       );
@@ -399,14 +401,14 @@ export const callbackHandlers = {
     message: string;
   }> => {
     try {
-      console.log("[callbackHandlers] - Processing YouTube OAuth callback");
+      logger.log("[callbackHandlers] - Processing YouTube OAuth callback");
 
       // Extract URL parameters
       const code = searchParams.get("code");
       const state = searchParams.get("state");
       const error = searchParams.get("error");
 
-      console.log("[callbackHandlers] - URL parameters:", {
+      logger.log("[callbackHandlers] - URL parameters:", {
         code: !!code,
         state,
         error,
@@ -429,7 +431,7 @@ export const callbackHandlers = {
         message: "Successfully connected to YouTube!",
       };
     } catch (error) {
-      console.error(
+      logger.error(
         "[callbackHandlers] - YouTube authentication failed:",
         error,
       );
@@ -445,8 +447,6 @@ export const callbackHandlers = {
   },
 };
 
-
-
 /**
  * Transfer API functions
  * These handle the actual playlist transfer logic and communicate with the backend.
@@ -456,16 +456,37 @@ export const transferAPI = {
   directTransfer: async (
     data: PlaylistTransferRequestProps,
   ): Promise<TransferResultResponseProps> => {
-    console.log("[transferAPI] - Sending transfer request:", data);
+    logger.info("[transferAPI] - Sending transfer request:", data);
 
-    const response = await api.post("/transfer/", {
-      playlist_url: data.url,
-      playlist_name: data.name,
-      is_public: data.isPublic,
-      description: data.description || "",
-    });
+    // Get user's tokens from localStorage
+    const spotifyToken = localStorage.getItem("spotify_access_token");
+    const youtubeToken = localStorage.getItem("youtube_access_token");
 
-    console.log("[transferAPI] - Backend response:", response.data);
+    logger.warn("spotifyToken = ", spotifyToken, "youtubeToken = ", youtubeToken);
+
+    if (!spotifyToken || !youtubeToken) {
+      throw new Error(
+        "Missing authentication tokens. Please reconnect your accounts on the home page.",
+      );
+    }
+
+    const response = await api.post(
+      "/transfer",
+      {
+        playlist_url: data.url,
+        playlist_name: data.name,
+        is_public: data.isPublic,
+        description: data.description || "",
+      },
+      {
+        headers: {
+          "X-Spotify-Token": spotifyToken,
+          "X-YouTube-Token": youtubeToken,
+        },
+      },
+    );
+
+    logger.success("[transferAPI] - Backend response:", response.data);
 
     // Backend now returns the exact format we need!
     const backendData = response.data;
