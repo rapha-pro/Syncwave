@@ -105,10 +105,7 @@ export default function PrivacyPolicy() {
                   <li>
                     • Basic usage analytics (anonymous transfer statistics)
                   </li>
-                  <li>
-                    • No personal information beyond what's required for
-                    authentication
-                  </li>
+                  <li>• User Profile data (name, email, id)</li>
                 </ul>
               </section>
 

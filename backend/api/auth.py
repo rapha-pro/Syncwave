@@ -76,7 +76,7 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
             )
         
         token_response = response.json()
-        logger.success(f"[SpotifyOAuth] - Token exchange successful")
+        logger.info(f"[SpotifyOAuth] - Token exchange successful")
         
         # Get user info using the access token
         user_info = None
@@ -110,7 +110,7 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logger.errpr(f"[SpotifyOAuth] - Unexpected error: {e}")
+        logger.error(f"[SpotifyOAuth] - Unexpected error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"OAuth callback failed: {str(e)}"
@@ -182,7 +182,7 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
             )
         
         token_response = response.json()
-        logger.success(f"[YouTubeOAuth] - Token exchange successful")
+        logger.info(f"[YouTubeOAuth] - Token exchange successful")
         
         # Get user info using the access token
         user_info = None

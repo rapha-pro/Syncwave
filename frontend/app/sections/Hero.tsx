@@ -118,12 +118,12 @@ export default function Hero() {
   }, []);
 
   const canProceed = authStatus.spotify && authStatus.youtube;
-  var hasPlayedAnimation = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+  var hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
 
   // Trigger celebration animation when both accounts are connected
   useEffect(() => {
     if (canProceed && celebrationRef.current) {
-      const hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+      hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
       if (hasPlayedCelebration) return;
 
       triggerCelebration();
@@ -298,7 +298,7 @@ export default function Hero() {
             ref={celebrationRef}
             className="relative mb-6 flex justify-center h-0"
           >
-            {canProceed && hasPlayedAnimation && (
+            {canProceed && hasPlayedCelebration && (
               <div className="celebration-text absolute flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500/20 to-blue-500/20 backdrop-blur-md rounded-full border border-green-500/30 -top-12">
                 <Sparkles className="text-yellow-400 animate-pulse" size={20} />
                 <span className="text-white font-medium">
