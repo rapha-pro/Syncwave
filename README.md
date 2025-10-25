@@ -152,7 +152,7 @@ cd syncwave
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+venv\Scripts\activate # Linux: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -191,8 +191,6 @@ API_BASE_URL=http://localhost:8000
 #### Install Dependencies
 ```bash
 cd frontend
-npm install
-# or
 pnpm install
 ```
 
@@ -207,15 +205,13 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ### Start Backend Server
 ```bash
 cd backend
-source venv/bin/activate
+venv\Scripts\activate # Linux: source venv/bin/activate
 uvicorn main:app --reload --port 8000
 ```
 
 ### Start Frontend Development Server
 ```bash
 cd frontend
-npm run dev
-# or
 pnpm dev
 ```
 
