@@ -2,15 +2,15 @@ from googleapiclient.discovery import Resource
 import spotipy
 import time
 from datetime import datetime
-from backend.services.youtube_api import (
+from services.youtube_api import (
     get_video_details_from_playlist,  # New function!
     extract_playlist_id
 )
-from backend.services.spotify_api import (
+from services.spotify_api import (
     api_create_playlist,
     api_process_videos_to_songs,  # New function!
 )
-from backend.models.transfer import TransferResponse, SongResult
+from models.transfer import TransferResponse, SongResult
 from typing import List
 import logging
 

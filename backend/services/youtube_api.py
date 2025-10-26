@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from typing import List
-from backend.models.transfer import YouTubeVideo
+from models.transfer import YouTubeVideo
 import logging
 
 

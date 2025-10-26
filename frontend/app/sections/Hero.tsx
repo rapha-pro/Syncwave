@@ -118,7 +118,9 @@ export default function Hero() {
   }, []);
 
   const canProceed = authStatus.spotify && authStatus.youtube;
-  var hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+  var hasPlayedCelebration = typeof window !== "undefined" 
+    ? sessionStorage.getItem("heroAuthenticationCelebrationPlayed") 
+    : null;
 
   // Trigger celebration animation when both accounts are connected
   useEffect(() => {
@@ -442,6 +444,7 @@ export default function Hero() {
       </div>
 
       {/* Development Debug Info - Consolidated */}
+      {/* TODO: change next line to isDevelopment */}
       {process.env.NODE_ENV === "development" && (
         <div className="container mx-auto max-w-6xl mt-8">
           <div className="p-4 bg-yellow-900/20 border border-yellow-500/50 rounded-lg">

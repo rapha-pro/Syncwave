@@ -5,7 +5,7 @@ from rich import print
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from typing import Optional, List, Dict, Any, Tuple
-from backend.models.transfer import SpotifyTrack, YouTubeVideo, SongResult
+from models.transfer import SpotifyTrack, YouTubeVideo, SongResult
 import logging
 
 # Setup a logger instance for this module

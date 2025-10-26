@@ -152,7 +152,7 @@ cd syncwave
 ```bash
 cd backend
 python -m venv venv
-venv\Scripts\activate # Linux: source venv/bin/activate
+venv\Scripts\activate    #Linux: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -195,9 +195,18 @@ pnpm install
 ```
 
 #### Environment Configuration
-Create `frontend/.env.local`:
+Create `frontend/.env`:
 ```env
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+# Frontend
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+
+# OAuth Variables
+NEXT_PUBLIC_SPOTIFY_CLIENT_ID=...
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=... .apps.googleusercontent.com
+
+# OAuth Redirect URIs for Web (add these)
+SPOTIFY_WEB_REDIRECT_URI=http://localhost:3000/auth/spotify/callback
+GOOGLE_WEB_REDIRECT_URI=http://localhost:3000/auth/youtube/callback
 ```
 
 ## Development
@@ -205,7 +214,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ### Start Backend Server
 ```bash
 cd backend
-venv\Scripts\activate # Linux: source venv/bin/activate
+venv\Scripts\activate    #Linux: source venv/bin/activate
 uvicorn main:app --reload --port 8000
 ```
 

@@ -15,6 +15,7 @@ export default function Features() {
   // instantiate logger
   const logger = useLogger("sections/Features");
 
+  // TODO: Remove '[Feature]' in logger output
   useEffect(() => {
     logger.log("[Features] - Component mounted/remounted");
     gsap.registerPlugin(ScrollTrigger);

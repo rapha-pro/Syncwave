@@ -1,11 +1,11 @@
 import os
 from dotenv import load_dotenv
-from backend.services.youtube_api import (
+from services.youtube_api import (
     get_authenticated_service,
     get_video_titles_from_playlist, 
     extract_playlist_id
 )
-from backend.services.spotify_api import (
+from services.spotify_api import (
     get_spotify_client,
     api_create_playlist,
     api_search_track,
