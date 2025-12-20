@@ -54,7 +54,8 @@ export const tokenManager = {
 
   /**
    * Get stored tokens for API requests
-   * Returns token existence status only, not the actual tokens to prevent logging
+   * Returns actual token strings (or null if not found/expired)
+   * Note: Use with caution - do not log the returned values
    */
   getTokens: (): {
     spotify: string | null;
