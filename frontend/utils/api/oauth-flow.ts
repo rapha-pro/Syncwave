@@ -63,7 +63,7 @@ export const oauthFlow = {
     const storedState = localStorage.getItem("oauth_state");
 
     if (state !== storedState) {
-      throw new Error("Invalid state parameter - possible CSRF attack");
+      throw new Error("Authentication validation failed. Please try again.");
     }
 
     const redirectUri = `${window.location.origin}/auth/${platform}/callback`;
@@ -133,9 +133,9 @@ function getUserFriendlyErrorMessage(error: any): string {
     return "Network error. Please check your internet connection.";
   }
 
-  // Handle CSRF attack detection
-  if (error.message?.includes("CSRF")) {
-    return "Security validation failed. Please start the authentication process again.";
+  // Handle authentication validation failures
+  if (error.message?.includes("validation failed")) {
+    return "Authentication validation failed. Please try again.";
   }
 
   // Default to error message if available

@@ -13,25 +13,29 @@ export default function TermsOfService() {
   const router = useRouter();
 
   useEffect(() => {
+    // Only run animations once
+    const hasAnimated = sessionStorage.getItem("termsPageAnimated");
+
+    if (hasAnimated) return;
+
     // Kill any existing animations first
     gsap.killTweensOf([".page-header", ".main-content"]);
 
-    // Animate page elements
-    const timeoutId = setTimeout(() => {
-      gsap.fromTo(
-        ".page-header",
-        { y: -50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
-      );
+    // Animate page elements - run synchronously without delay
+    gsap.fromTo(
+      ".page-header",
+      { y: -50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+    );
 
-      gsap.fromTo(
-        ".main-content",
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: 0.2, ease: "power3.out" },
-      );
-    }, 50);
+    gsap.fromTo(
+      ".main-content",
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, delay: 0.1, ease: "power3.out" },
+    );
 
-    return () => clearTimeout(timeoutId);
+    // Mark as animated
+    sessionStorage.setItem("termsPageAnimated", "true");
   }, []);
 
   const handleBackClick = () => {

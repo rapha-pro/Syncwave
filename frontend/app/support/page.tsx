@@ -29,44 +29,48 @@ export default function Support() {
   };
 
   useEffect(() => {
+    // Only run animations once
+    const hasAnimated = sessionStorage.getItem("supportPageAnimated");
+
+    if (hasAnimated) return;
+
     // Kill any existing animations first
-    gsap.killTweensOf([".page-header", ".main-content"]);
+    gsap.killTweensOf([".page-header", ".main-content", ".support-card"]);
 
-    // Animate page elements
-    const timeoutId = setTimeout(() => {
-      gsap.fromTo(
-        ".page-header",
-        { y: -50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
-      );
+    // Animate page elements - run synchronously without delay
+    gsap.fromTo(
+      ".page-header",
+      { y: -50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+    );
 
-      gsap.fromTo(
-        ".main-content",
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          delay: 0.2,
-          ease: "power3.out",
-        },
-      );
+    gsap.fromTo(
+      ".main-content",
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        delay: 0.1,
+        ease: "power3.out",
+      },
+    );
 
-      gsap.fromTo(
-        ".support-card",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          delay: 0.4,
-          ease: "power3.out",
-        },
-      );
-    }, 50);
+    gsap.fromTo(
+      ".support-card",
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.4,
+        stagger: 0.08,
+        delay: 0.2,
+        ease: "power3.out",
+      },
+    );
 
-    return () => clearTimeout(timeoutId);
+    // Mark as animated
+    sessionStorage.setItem("supportPageAnimated", "true");
   }, []);
 
   const handleBackClick = () => {
