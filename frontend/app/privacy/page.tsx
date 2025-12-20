@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
 
 import { emailAddress } from "@/utils/socialLinks";
+import { termsUpdateDate } from "@/utils/site";
 
 export default function PrivacyPolicy() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,7 +86,7 @@ export default function PrivacyPolicy() {
           <div className="prose prose-invert max-w-none">
             <div className="bg-gray-800/50 rounded-lg p-8 space-y-8">
               <div className="text-sm text-gray-400 mb-6">
-                Last updated: {new Date().toLocaleDateString()}
+                Last updated: {termsUpdateDate}
               </div>
 
               <section className="space-y-4">
@@ -105,12 +106,13 @@ export default function PrivacyPolicy() {
                     during transfer)
                   </li>
                   <li>
-                    • Playlist metadata (names, descriptions, track information)
+                    • Playlist metadata (names, descriptions)
                   </li>
                   <li>
-                    • Basic usage analytics (anonymous transfer statistics)
+                    • Basic usage analytics (anonymous transfer statistics like page views, 
+                    performance metrics, etc..) to provide reliability of our service
                   </li>
-                  <li>• User Profile data (name, email, id)</li>
+                  <li>• User Profile data (name, email) used in the transfer process</li>
                 </ul>
               </section>
 
@@ -129,7 +131,7 @@ export default function PrivacyPolicy() {
                   <li>
                     • OAuth tokens are stored securely and deleted after use
                   </li>
-                  <li>• We never store your Spotify or YouTube passwords</li>
+                  <li>• We NEVER store your Spotify or YouTube passwords</li>
                   <li>• Regular security audits and updates</li>
                 </ul>
               </section>
@@ -147,7 +149,7 @@ export default function PrivacyPolicy() {
                   <li>• Improving our service quality</li>
                   <li>• Anonymous usage statistics</li>
                   <li>
-                    • We never sell or share your personal data with third
+                    • We NEVER sell or share your personal data with third
                     parties
                   </li>
                 </ul>
@@ -199,7 +201,7 @@ export default function PrivacyPolicy() {
               <div className="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
                 <p>
                   This Privacy Policy is effective as of{" "}
-                  {new Date().toLocaleDateString()} and will remain in effect
+                  {termsUpdateDate} and will remain in effect
                   except with respect to any changes in its provisions in the
                   future.
                 </p>

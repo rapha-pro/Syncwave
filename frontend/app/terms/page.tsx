@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
 
 import { emailAddress } from "@/utils/socialLinks";
+import { termsUpdateDate } from "@/utils/site";
 
 export default function TermsOfService() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,7 +86,7 @@ export default function TermsOfService() {
           <div className="prose prose-invert max-w-none">
             <div className="bg-gray-800/50 rounded-lg p-8 space-y-8">
               <div className="text-sm text-gray-400 mb-6">
-                Last updated: {new Date().toLocaleDateString()}
+                Last updated: {termsUpdateDate}
               </div>
 
               <section className="space-y-4">
@@ -242,7 +243,7 @@ export default function TermsOfService() {
               <div className="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
                 <p>
                   These Terms of Service are effective as of{" "}
-                  {new Date().toLocaleDateString()} and will remain in effect
+                  {termsUpdateDate} and will remain in effect
                   except with respect to any changes in its provisions in the
                   future.
                 </p>
