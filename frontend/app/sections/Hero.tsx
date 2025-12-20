@@ -18,6 +18,7 @@ import { inactivityTracker } from "@/utils/inactivity-tracker";
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const celebrationRef = useRef<HTMLDivElement>(null);
+  const musicNotesRef = useRef<HTMLDivElement>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>({
     spotify: false,
     youtube: false,
@@ -54,13 +55,15 @@ export default function Hero() {
 
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
+      // Enhanced title animation with rotation and scale
       gsap.fromTo(
         ".hero-title",
-        { y: 50, opacity: 0 },
+        { y: 50, opacity: 0, rotationX: -15 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          rotationX: 0,
+          duration: 1,
           delay: 0.2,
           ease: "power3.out",
         },
@@ -78,29 +81,87 @@ export default function Hero() {
         },
       );
 
+      // Stagger animation for buttons
       gsap.fromTo(
-        ".hero-buttons",
-        { y: 50, opacity: 0 },
+        ".hero-buttons > div",
+        { x: -30, opacity: 0, scale: 0.9 },
         {
-          y: 0,
+          x: 0,
           opacity: 1,
-          duration: 0.8,
+          scale: 1,
+          duration: 0.6,
           delay: 0.6,
-          ease: "power3.out",
+          stagger: 0.1,
+          ease: "back.out(1.4)",
         },
       );
 
+      // Enhanced phone animation with rotation
       gsap.fromTo(
         ".hero-image",
-        { scale: 0.8, opacity: 0 },
+        { scale: 0.7, opacity: 0, rotationY: -20 },
         {
           scale: 1,
           opacity: 1,
-          duration: 1,
-          delay: 0.4,
-          ease: "elastic.out(1, 0.75)",
+          rotationY: 0,
+          duration: 1.2,
+          delay: 0.5,
+          ease: "elastic.out(1, 0.6)",
         },
       );
+
+      // Animate gradient orbs with pulsing effect
+      gsap.fromTo(
+        ".gradient-orb",
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5,
+          delay: 0.3,
+          stagger: 0.2,
+          ease: "power2.out",
+        },
+      );
+
+      // Create floating music notes
+      if (musicNotesRef.current) {
+        const notes = ["♪", "♫", "♬", "♩"];
+        
+        for (let i = 0; i < 8; i++) {
+          const note = document.createElement("div");
+          const noteSymbol = notes[Math.floor(Math.random() * notes.length)];
+          
+          note.className = "absolute text-2xl opacity-0 pointer-events-none music-note";
+          note.textContent = noteSymbol;
+          note.style.left = `${Math.random() * 100}%`;
+          note.style.top = `${Math.random() * 100}%`;
+          note.style.color = i % 2 === 0 ? "#22c55e" : "#ef4444";
+          
+          musicNotesRef.current.appendChild(note);
+
+          // Animate notes floating across
+          gsap.to(note, {
+            x: (Math.random() - 0.5) * 400,
+            y: (Math.random() - 0.5) * 300 - 100,
+            opacity: 0.6,
+            rotation: Math.random() * 360,
+            duration: 3 + Math.random() * 2,
+            delay: 1 + i * 0.2,
+            ease: "power1.inOut",
+            repeat: -1,
+            repeatDelay: 2,
+            onRepeat: () => {
+              // Reset position
+              gsap.set(note, {
+                x: 0,
+                y: 0,
+                opacity: 0,
+              });
+            },
+          });
+        }
+      }
 
       // Mark animation as played in session storage
       sessionStorage.setItem("heroAnimated", "true");
@@ -110,11 +171,16 @@ export default function Hero() {
       clearTimeout(timeoutId);
       logger.log("[Hero] - Cleaning up animations");
 
-      ["hero-title", "hero-description", "hero-buttons", "hero-image"].forEach(
+      ["hero-title", "hero-description", "hero-buttons", "hero-image", "gradient-orb", "music-note"].forEach(
         (selector) => {
           killAnimations(selector);
         },
       );
+      
+      // Clean up music notes
+      if (musicNotesRef.current) {
+        musicNotesRef.current.innerHTML = "";
+      }
     };
   }, []);
 
@@ -456,8 +522,13 @@ export default function Hero() {
 
         <div className="hero-image relative">
           <div className="relative h-[400px] w-full">
-            <div className="absolute top-0 right-0 h-64 w-64 bg-green-500/20 rounded-full filter blur-3xl animate-pulse" />
-            <div className="absolute bottom-0 left-0 h-64 w-64 bg-red-500/20 rounded-full filter blur-3xl animate-pulse" />
+            {/* Enhanced gradient orbs with class for animation */}
+            <div className="gradient-orb absolute top-0 right-0 h-64 w-64 bg-green-500/20 rounded-full filter blur-3xl" />
+            <div className="gradient-orb absolute bottom-0 left-0 h-64 w-64 bg-red-500/20 rounded-full filter blur-3xl" />
+            <div className="gradient-orb absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-48 w-48 bg-purple-500/20 rounded-full filter blur-3xl" />
+            
+            {/* Music notes container */}
+            <div ref={musicNotesRef} className="absolute inset-0 overflow-hidden pointer-events-none" />
 
             <div className="absolute inset-0 flex items-center justify-center">
               <Phone />

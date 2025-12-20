@@ -11,20 +11,21 @@ export default function AnimatedBackground() {
 
     if (!container) return;
 
-    // Create floating particles
+    // Create floating particles with enhanced animation
     const createParticles = () => {
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 20; i++) {
         const particle = document.createElement("div");
 
         particle.className = "absolute rounded-full opacity-20";
 
         // Random size and color
-        const size = Math.random() * 20 + 2;
+        const size = Math.random() * 24 + 4;
         const colors = [
           "bg-green-400",
           "bg-blue-400",
           "bg-purple-400",
           "bg-red-400",
+          "bg-yellow-400",
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -36,20 +37,31 @@ export default function AnimatedBackground() {
 
         container.appendChild(particle);
 
-        // Animate particle
+        // Enhanced floating animation
+        const tl = gsap.timeline({ repeat: -1, yoyo: true });
+        
+        tl.to(particle, {
+          x: (Math.random() - 0.5) * 300,
+          y: (Math.random() - 0.5) * 300,
+          rotation: Math.random() * 360,
+          duration: Math.random() * 25 + 15,
+          ease: "sine.inOut",
+        });
+
+        // Pulsing opacity
         gsap.to(particle, {
-          x: (Math.random() - 0.5) * 200,
-          y: (Math.random() - 0.5) * 200,
-          duration: Math.random() * 20 + 10,
-          ease: "none",
+          opacity: Math.random() * 0.4 + 0.1,
+          duration: Math.random() * 3 + 2,
+          ease: "power2.inOut",
           repeat: -1,
           yoyo: true,
         });
 
+        // Scale animation
         gsap.to(particle, {
-          opacity: Math.random() * 0.3 + 0.1,
-          duration: Math.random() * 3 + 2,
-          ease: "power2.inOut",
+          scale: Math.random() * 0.5 + 0.8,
+          duration: Math.random() * 4 + 2,
+          ease: "sine.inOut",
           repeat: -1,
           yoyo: true,
         });
@@ -71,19 +83,24 @@ export default function AnimatedBackground() {
       ref={backgroundRef}
       className="fixed inset-0 pointer-events-none overflow-hidden"
     >
-      {/* Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 h-64 w-64 bg-green-500/10 rounded-full filter blur-3xl animate-pulse" />
-      <div className="absolute top-3/4 right-1/4 h-64 w-64 bg-blue-500/10 rounded-full filter blur-3xl animate-pulse" />
-      <div className="absolute top-1/2 right-1/3 h-48 w-48 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse" />
+      {/* Enhanced Gradient Orbs with pulsing animation */}
+      <div className="absolute top-1/4 left-1/4 h-72 w-72 bg-green-500/10 rounded-full filter blur-3xl animate-pulse" />
+      <div className="absolute top-3/4 right-1/4 h-72 w-72 bg-blue-500/10 rounded-full filter blur-3xl animate-pulse" 
+           style={{ animationDelay: '0.5s' }} />
+      <div className="absolute top-1/2 right-1/3 h-56 w-56 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse" 
+           style={{ animationDelay: '1s' }} />
+      <div className="absolute bottom-1/4 left-1/3 h-64 w-64 bg-red-500/10 rounded-full filter blur-3xl animate-pulse" 
+           style={{ animationDelay: '1.5s' }} />
 
-      {/* Mesh Gradient Background */}
+      {/* Enhanced Mesh Gradient Background */}
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-40"
         style={{
           background: `
-            radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)
+            radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 60% 70%, rgba(239, 68, 68, 0.1) 0%, transparent 50%)
           `,
         }}
       />

@@ -65,18 +65,33 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
       const formCard = document.querySelector(".form-card");
 
       if (formFields.length > 0) {
+        // Enhanced stagger animation with scale and rotation
         gsap.fromTo(
           ".form-field",
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out" },
+          { y: 30, opacity: 0, scale: 0.95, rotationX: -10 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            scale: 1, 
+            rotationX: 0,
+            duration: 0.7, 
+            stagger: 0.15, 
+            ease: "back.out(1.4)" 
+          },
         );
       }
 
       if (formCard) {
         gsap.fromTo(
           ".form-card",
-          { scale: 0.95, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" },
+          { scale: 0.9, opacity: 0, y: 20 },
+          { 
+            scale: 1, 
+            opacity: 1, 
+            y: 0,
+            duration: 0.9, 
+            ease: "back.out(1.5)" 
+          },
         );
       }
     }, 100);

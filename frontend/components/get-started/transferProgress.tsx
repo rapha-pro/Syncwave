@@ -76,10 +76,10 @@ export default function TransferProgress({
     // Reset GSAP context and clear any existing animations
     const ctx = gsap.context(() => {
       // Kill any existing animations
-      gsap.killTweensOf([".progress-container", ".step-item"]);
+      gsap.killTweensOf([".progress-container", ".step-item", ".stats-card"]);
 
       // Reset elements to visible state first
-      gsap.set([".progress-container", ".step-item"], {
+      gsap.set([".progress-container", ".step-item", ".stats-card"], {
         opacity: 1,
         x: 0,
         y: 0,
@@ -87,23 +87,40 @@ export default function TransferProgress({
         clearProps: "all",
       });
 
-      // Then animate them in
+      // Enhanced progress container animation
       gsap.fromTo(
         ".progress-container",
-        { scale: 0.9, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" },
+        { scale: 0.85, opacity: 0, y: 30 },
+        { scale: 1, opacity: 1, y: 0, duration: 1, ease: "back.out(1.5)" },
       );
 
+      // Enhanced step items with 3D rotation
       gsap.fromTo(
         ".step-item",
-        { x: -50, opacity: 0 },
+        { x: -60, opacity: 0, rotationY: -20 },
         {
           x: 0,
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
+          rotationY: 0,
+          duration: 0.8,
+          stagger: 0.12,
           delay: 0.3,
-          ease: "power3.out",
+          ease: "back.out(1.3)",
+        },
+      );
+
+      // Animate stats cards
+      gsap.fromTo(
+        ".stats-card",
+        { y: 30, opacity: 0, scale: 0.9 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          delay: 0.5,
+          ease: "back.out(1.4)",
         },
       );
     }, containerRef);
@@ -349,7 +366,7 @@ export default function TransferProgress({
 
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-4">
-        <Card className="bg-gray-800/30 border border-gray-700">
+        <Card className="stats-card bg-gray-800/30 border border-gray-700">
           <CardBody className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-400 mb-1">
               {totalSongs}
@@ -358,7 +375,7 @@ export default function TransferProgress({
           </CardBody>
         </Card>
 
-        <Card className="bg-gray-800/30 border border-gray-700">
+        <Card className="stats-card bg-gray-800/30 border border-gray-700">
           <CardBody className="p-4 text-center">
             <div className="text-2xl font-bold text-green-400 mb-1">
               {foundSongs}
@@ -367,7 +384,7 @@ export default function TransferProgress({
           </CardBody>
         </Card>
 
-        <Card className="bg-gray-800/30 border border-gray-700">
+        <Card className="stats-card bg-gray-800/30 border border-gray-700">
           <CardBody className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-400 mb-1">
               {totalSongs - foundSongs}

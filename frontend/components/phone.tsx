@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { CheckCircle, ArrowRightLeft, TvMinimalPlay } from "lucide-react";
+import { gsap } from "gsap";
 
 import Logo from "./logo";
 
@@ -8,11 +12,61 @@ import { playlistDescription } from "@/utils/site";
 
 export default function Phone(area: areaProps) {
   const { width = 280, height = 500 } = area;
+  const transferIconRef = useRef<HTMLDivElement>(null);
+  const checkIconsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const style = {
     width: `${width}px`,
     height: `${height}px`,
   };
+
+  useEffect(() => {
+    // Check if animation has already played
+    const hasPlayedAnimation = sessionStorage.getItem("phoneAnimated");
+
+    if (hasPlayedAnimation) return;
+
+    // Animate transfer icon with rotation and pulse
+    if (transferIconRef.current) {
+      const tl = gsap.timeline({ repeat: -1 });
+      
+      tl.to(transferIconRef.current, {
+        rotation: 180,
+        scale: 1.2,
+        duration: 1,
+        ease: "power2.inOut",
+      })
+      .to(transferIconRef.current, {
+        rotation: 360,
+        scale: 1,
+        duration: 1,
+        ease: "power2.inOut",
+      });
+    }
+
+    // Animate check icons appearing one by one
+    checkIconsRef.current.forEach((icon, index) => {
+      if (icon) {
+        gsap.fromTo(
+          icon,
+          { scale: 0, rotation: -180, opacity: 0 },
+          {
+            scale: 1,
+            rotation: 0,
+            opacity: 1,
+            duration: 0.6,
+            delay: 2 + index * 0.3,
+            ease: "back.out(1.7)",
+            repeat: -1,
+            repeatDelay: 3,
+          }
+        );
+      }
+    });
+
+    // Mark as animated
+    sessionStorage.setItem("phoneAnimated", "true");
+  }, []);
 
   return (
     <div className={`relative md:scale-110`} style={style}>
@@ -47,7 +101,10 @@ export default function Phone(area: areaProps) {
 
               {/* Transfer Animation */}
               <div className="flex justify-center my-2">
-                <div className="relative h-10 w-10 bg-purple-900/30 rounded-full flex items-center justify-center animate-pulse">
+                <div 
+                  ref={transferIconRef}
+                  className="relative h-10 w-10 bg-purple-900/30 rounded-full flex items-center justify-center"
+                >
                   <ArrowRightLeft className="text-purple-400" size={20} />
                 </div>
               </div>
@@ -62,18 +119,27 @@ export default function Phone(area: areaProps) {
                 </div>
                 <div className="space-y-2">
                   <div className="h-6 bg-green-800/30 rounded-md w-full flex items-center">
-                    <div className="ml-auto mr-2 flex items-center gap-1">
+                    <div 
+                      ref={(el) => { checkIconsRef.current[0] = el; }}
+                      className="ml-auto mr-2 flex items-center gap-1"
+                    >
                       <CheckCircle className="text-green-400" size={16} />
                     </div>
                   </div>
                   <div className="h-6 bg-green-800/30 rounded-md w-[85%] flex items-center">
-                    <div className="ml-auto mr-2 flex items-center gap-1">
+                    <div 
+                      ref={(el) => { checkIconsRef.current[1] = el; }}
+                      className="ml-auto mr-2 flex items-center gap-1"
+                    >
                       <CheckCircle className="text-green-400" size={16} />
                     </div>
                   </div>
                   <div className="h-6 bg-green-800/30 rounded-md w-[90%] flex items-center">
-                    <div className="ml-auto mr-2 flex items-center gap-1">
-                      <CheckCircle className="text-green-400" />
+                    <div 
+                      ref={(el) => { checkIconsRef.current[2] = el; }}
+                      className="ml-auto mr-2 flex items-center gap-1"
+                    >
+                      <CheckCircle className="text-green-400" size={16} />
                     </div>
                   </div>
                 </div>
