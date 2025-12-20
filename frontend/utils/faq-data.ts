@@ -1,4 +1,5 @@
 import { successfullTransferPercent } from "./site";
+
 import { FaqItemProps } from "@/types";
 
 export const faqData: FaqItemProps[] = [

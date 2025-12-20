@@ -96,7 +96,7 @@ export default function Header() {
           className="cursor-pointer"
           onClick={handleLogoClick}
         >
-          <Logo size={14}/>
+          <Logo size={14} />
         </button>
 
         <div className="hidden md:flex gap-6 items-center">

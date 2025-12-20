@@ -3,7 +3,7 @@ import FaqCard from "@/components/faqCard";
 
 export default function Faq() {
   return (
-    <section id="faq" className="py-20 bg-black">
+    <section className="py-20 bg-black" id="faq">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">

@@ -6,7 +6,6 @@ import { Music, Search, CheckCircle, Download, Loader2 } from "lucide-react";
 import { gsap } from "gsap";
 
 import { ProgressStepProps, PlaylistTransferRequestProps } from "@/types";
-import { stat } from "fs";
 import { useLogger } from "@/utils/useLogger";
 
 interface TransferProgressProps {
