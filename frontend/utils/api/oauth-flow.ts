@@ -91,6 +91,62 @@ export const oauthFlow = {
 };
 
 /**
+ * Get user-friendly error message for OAuth errors
+ */
+function getUserFriendlyErrorMessage(error: any): string {
+  if (!error) return "Unknown error occurred";
+
+  // Handle Axios errors
+  if (error.response) {
+    const status = error.response.status;
+    const data = error.response.data;
+
+    if (status === 400) {
+      return "Invalid authorization code. Please try authenticating again.";
+    } else if (status === 401) {
+      return "Authentication failed. Please check your credentials and try again.";
+    } else if (status === 403) {
+      return "Access denied. Please ensure you've granted the necessary permissions.";
+    } else if (status === 500) {
+      return "Server error occurred. Please try again in a few moments.";
+    } else if (status === 503) {
+      return "Service temporarily unavailable. Please try again later.";
+    }
+
+    // Try to extract error message from response
+    if (data?.detail) {
+      return data.detail;
+    } else if (data?.error_description) {
+      return data.error_description;
+    } else if (data?.message) {
+      return data.message;
+    }
+  }
+
+  // Handle network errors
+  if (error.code === "ECONNABORTED" || error.message?.includes("timeout")) {
+    return "Connection timeout. Please check your internet connection and try again.";
+  } else if (
+    error.code === "ERR_NETWORK" ||
+    error.message?.includes("Network Error")
+  ) {
+    return "Network error. Please check your internet connection.";
+  }
+
+  // Handle CSRF attack detection
+  if (error.message?.includes("CSRF")) {
+    return "Security validation failed. Please start the authentication process again.";
+  }
+
+  // Default to error message if available
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "An unexpected error occurred. Please try again.";
+}
+
+/**
  * OAuth callback handlers for callback pages
  */
 export const callbackHandlers = {
@@ -111,19 +167,19 @@ export const callbackHandlers = {
       const state = searchParams.get("state");
       const error = searchParams.get("error");
 
-      logger.info("[callbackHandlers] - URL parameters:", {
-        code: !!code,
-        state,
-        error,
-      });
+      logger.info("[callbackHandlers] - URL parameters received");
 
       // Check for errors from Spotify
       if (error) {
-        throw new Error(`Spotify error: ${error}`);
+        const errorDescription = searchParams.get("error_description") || error;
+
+        throw new Error(`Spotify authorization error: ${errorDescription}`);
       }
 
       if (!code || !state) {
-        throw new Error("Missing required parameters from Spotify");
+        throw new Error(
+          "Missing required parameters from Spotify. Please try authenticating again.",
+        );
       }
 
       // Use the centralized OAuth flow handler
@@ -131,7 +187,7 @@ export const callbackHandlers = {
 
       return {
         status: "success",
-        message: "Successfully connected to Spotify!",
+        message: "Successfully connected to Spotify! Redirecting...",
       };
     } catch (error) {
       logger.error(
@@ -139,12 +195,9 @@ export const callbackHandlers = {
         error,
       );
 
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
-
       return {
         status: "error",
-        message: `Authentication failed: ${errorMessage}`,
+        message: getUserFriendlyErrorMessage(error),
       };
     }
   },
@@ -166,19 +219,19 @@ export const callbackHandlers = {
       const state = searchParams.get("state");
       const error = searchParams.get("error");
 
-      logger.log("[callbackHandlers] - URL parameters:", {
-        code: !!code,
-        state,
-        error,
-      });
+      logger.log("[callbackHandlers] - URL parameters received");
 
       // Check for errors from Google
       if (error) {
-        throw new Error(`Google error: ${error}`);
+        const errorDescription = searchParams.get("error_description") || error;
+
+        throw new Error(`Google authorization error: ${errorDescription}`);
       }
 
       if (!code || !state) {
-        throw new Error("Missing required parameters from Google");
+        throw new Error(
+          "Missing required parameters from Google. Please try authenticating again.",
+        );
       }
 
       // Use the centralized OAuth flow handler
@@ -186,7 +239,7 @@ export const callbackHandlers = {
 
       return {
         status: "success",
-        message: "Successfully connected to YouTube!",
+        message: "Successfully connected to YouTube! Redirecting...",
       };
     } catch (error) {
       logger.error(
@@ -194,12 +247,9 @@ export const callbackHandlers = {
         error,
       );
 
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
-
       return {
         status: "error",
-        message: `Authentication failed: ${errorMessage}`,
+        message: getUserFriendlyErrorMessage(error),
       };
     }
   },
