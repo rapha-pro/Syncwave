@@ -13,6 +13,7 @@ import { authAPI, tokenManager, oauthFlow } from "@/utils/api";
 import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { useLogger } from "@/utils/useLogger";
+import { inactivityTracker } from "@/utils/inactivity-tracker";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -159,7 +160,6 @@ export default function Hero() {
           ease: "power2.out",
           onComplete: () => {
             particle.remove();
-            router.push("/get-started");
           },
         });
       }
@@ -176,13 +176,17 @@ export default function Hero() {
         duration: 1,
         ease: "back.out(1.7)",
         onComplete: () => {
-          // Auto-hide after 3 seconds
+          // Auto-hide after 2 seconds and then redirect
           setTimeout(() => {
             gsap.to(".celebration-text", {
               scale: 0.8,
               opacity: 0,
               duration: 0.5,
               ease: "power2.in",
+              onComplete: () => {
+                // Redirect to get-started after animation completes
+                router.push("/get-started");
+              },
             });
           }, 2000);
         },
@@ -197,6 +201,12 @@ export default function Hero() {
     const localAuthStatus = tokenManager.getAuthStatus();
 
     setAuthStatus(localAuthStatus);
+
+    // Start inactivity tracking if user is authenticated
+    if (localAuthStatus.spotify || localAuthStatus.youtube) {
+      logger.log("[Hero] - User authenticated, starting inactivity tracker");
+      inactivityTracker.start();
+    }
 
     // Check backend OAuth configuration
     try {
@@ -249,6 +259,16 @@ export default function Hero() {
       tokenManager.clearSpotifyTokens();
     } else {
       tokenManager.clearYouTubeTokens();
+    }
+
+    // Check if both services are now logged out
+    const authStatus = tokenManager.getAuthStatus();
+
+    if (!authStatus.spotify && !authStatus.youtube) {
+      logger.log("[Hero] - All services logged out, stopping inactivity tracker");
+      inactivityTracker.stop();
+      // Clear celebration flag so user can see the animation again if they reconnect
+      sessionStorage.removeItem("heroAuthenticationCelebrationPlayed");
     }
 
     checkAuthStatus();
