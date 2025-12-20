@@ -147,8 +147,9 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   const isValidYouTubeURL = (url: string): boolean => {
     // Enhanced validation to prevent XSS and injection attacks
     // Must be a valid HTTPS YouTube URL with a playlist parameter
+    // YouTube playlist IDs are exactly 34 characters long
     const youtubePlaylistRegex =
-      /^https:\/\/(?:www\.)?youtube\.com\/.*[?&]list=([a-zA-Z0-9_-]+)(?:[&#]|$)/i;
+      /^https:\/\/(?:www\.)?youtube\.com\/.*[?&]list=([a-zA-Z0-9_-]{34})(?:[&#]|$)/i;
 
     // Additional security check: URL should not contain suspicious characters
     const hasSuspiciousChars = /<|>|javascript:|data:|vbscript:/i.test(url);

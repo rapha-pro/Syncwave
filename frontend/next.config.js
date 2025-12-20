@@ -7,12 +7,14 @@ const nextConfig = {
         source: "/:path*",
         headers: [
           // Content Security Policy
+          // Note: Next.js requires 'unsafe-eval' and 'unsafe-inline' for development
+          // In production, consider implementing nonces or hashes for inline scripts
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js requires unsafe-eval and unsafe-inline
-              "style-src 'self' 'unsafe-inline'", // Required for styled components
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
               "connect-src 'self' http://localhost:* http://127.0.0.1:* https://accounts.spotify.com https://accounts.google.com https://www.googleapis.com https://api.spotify.com https://oauth2.googleapis.com",
