@@ -2,24 +2,24 @@ export const testimonials = [
   {
     id: 1,
     quote:
-      "I spent hours trying to rebuild my YouTube playlists on Spotify manually. With Syncwave, I transferred 50+ songs across multiple playlists in under 2 minutes. Absolute game changer!",
+      "I spent hours trying to rebuild my YouTube playlists on Spotify manually. Thanks for building this",
     name: "Sarah K.",
-    title: "Music Producer & DJ",
+    title: "user",
     icon: "✨",
   },
   {
     id: 2,
     quote:
-      "This tool saved me so much time! Moving my entire music library between platforms used to be draining.",
+      "This saved me so much time! Moving my entire playlist was easy",
     name: "Mike R.",
-    title: "Audio Engineer",
+    title: "user",
     icon: "🎵",
   },
   {
     id: 3,
-    quote: "Clean interface, and zero hassle.",
+    quote: "Clean interface, I like your design",
     name: "Emma L.",
-    title: "Content Creator",
+    title: "user",
     icon: "🎧",
   },
 ];

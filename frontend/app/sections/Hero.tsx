@@ -475,48 +475,6 @@ export default function Hero() {
           </p>
         </div>
       </div>
-
-      {/* Development Debug Info - Consolidated */}
-      {/* TODO: change next line to isDevelopment */}
-      {process.env.NODE_ENV === "development" && (
-        <div className="container mx-auto max-w-6xl mt-8">
-          <div className="p-4 bg-yellow-900/20 border border-yellow-500/50 rounded-lg">
-            <h4 className="text-yellow-400 font-medium mb-2">
-              OAuth Debug Info
-            </h4>
-
-            {/* Technical Debug Info */}
-            <div className="text-xs text-gray-400 space-y-1">
-              <p>
-                Spotify Account:{" "}
-                {authStatus.spotify ? "Connected" : "Not Connected"}
-              </p>
-              <p>
-                YouTube Account:{" "}
-                {authStatus.youtube ? "Connected" : "Not Connected"}
-              </p>
-              <p>
-                Spotify Client ID:{" "}
-                {process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID ? "Set" : "Missing"}
-              </p>
-              <p>
-                Google Client ID:{" "}
-                {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? "Set" : "Missing"}
-              </p>
-              <p>
-                Backend Status:{" "}
-                {backendStatus ? JSON.stringify(backendStatus) : "Loading..."}
-              </p>
-              <p>
-                Current Origin:{" "}
-                {typeof window !== "undefined"
-                  ? window.location.origin
-                  : "Server"}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
