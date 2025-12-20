@@ -141,6 +141,8 @@ export default function Hero() {
     sessionStorage.setItem("heroAuthenticationCelebrationPlayed", "true");
 
     // Create floating particles
+    // Note: Particles animate for 2s, then component unmounts on redirect
+    // Particles are cleaned up naturally via DOM cleanup on unmount
     if (celebrationRef.current) {
       for (let i = 0; i < 15; i++) {
         const particle = document.createElement("div");
@@ -206,6 +208,7 @@ export default function Hero() {
     setAuthStatus(localAuthStatus);
 
     // Start inactivity tracking if user is authenticated
+    // Note: start() has internal guard to prevent multiple timers
     if (localAuthStatus.spotify || localAuthStatus.youtube) {
       logger.log("[Hero] - User authenticated, starting inactivity tracker");
       inactivityTracker.start();
