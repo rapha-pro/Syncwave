@@ -158,15 +158,6 @@ class InactivityTracker {
 
     return Math.max(0, timeoutMs - elapsed);
   }
-
-  /**
-   * Check if user is currently authenticated
-   */
-  private isAuthenticated(): boolean {
-    const authStatus = tokenManager.getAuthStatus();
-
-    return authStatus.spotify || authStatus.youtube;
-  }
 }
 
 // Export a singleton instance

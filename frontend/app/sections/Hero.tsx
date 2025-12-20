@@ -159,7 +159,10 @@ export default function Hero() {
           duration: 2,
           ease: "power2.out",
           onComplete: () => {
-            particle.remove();
+            // Safely remove particle if it still exists in the DOM
+            if (particle && particle.parentNode) {
+              particle.remove();
+            }
           },
         });
       }
