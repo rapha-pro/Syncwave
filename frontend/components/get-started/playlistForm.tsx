@@ -145,11 +145,15 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   };
 
   const isValidYouTubeURL = (url: string): boolean => {
+    // Enhanced validation to prevent XSS and injection attacks
+    // Must be a valid HTTPS YouTube URL with a playlist parameter
     const youtubePlaylistRegex =
-      /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/.*[?&]list=([a-zA-Z0-9_-]+)(?:[&#]|$)/i;
+      /^https:\/\/(?:www\.)?youtube\.com\/.*[?&]list=([a-zA-Z0-9_-]+)(?:[&#]|$)/i;
 
-    // return youtubePlaylistRegex.test(url);
-    return true;
+    // Additional security check: URL should not contain suspicious characters
+    const hasSuspiciousChars = /<|>|javascript:|data:|vbscript:/i.test(url);
+
+    return youtubePlaylistRegex.test(url) && !hasSuspiciousChars;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
