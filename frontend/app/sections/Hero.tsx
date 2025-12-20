@@ -265,7 +265,9 @@ export default function Hero() {
     const authStatus = tokenManager.getAuthStatus();
 
     if (!authStatus.spotify && !authStatus.youtube) {
-      logger.log("[Hero] - All services logged out, stopping inactivity tracker");
+      logger.log(
+        "[Hero] - All services logged out, stopping inactivity tracker",
+      );
       inactivityTracker.stop();
       // Clear celebration flag so user can see the animation again if they reconnect
       sessionStorage.removeItem("heroAuthenticationCelebrationPlayed");
@@ -291,9 +293,11 @@ export default function Hero() {
           ease: "power2.inOut",
         });
 
-      return () => heartbeat.kill();
+      return () => {
+        heartbeat.kill();
+      };
     }
-  }, []);
+  }, [canProceed]);
 
   return (
     <section

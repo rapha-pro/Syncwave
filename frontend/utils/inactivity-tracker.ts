@@ -23,6 +23,7 @@ class InactivityTracker {
   start(): void {
     if (this.isTracking) {
       logger.log("[InactivityTracker] - Already tracking");
+
       return;
     }
 
