@@ -5,6 +5,16 @@ import { gsap } from "gsap";
 
 export default function AnimatedBackground() {
   const backgroundRef = useRef<HTMLDivElement>(null);
+  
+  // Animation constants
+  const PARTICLE_COUNT = 20;
+  const PARTICLE_COLORS = [
+    "bg-green-400",
+    "bg-blue-400",
+    "bg-purple-400",
+    "bg-red-400",
+    "bg-yellow-400",
+  ];
 
   useEffect(() => {
     const container = backgroundRef.current;
@@ -13,21 +23,14 @@ export default function AnimatedBackground() {
 
     // Create floating particles with enhanced animation
     const createParticles = () => {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
         const particle = document.createElement("div");
 
         particle.className = "absolute rounded-full opacity-20";
 
         // Random size and color
         const size = Math.random() * 24 + 4;
-        const colors = [
-          "bg-green-400",
-          "bg-blue-400",
-          "bg-purple-400",
-          "bg-red-400",
-          "bg-yellow-400",
-        ];
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        const color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
 
         particle.classList.add(color);
         particle.style.width = `${size}px`;

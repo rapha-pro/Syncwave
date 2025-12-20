@@ -31,6 +31,10 @@ export default function TransferResults({
   const [copySuccess, setCopySuccess] = useState(false);
   const logger = useLogger("components/get-started/TransferResults");
 
+  // Animation constants
+  const CONFETTI_PARTICLE_COUNT = 30;
+  const CONFETTI_COLORS = ["#22c55e", "#3b82f6", "#a855f7", "#eab308", "#ef4444"];
+
   useEffect(() => {
     // Reset GSAP context and clear any existing animations
     const ctx = gsap.context(() => {
@@ -116,11 +120,9 @@ export default function TransferResults({
     if (!container) return;
 
     // Create confetti-like particles with multiple colors
-    const colors = ["#22c55e", "#3b82f6", "#a855f7", "#eab308", "#ef4444"];
-
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < CONFETTI_PARTICLE_COUNT; i++) {
       const particle = document.createElement("div");
-      const color = colors[Math.floor(Math.random() * colors.length)];
+      const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
 
       particle.className = "absolute w-3 h-3 rounded-full opacity-0";
       particle.style.backgroundColor = color;

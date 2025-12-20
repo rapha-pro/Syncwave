@@ -37,6 +37,10 @@ export default function Hero() {
   // instantiate logger
   const logger = useLogger("sections/Hero");
 
+  // Animation constants
+  const MUSIC_NOTES_COUNT = 8;
+  const MUSIC_NOTE_SYMBOLS = ["♪", "♫", "♬", "♩"];
+
   useEffect(() => {
     logger.log("[Hero] - Component mounted, checking auth status");
     gsap.registerPlugin(ScrollTrigger);
@@ -126,11 +130,9 @@ export default function Hero() {
 
       // Create floating music notes
       if (musicNotesRef.current) {
-        const notes = ["♪", "♫", "♬", "♩"];
-        
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < MUSIC_NOTES_COUNT; i++) {
           const note = document.createElement("div");
-          const noteSymbol = notes[Math.floor(Math.random() * notes.length)];
+          const noteSymbol = MUSIC_NOTE_SYMBOLS[Math.floor(Math.random() * MUSIC_NOTE_SYMBOLS.length)];
           
           note.className = "absolute text-2xl opacity-0 pointer-events-none music-note";
           note.textContent = noteSymbol;
@@ -164,7 +166,9 @@ export default function Hero() {
       }
 
       // Mark animation as played in session storage
-      sessionStorage.setItem("heroAnimated", "true");
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem("heroAnimated", "true");
+      }
     }, 100);
 
     return () => {

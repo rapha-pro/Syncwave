@@ -22,7 +22,9 @@ export default function Phone(area: areaProps) {
 
   useEffect(() => {
     // Check if animation has already played
-    const hasPlayedAnimation = sessionStorage.getItem("phoneAnimated");
+    const hasPlayedAnimation = typeof window !== 'undefined' 
+      ? sessionStorage.getItem("phoneAnimated") 
+      : null;
 
     if (hasPlayedAnimation) return;
 
@@ -65,7 +67,9 @@ export default function Phone(area: areaProps) {
     });
 
     // Mark as animated
-    sessionStorage.setItem("phoneAnimated", "true");
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem("phoneAnimated", "true");
+    }
   }, []);
 
   return (
