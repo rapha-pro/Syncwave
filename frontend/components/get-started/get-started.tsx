@@ -11,7 +11,7 @@ import PlaylistForm from "@/components/get-started/playlistForm";
 import TransferProgress from "@/components/get-started/transferProgress";
 import TransferResults from "@/components/get-started/transferResults";
 import AnimatedBackground from "@/components/get-started/animatedBackground";
-import { transferAPI } from "@/utils/api_routes.ts/api";
+import { transferAPI } from "@/utils/api";
 import {
   TransferResultResponseProps,
   PlaylistTransferRequestProps,

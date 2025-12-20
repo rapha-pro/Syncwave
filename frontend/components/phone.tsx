@@ -1,9 +1,10 @@
 import { CheckCircle, ArrowRightLeft, TvMinimalPlay } from "lucide-react";
 
+import Logo from "./logo";
+
 import { areaProps } from "@/types";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
-import Logo from "./logo";
 
 export default function Phone(area: areaProps) {
   const { width = 280, height = 500 } = area;
@@ -14,10 +15,7 @@ export default function Phone(area: areaProps) {
   };
 
   return (
-    <div
-      style={style}
-      className={`relative md:scale-110`}
-    >
+    <div className={`relative md:scale-110`} style={style}>
       {/* Phone mockup */}
       <div className="absolute inset-0 bg-gray-800 rounded-[40px] border-4 border-gray-700 shadow-2xl overflow-hidden">
         {/* App Screen */}

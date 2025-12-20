@@ -1,4 +1,5 @@
 import { Card } from "@heroui/react";
+
 import { FaqCardProps } from "@/types";
 
 export default function FaqCard({ faq }: FaqCardProps) {

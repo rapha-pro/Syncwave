@@ -1,4 +1,5 @@
-import { successfullTransferPercent } from "./site";
+import { successfulTransferPercent } from "./site";
+
 import { FaqItemProps } from "@/types";
 
 export const faqData: FaqItemProps[] = [
@@ -16,7 +17,7 @@ export const faqData: FaqItemProps[] = [
   {
     id: "songs-not-found",
     question: "What if some songs aren't found?",
-    answer: `We\'ll show you a list of any tracks that couldn\'t be matched, and provide suggestions for similar tracks when possible. Our match rate is typically ${successfullTransferPercent}% for most music.`,
+    answer: `We'll show you a list of any tracks that couldn't be matched, and provide suggestions for similar tracks when possible. Our match rate is typically ${successfulTransferPercent}% for most music.`,
   },
   // {
   //   id: 'multiple-playlists',

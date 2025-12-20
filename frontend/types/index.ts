@@ -1,11 +1,12 @@
 // types/index.ts (updated)
 import { SVGProps } from "react";
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon } from "lucide-react";
+
 import { SpotifyIcon } from "@/components/icons";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
-}
+};
 
 export interface FeatureCardProps {
   id: string;

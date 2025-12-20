@@ -5,6 +5,7 @@ import { Button } from "@heroui/react";
 import { ArrowLeft, FileText, AlertTriangle, Users, Gavel } from "lucide-react";
 import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
+
 import { emailAddress } from "@/utils/socialLinks";
 
 export default function TermsOfService() {
@@ -172,8 +173,8 @@ export default function TermsOfService() {
                   <h2 className="text-2xl font-bold text-white">Disclaimers</h2>
                 </div>
                 <p className="text-gray-300">
-                  Syncwave is provided "as is" without any representations or
-                  warranties:
+                  Syncwave is provided &quot;as is&quot; without any
+                  representations or warranties:
                 </p>
                 <ul className="text-gray-300 space-y-2 ml-6">
                   <li>

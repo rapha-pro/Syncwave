@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Card, CardBody, Spinner } from "@heroui/react";
 import { CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 
-import { callbackHandlers } from "@/utils/api_routes.ts/api";
+import { callbackHandlers } from "@/utils/api";
 import { useLogger } from "@/utils/useLogger";
 
 export default function YouTubeCallback() {

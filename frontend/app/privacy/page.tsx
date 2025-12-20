@@ -5,6 +5,7 @@ import { Button } from "@heroui/react";
 import { ArrowLeft, Shield, Eye, Lock, Database } from "lucide-react";
 import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
+
 import { emailAddress } from "@/utils/socialLinks";
 
 export default function PrivacyPolicy() {

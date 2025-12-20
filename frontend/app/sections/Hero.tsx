@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { SpotifyIcon } from "@/components/icons";
 import Phone from "@/components/phone";
-import { authAPI, tokenManager, oauthFlow } from "@/utils/api_routes.ts/api";
+import { authAPI, tokenManager, oauthFlow } from "@/utils/api";
 import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { useLogger } from "@/utils/useLogger";
@@ -118,14 +118,17 @@ export default function Hero() {
   }, []);
 
   const canProceed = authStatus.spotify && authStatus.youtube;
-  var hasPlayedCelebration = typeof window !== "undefined" 
-    ? sessionStorage.getItem("heroAuthenticationCelebrationPlayed") 
-    : null;
+  var hasPlayedCelebration =
+    typeof window !== "undefined"
+      ? sessionStorage.getItem("heroAuthenticationCelebrationPlayed")
+      : null;
 
   // Trigger celebration animation when both accounts are connected
   useEffect(() => {
     if (canProceed && celebrationRef.current) {
-      hasPlayedCelebration = sessionStorage.getItem("heroAuthenticationCelebrationPlayed");
+      hasPlayedCelebration = sessionStorage.getItem(
+        "heroAuthenticationCelebrationPlayed",
+      );
       if (hasPlayedCelebration) return;
 
       triggerCelebration();

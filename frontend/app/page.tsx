@@ -2,6 +2,7 @@
 
 import Cta from "./sections/cta";
 import Faq from "./sections/faq";
+
 import Features from "@/app/sections/Features";
 import Hero from "@/app/sections/Hero";
 import HowItWorks from "@/app/sections/HowItWorks";

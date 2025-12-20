@@ -8,21 +8,21 @@ export const siteConfig = {
     {
       label: "Features",
       href: "/#features",
-      icon: "Sparkles"
+      icon: "Sparkles",
     },
     {
       label: "How It Works",
       href: "/#how-it-works",
-      icon: "Workflow"
+      icon: "Workflow",
     },
     {
       label: "FAQ",
       href: "/#faq",
-      icon: "HelpCircle"
+      icon: "HelpCircle",
     },
   ],
 };
 
-
-export const successfullTransferPercent = 80;
-export const playlistDescription = "Summer vibe " +  new Date().getFullYear().toString();
+export const successfulTransferPercent = 80;
+export const playlistDescription =
+  "Summer vibe " + new Date().getFullYear().toString();

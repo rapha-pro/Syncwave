@@ -240,8 +240,8 @@ export default function Support() {
                 Get in Touch
               </h2>
               <p className="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
-                Have questions, suggestions, or feedback? We'd love to hear from
-                you. Reach out through any of these channels:
+                Have questions, suggestions, or feedback? We&apos;d love to hear
+                from you. Reach out through any of these channels:
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

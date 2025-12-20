@@ -1,6 +1,6 @@
 import { Music, Rocket, CheckCircle, TvMinimalPlay } from "lucide-react";
 
-import { successfullTransferPercent } from "./site";
+import { successfulTransferPercent } from "./site";
 
 import { SpotifyIcon } from "@/components/icons";
 import { FeatureCardProps } from "@/types";
@@ -20,7 +20,7 @@ export const featuresData: FeatureCardProps[] = [
     icon: Music,
     iconColor: "text-purple-400",
     bgColor: "bg-purple-900/30",
-    title: `${successfullTransferPercent}% Match Rate`,
+    title: `${successfulTransferPercent}% Match Rate`,
     description:
       "Our advanced audio fingerprinting ensures nearly perfect matching, even for obscure tracks and remixes.",
   },
