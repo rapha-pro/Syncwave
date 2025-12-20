@@ -2,6 +2,10 @@ import { createLogger } from "../useLogger";
 
 const logger = createLogger("utils/api/token-manager");
 
+// Track if we're currently refreshing tokens to prevent multiple simultaneous refresh attempts
+let isRefreshingSpotify = false;
+let isRefreshingYouTube = false;
+
 /**
  * Token management utilities for storing and retrieving authentication tokens
  * Note: Tokens are stored in localStorage. In production, consider more secure storage options.
@@ -180,5 +184,109 @@ export const tokenManager = {
     const userJson = localStorage.getItem(`${platform}_user`);
 
     return userJson ? JSON.parse(userJson) : null;
+  },
+
+  /**
+   * Check if token needs refresh (within 10 minutes of expiry)
+   */
+  needsRefresh: (platform: "spotify" | "youtube"): boolean => {
+    const expiryKey = `${platform}_token_expiry`;
+    const expiryTimeStr = localStorage.getItem(expiryKey);
+
+    if (!expiryTimeStr) {
+      return false;
+    }
+
+    const expiryTime = parseInt(expiryTimeStr, 10);
+    const now = Date.now();
+
+    // Refresh if within 10 minutes of expiry
+    const refreshBufferMs = 10 * 60 * 1000;
+
+    return now >= expiryTime - refreshBufferMs;
+  },
+
+  /**
+   * Attempt to refresh Spotify token
+   * Note: Currently Spotify refresh tokens are not fully implemented in backend
+   * This is a placeholder for future implementation
+   */
+  refreshSpotifyToken: async (): Promise<boolean> => {
+    if (isRefreshingSpotify) {
+      logger.warn("[tokenManager] - Spotify token refresh already in progress");
+
+      return false;
+    }
+
+    const refreshToken = localStorage.getItem("spotify_refresh_token");
+
+    if (!refreshToken) {
+      logger.warn("[tokenManager] - No Spotify refresh token available");
+
+      return false;
+    }
+
+    try {
+      isRefreshingSpotify = true;
+      logger.log("[tokenManager] - Attempting to refresh Spotify token");
+
+      // TODO: Implement backend endpoint for token refresh
+      // For now, this is a placeholder that returns false
+      // In production, you would call the backend refresh endpoint here
+
+      logger.warn(
+        "[tokenManager] - Spotify token refresh not yet implemented in backend",
+      );
+
+      return false;
+    } catch (error) {
+      logger.error("[tokenManager] - Failed to refresh Spotify token:", error);
+
+      return false;
+    } finally {
+      isRefreshingSpotify = false;
+    }
+  },
+
+  /**
+   * Attempt to refresh YouTube token
+   * Note: Currently YouTube refresh tokens are not fully implemented in backend
+   * This is a placeholder for future implementation
+   */
+  refreshYouTubeToken: async (): Promise<boolean> => {
+    if (isRefreshingYouTube) {
+      logger.warn("[tokenManager] - YouTube token refresh already in progress");
+
+      return false;
+    }
+
+    const refreshToken = localStorage.getItem("youtube_refresh_token");
+
+    if (!refreshToken) {
+      logger.warn("[tokenManager] - No YouTube refresh token available");
+
+      return false;
+    }
+
+    try {
+      isRefreshingYouTube = true;
+      logger.log("[tokenManager] - Attempting to refresh YouTube token");
+
+      // TODO: Implement backend endpoint for token refresh
+      // For now, this is a placeholder that returns false
+      // In production, you would call the backend refresh endpoint here
+
+      logger.warn(
+        "[tokenManager] - YouTube token refresh not yet implemented in backend",
+      );
+
+      return false;
+    } catch (error) {
+      logger.error("[tokenManager] - Failed to refresh YouTube token:", error);
+
+      return false;
+    } finally {
+      isRefreshingYouTube = false;
+    }
   },
 };

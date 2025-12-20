@@ -1,4 +1,5 @@
 import { createLogger } from "../useLogger";
+import { rateLimiter } from "../rate-limiter";
 
 const logger = createLogger("utils/api/auth");
 
@@ -109,6 +110,16 @@ export const authAPI = {
     scope: string;
     user_info?: any;
   }> => {
+    // Check rate limit before proceeding
+    if (!rateLimiter.checkLimit("auth")) {
+      const resetTime = rateLimiter.getTimeUntilReset("auth");
+      const resetSeconds = Math.ceil(resetTime / 1000);
+
+      throw new Error(
+        `Too many authentication attempts. Please wait ${resetSeconds} seconds before trying again.`,
+      );
+    }
+
     return withRetry(async () => {
       logger.log("[authAPI] - Exchanging Spotify authorization code");
       const api = (await import("./index")).default;
@@ -139,6 +150,16 @@ export const authAPI = {
     scope: string;
     user_info?: any;
   }> => {
+    // Check rate limit before proceeding
+    if (!rateLimiter.checkLimit("auth")) {
+      const resetTime = rateLimiter.getTimeUntilReset("auth");
+      const resetSeconds = Math.ceil(resetTime / 1000);
+
+      throw new Error(
+        `Too many authentication attempts. Please wait ${resetSeconds} seconds before trying again.`,
+      );
+    }
+
     return withRetry(async () => {
       logger.log("[authAPI] - Exchanging YouTube authorization code");
       const api = (await import("./index")).default;

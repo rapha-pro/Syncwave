@@ -1,4 +1,5 @@
 import { createLogger } from "../useLogger";
+import { rateLimiter } from "../rate-limiter";
 
 import { tokenManager } from "./token-manager";
 
@@ -21,6 +22,16 @@ export const transferAPI = {
     data: PlaylistTransferRequestProps,
   ): Promise<TransferResultResponseProps> => {
     logger.info("[transferAPI] - Sending transfer request");
+
+    // Check rate limit before proceeding
+    if (!rateLimiter.checkLimit("transfer")) {
+      const resetTime = rateLimiter.getTimeUntilReset("transfer");
+      const resetSeconds = Math.ceil(resetTime / 1000);
+
+      throw new Error(
+        `Rate limit exceeded. Please wait ${resetSeconds} seconds before trying again.`,
+      );
+    }
 
     // Get user's tokens from localStorage
     const tokens = tokenManager.getTokens();
