@@ -12,7 +12,6 @@ import Phone from "@/components/phone";
 import { authAPI, tokenManager, oauthFlow } from "@/utils/api";
 import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
 import { inactivityTracker } from "@/utils/inactivity-tracker";
 
 export default function Hero() {
@@ -34,15 +33,12 @@ export default function Hero() {
   } | null>(null);
 
   const router = useRouter();
-  // instantiate logger
-  const logger = useLogger("sections/Hero");
 
   // Animation constants
   const MUSIC_NOTES_COUNT = 8;
   const MUSIC_NOTE_SYMBOLS = ["♪", "♫", "♬", "♩"];
 
   useEffect(() => {
-    logger.log("[Hero] - Component mounted, checking auth status");
     gsap.registerPlugin(ScrollTrigger);
 
     // Check authentication status
@@ -52,8 +48,6 @@ export default function Hero() {
     const hasPlayedAnimation = sessionStorage.getItem("heroAnimated");
 
     if (hasPlayedAnimation) {
-      logger.log("[Hero] - Animation already played this session, skipping");
-
       return;
     }
 
@@ -173,7 +167,6 @@ export default function Hero() {
 
     return () => {
       clearTimeout(timeoutId);
-      logger.log("[Hero] - Cleaning up animations");
 
       ["hero-title", "hero-description", "hero-buttons", "hero-image", "gradient-orb", "music-note"].forEach(
         (selector) => {
@@ -270,8 +263,6 @@ export default function Hero() {
   };
 
   const checkAuthStatus = async () => {
-    logger.log("[Hero] - Checking authentication status");
-
     // Check local storage for tokens
     const localAuthStatus = tokenManager.getAuthStatus();
 
@@ -280,7 +271,6 @@ export default function Hero() {
     // Start inactivity tracking if user is authenticated
     // Note: start() has internal guard to prevent multiple timers
     if (localAuthStatus.spotify || localAuthStatus.youtube) {
-      logger.log("[Hero] - User authenticated, starting inactivity tracker");
       inactivityTracker.start();
     }
 
@@ -289,33 +279,28 @@ export default function Hero() {
       const status = await authAPI.checkStatus();
 
       setBackendStatus(status);
-      logger.info("[Hero] - Backend OAuth status:", status);
     } catch (error) {
-      logger.error("[Hero] - Failed to check backend OAuth status:", error);
+      // Backend OAuth status check failed
     }
   };
 
   const handleSpotifyLogin = async () => {
-    logger.log("[Hero] - Starting Spotify OAuth flow");
     setIsLoading((prev) => ({ ...prev, spotify: true }));
 
     try {
       oauthFlow.startSpotifyAuth();
     } catch (error) {
-      logger.error("[Hero] - Spotify OAuth error:", error);
       setIsLoading((prev) => ({ ...prev, spotify: false }));
       alert("Failed to start Spotify login. Please check your configuration.");
     }
   };
 
   const handleYouTubeLogin = async () => {
-    logger.log("[Hero] - Starting YouTube OAuth flow");
     setIsLoading((prev) => ({ ...prev, youtube: true }));
 
     try {
       oauthFlow.startYouTubeAuth();
     } catch (error) {
-      logger.error("[Hero] - YouTube OAuth error:", error);
       setIsLoading((prev) => ({ ...prev, youtube: false }));
       alert("Failed to start YouTube login. Please check your configuration.");
     }
@@ -329,8 +314,6 @@ export default function Hero() {
       event.stopPropagation(); // Prevent button click propagation
     }
 
-    logger.info(`[Hero] - Logging out from ${service}`);
-
     if (service === "spotify") {
       tokenManager.clearSpotifyTokens();
     } else {
@@ -341,9 +324,6 @@ export default function Hero() {
     const authStatus = tokenManager.getAuthStatus();
 
     if (!authStatus.spotify && !authStatus.youtube) {
-      logger.log(
-        "[Hero] - All services logged out, stopping inactivity tracker",
-      );
       inactivityTracker.stop();
       // Clear celebration flag so user can see the animation again if they reconnect
       sessionStorage.removeItem("heroAuthenticationCelebrationPlayed");

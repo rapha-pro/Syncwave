@@ -15,7 +15,6 @@ import {
 import { gsap } from "gsap";
 
 import { TransferResultResponseProps } from "@/types";
-import { useLogger } from "@/utils/useLogger";
 
 interface TransferResultsProps {
   results: TransferResultResponseProps;
@@ -29,7 +28,6 @@ export default function TransferResults({
   const containerRef = useRef<HTMLDivElement>(null);
   const [showAllSongs, setShowAllSongs] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const logger = useLogger("components/get-started/TransferResults");
 
   // Animation constants
   const CONFETTI_PARTICLE_COUNT = 30;
@@ -160,7 +158,7 @@ export default function TransferResults({
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (error) {
-      logger.error("Failed to copy to clipboard:", error);
+      // Failed to copy to clipboard
     }
   };
 

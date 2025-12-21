@@ -6,7 +6,6 @@ import { Music, Search, CheckCircle, Download, Loader2 } from "lucide-react";
 import { gsap } from "gsap";
 
 import { ProgressStepProps, PlaylistTransferRequestProps } from "@/types";
-import { useLogger } from "@/utils/useLogger";
 
 interface TransferProgressProps {
   playlistData: PlaylistTransferRequestProps;
@@ -24,14 +23,6 @@ export default function TransferProgress({
   const [totalSongs, setTotalSongs] = useState(0);
   const [currentMessage, setCurrentMessage] = useState("Starting transfer...");
   const progressTime = 1000;
-  const logger = useLogger("components/get-started/TransferProgress");
-
-  logger.info("🎵 TransferProgress rendered:", {
-    playlistName: playlistData.name,
-    isTransferring,
-    currentStep: currentStepIndex,
-    progress: Math.round(progress),
-  });
 
   const steps: ProgressStepProps[] = [
     {
@@ -71,8 +62,6 @@ export default function TransferProgress({
   ];
 
   useEffect(() => {
-    logger.log("🎬 TransferProgress useEffect (animations) triggered");
-
     // Reset GSAP context and clear any existing animations
     const ctx = gsap.context(() => {
       // Kill any existing animations
@@ -130,17 +119,9 @@ export default function TransferProgress({
   }, []); // Only run once on mount
 
   useEffect(() => {
-    logger.log("TransferProgress progress simulation effect:", {
-      isTransferring,
-    });
-
     if (!isTransferring) {
-      logger.log("⏸ Not transferring, skipping progress simulation");
-
       return;
     }
-
-    logger.log("▶ Starting progress simulation");
 
     // Realistic progress simulation
     const progressSteps = [
@@ -203,19 +184,12 @@ export default function TransferProgress({
 
     const progressInterval = setInterval(() => {
       if (currentProgressIndex >= progressSteps.length) {
-        logger.success("Progress simulation completed");
         clearInterval(progressInterval);
 
         return;
       }
 
       const currentProgressStep = progressSteps[currentProgressIndex];
-
-      logger.info(
-        `Progress step ${currentProgressIndex}:`,
-        currentProgressStep.message,
-        `${currentProgressStep.progress}%`,
-      );
 
       // Update step, progress, and message
       setCurrentStepIndex(currentProgressStep.step);
@@ -237,11 +211,6 @@ export default function TransferProgress({
         have real data yet. We will show the real stats in the results page.
         */
         setFoundSongs(newTotal);
-
-        logger.info("Songs stats:", {
-          total: newTotal,
-          found: foundSongs,
-        });
       }
 
       currentProgressIndex++;
@@ -249,7 +218,6 @@ export default function TransferProgress({
 
     // Cleanup interval on unmount
     return () => {
-      logger.log("🧹 Cleaning up progress interval");
       clearInterval(progressInterval);
     };
   }, [isTransferring, progressTime]);

@@ -16,7 +16,6 @@ import {
   TransferResultResponseProps,
   PlaylistTransferRequestProps,
 } from "@/types";
-import { useLogger } from "@/utils/useLogger";
 
 type TransferStep = "form" | "progress" | "results";
 
@@ -31,7 +30,6 @@ export default function GetStarted() {
   const [isTransferring, setIsTransferring] = useState(false);
   const [formKey, setFormKey] = useState(0);
   const router = useRouter();
-  const logger = useLogger("components/get-started/GetStarted");
 
   useEffect(() => {
     const animatePageElements = () => {
@@ -85,17 +83,11 @@ export default function GetStarted() {
       setIsTransferring(true);
       setCurrentStep("progress");
 
-      logger.info("Starting transfer with data:", data);
-
       const results = await transferAPI.directTransfer(data);
-
-      logger.success("✅ Transfer completed:", results);
 
       setTransferResults(results);
       setCurrentStep("results");
     } catch (error) {
-      logger.error("[GetStarted] - Transfer failed:", error);
-
       if (axios.isAxiosError(error)) {
         const errorMessage =
           error.response?.data?.detail ||
@@ -114,8 +106,6 @@ export default function GetStarted() {
   };
 
   const handleStartOver = () => {
-    logger.log("[GetStarted] - Starting over - resetting all state");
-
     // Kill all GSAP animations first
     gsap.killTweensOf("*");
 
@@ -129,24 +119,9 @@ export default function GetStarted() {
 
     // Force scroll to top
     window.scrollTo(0, 0);
-
-    // Debug log
-    logger.info("[GetStarted] - State after reset:", {
-      currentStep: "form",
-      formKey: formKey + 1,
-      playlistData: null,
-      transferResults: null,
-    });
   };
 
   const getStepTitle = () => {
-    logger.info(
-      "[GetStarted] - Current step:",
-      currentStep,
-      "Form key:",
-      formKey,
-    );
-
     switch (currentStep) {
       case "form":
         return "Fill in your playlist details to begin the transfer";
