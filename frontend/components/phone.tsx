@@ -28,9 +28,9 @@ export default function Phone(area: areaProps) {
 
     if (hasPlayedAnimation) return;
 
-    // Animate transfer icon with rotation and pulse
+    // Animate transfer icon with rotation and pulse (spins 3 times)
     if (transferIconRef.current) {
-      const tl = gsap.timeline({ repeat: -1 });
+      const tl = gsap.timeline({ repeat: 2 });
       
       tl.to(transferIconRef.current, {
         rotation: 180,
