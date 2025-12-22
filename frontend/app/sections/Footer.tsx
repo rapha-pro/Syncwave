@@ -6,11 +6,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { siteConfig } from "@/utils/site";
-import { useLogger } from "@/utils/useLogger";
 import socialLinks from "@/utils/socialLinks";
 
 export default function Footer() {
-  const logger = useLogger("sections/Footer");
   const router = useRouter();
   const sloganRef = useRef<HTMLParagraphElement>(null);
 
@@ -96,12 +94,10 @@ export default function Footer() {
   }, []);
 
   const handleNavClick = (href: string) => {
-    logger.info("[Footer] - Nav clicked:", href);
     router.push(href);
   };
 
   const handleLogoClick = () => {
-    logger.log("[Footer] - Logo clicked, navigating to home");
     if (window.location.pathname === "/")
       window.scrollTo({ top: 0, behavior: "smooth" });
     else router.push("/");

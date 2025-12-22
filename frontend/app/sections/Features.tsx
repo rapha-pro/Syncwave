@@ -7,27 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { featuresData } from "@/utils/features-data";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
 
 export default function Features() {
   const featureRef = useRef<HTMLDivElement>(null);
 
-  // instantiate logger
-  const logger = useLogger("sections/Features");
-
-  // TODO: Remove '[Feature]' in logger output
   useEffect(() => {
-    logger.log("[Features] - Component mounted/remounted");
     gsap.registerPlugin(ScrollTrigger);
 
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("featuresAnimated");
 
     if (hasPlayedAnimation) {
-      logger.log(
-        "[Features] - Animation already played this session, skipping",
-      );
-
       return;
     }
 
@@ -36,8 +26,6 @@ export default function Features() {
       const features = document.querySelectorAll(".feature-card");
 
       if (features.length > 0) {
-        logger.info(`[Features] - Animating ${features.length} feature cards`);
-
         features.forEach((feature, index) => {
           // Then animate from the desired start state
           gsap.fromTo(

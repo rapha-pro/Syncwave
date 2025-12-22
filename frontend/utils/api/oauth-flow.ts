@@ -1,9 +1,5 @@
-import { createLogger } from "../useLogger";
-
 import { authAPI } from "./auth";
 import { tokenManager } from "./token-manager";
-
-const logger = createLogger("utils/api/oauth-flow");
 
 /**
  * OAuth flow utilities for handling authentication flows
@@ -13,8 +9,6 @@ export const oauthFlow = {
    * Start Spotify OAuth flow
    */
   startSpotifyAuth: (): void => {
-    logger.log("[oauthFlow] - Starting Spotify OAuth flow");
-
     try {
       const state = Math.random().toString(36).substring(2, 15);
 
@@ -24,7 +18,6 @@ export const oauthFlow = {
 
       window.location.href = authUrl;
     } catch (error) {
-      logger.error("[oauthFlow] - Failed to start Spotify auth:", error);
       throw error;
     }
   },
@@ -33,8 +26,6 @@ export const oauthFlow = {
    * Start YouTube OAuth flow
    */
   startYouTubeAuth: (): void => {
-    logger.log("[oauthFlow] - Starting YouTube OAuth flow");
-
     try {
       const state = Math.random().toString(36).substring(2, 15);
 
@@ -44,7 +35,6 @@ export const oauthFlow = {
 
       window.location.href = authUrl;
     } catch (error) {
-      logger.error("[oauthFlow] - Failed to start YouTube auth:", error);
       throw error;
     }
   },
@@ -57,8 +47,6 @@ export const oauthFlow = {
     code: string,
     state: string,
   ): Promise<void> => {
-    logger.info(`[oauthFlow] - Handling ${platform} OAuth callback`);
-
     // Verify state parameter for security
     const storedState = localStorage.getItem("oauth_state");
 
@@ -81,10 +69,7 @@ export const oauthFlow = {
 
       // Clean up OAuth state
       localStorage.removeItem("oauth_state");
-
-      logger.success(`[oauthFlow] - ${platform} authentication successful`);
     } catch (error) {
-      logger.error(`[oauthFlow] - ${platform} authentication failed:`, error);
       throw error;
     }
   },
@@ -160,14 +145,10 @@ export const callbackHandlers = {
     message: string;
   }> => {
     try {
-      logger.log("[callbackHandlers] - Processing Spotify OAuth callback");
-
       // Extract URL parameters
       const code = searchParams.get("code");
       const state = searchParams.get("state");
       const error = searchParams.get("error");
-
-      logger.info("[callbackHandlers] - URL parameters received");
 
       // Check for errors from Spotify
       if (error) {
@@ -190,11 +171,6 @@ export const callbackHandlers = {
         message: "Successfully connected to Spotify! Redirecting...",
       };
     } catch (error) {
-      logger.error(
-        "[callbackHandlers] - Spotify authentication failed:",
-        error,
-      );
-
       return {
         status: "error",
         message: getUserFriendlyErrorMessage(error),
@@ -212,14 +188,10 @@ export const callbackHandlers = {
     message: string;
   }> => {
     try {
-      logger.log("[callbackHandlers] - Processing YouTube OAuth callback");
-
       // Extract URL parameters
       const code = searchParams.get("code");
       const state = searchParams.get("state");
       const error = searchParams.get("error");
-
-      logger.log("[callbackHandlers] - URL parameters received");
 
       // Check for errors from Google
       if (error) {
@@ -242,11 +214,6 @@ export const callbackHandlers = {
         message: "Successfully connected to YouTube! Redirecting...",
       };
     } catch (error) {
-      logger.error(
-        "[callbackHandlers] - YouTube authentication failed:",
-        error,
-      );
-
       return {
         status: "error",
         message: getUserFriendlyErrorMessage(error),

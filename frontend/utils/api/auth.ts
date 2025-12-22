@@ -1,7 +1,4 @@
-import { createLogger } from "../useLogger";
 import { rateLimiter } from "../rate-limiter";
-
-const logger = createLogger("utils/api/auth");
 
 /**
  * Retry configuration for OAuth token exchange
@@ -29,8 +26,6 @@ async function withRetry<T>(
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      logger.log(`[${operationName}] - Attempt ${attempt}/${maxRetries}`);
-
       return await operation();
     } catch (error) {
       lastError = error as Error;
@@ -43,9 +38,6 @@ async function withRetry<T>(
           axiosError.response?.status >= 400 &&
           axiosError.response?.status < 500
         ) {
-          logger.error(
-            `[${operationName}] - Client error (${axiosError.response.status}), not retrying`,
-          );
           throw error;
         }
       }
@@ -55,12 +47,7 @@ async function withRetry<T>(
           RETRY_CONFIG.retryDelay *
           Math.pow(RETRY_CONFIG.backoffMultiplier, attempt - 1);
 
-        logger.warn(
-          `[${operationName}] - Attempt ${attempt} failed, retrying in ${delay}ms...`,
-        );
         await sleep(delay);
-      } else {
-        logger.error(`[${operationName}] - All ${maxRetries} attempts failed`);
       }
     }
   }
@@ -85,7 +72,6 @@ export const authAPI = {
   }> => {
     return withRetry(
       async () => {
-        logger.log("[authAPI] - Checking backend OAuth status");
         const api = (await import("./index")).default;
         const response = await api.get("/auth/status");
 
@@ -121,7 +107,6 @@ export const authAPI = {
     }
 
     return withRetry(async () => {
-      logger.log("[authAPI] - Exchanging Spotify authorization code");
       const api = (await import("./index")).default;
       const response = await api.post("/auth/spotify/callback", {
         code,
@@ -161,7 +146,6 @@ export const authAPI = {
     }
 
     return withRetry(async () => {
-      logger.log("[authAPI] - Exchanging YouTube authorization code");
       const api = (await import("./index")).default;
       const response = await api.post("/auth/youtube/callback", {
         code,
@@ -180,7 +164,6 @@ export const authAPI = {
    * Generate Spotify OAuth URL
    */
   generateSpotifyAuthUrl: (state: string): string => {
-    logger.log("[authAPI] - Generating Spotify OAuth URL");
 
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri = `http://127.0.0.1:3000/auth/spotify/callback`;
@@ -210,8 +193,6 @@ export const authAPI = {
    * Generate YouTube OAuth URL
    */
   generateYouTubeAuthUrl: (state: string): string => {
-    logger.log("[authAPI] - Generating YouTube OAuth URL");
-
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     const redirectUri = `http://127.0.0.1:3000/auth/youtube/callback`;
     const scopes = ["https://www.googleapis.com/auth/youtube.readonly"].join(

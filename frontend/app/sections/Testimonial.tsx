@@ -8,7 +8,6 @@ import clsx from "clsx";
 
 import { testimonials } from "@/utils/testimonials";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
 
 export default function Testimonial() {
   const testimonialRef = useRef<HTMLDivElement>(null);
@@ -17,11 +16,7 @@ export default function Testimonial() {
   const [isAnimating, setIsAnimating] = useState(false);
   const currentTestimonial = testimonials[currentIndex];
 
-  // instantiate logger
-  const logger = useLogger("sections/Testimonial");
-
   useEffect(() => {
-    logger.log("[Testimonial] - Component mounted/remounted");
     gsap.registerPlugin(ScrollTrigger);
 
     // Kill any existing animations and scroll triggers first
@@ -30,8 +25,6 @@ export default function Testimonial() {
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
       if (testimonialRef.current) {
-        logger.log("[Testimonial] - Animating testimonial section");
-
         // Reset element state first
         gsap.set(testimonialRef.current, {
           y: 0,
@@ -61,7 +54,6 @@ export default function Testimonial() {
     // Cleanup function
     return () => {
       clearTimeout(timeoutId);
-      logger.log("[Testimonial] - Cleaning up animations");
 
       killAnimations(testimonialRef.current);
 
