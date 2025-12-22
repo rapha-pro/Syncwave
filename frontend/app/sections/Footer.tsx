@@ -181,7 +181,7 @@ export default function Footer() {
             className="hover:text-gray-300 transition-colors"
             onClick={() => handleNavClick("https://merge.picbreezy.com/en", true)}
           >
-            PicBreezy
+            Discover PicBreezy
           </button>
         </div>
       </div>
