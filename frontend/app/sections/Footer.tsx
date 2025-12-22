@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { siteConfig } from "@/utils/site";
 import socialLinks from "@/utils/socialLinks";
+import { kaushanScript } from "@/utils/fonts";
 
 export default function Footer() {
   const router = useRouter();
@@ -115,7 +116,7 @@ export default function Footer() {
           <div className="text-center md:text-left mb-6 md:mb-0 italic">
             <p
               ref={sloganRef}
-              className="text-gray-400 text-sm max-w-xs select-none cursor-default"
+              className={`text-gray-400 text-sm max-w-xs select-none tracking-wider cursor-default ${kaushanScript.className}`}
             >
               {siteConfig.slogan}
             </p>

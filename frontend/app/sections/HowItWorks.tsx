@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
 import { killAnimations } from "@/utils/cleaning_animations";
+import { courgette, kaushanScript } from "@/utils/fonts";
 
 export default function HowItWorks() {
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function HowItWorks() {
     >
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${kaushanScript.className}`}>How It Works</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Three simple steps to transfer your music collections
           </p>

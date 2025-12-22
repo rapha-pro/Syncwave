@@ -13,6 +13,8 @@ import { authAPI, tokenManager, oauthFlow } from "@/utils/api";
 import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { inactivityTracker } from "@/utils/inactivity-tracker";
+import { numPlaylistTransfered } from "@/utils/site";
+import { badScript, courgette, kaushanScript, merienda } from "@/utils/fonts";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -368,7 +370,7 @@ export default function Hero() {
               Spotify
             </span>
           </h1>
-          <p className="hero-description text-gray-300 text-lg md:text-xl mb-8">
+          <p className={`hero-description text-gray-400 text-lg md:text-xl mb-8 tracking-widest ${badScript.className}`}>
             Seamlessly migrate your music collections between platforms with
             just a few clicks. No more manual searching and rebuilding
             playlists.
@@ -492,7 +494,7 @@ export default function Hero() {
           </div>
 
           {/* Help Text */}
-          <p className="text-gray-400 text-sm mt-4 mb-16 lg:mb-0 heartbeat-text">
+          <p className="text-gray-400 text-sm mt-4 mb-16 lg:mb-0 animate-pulse">
             {!canProceed &&
               "Connect both accounts to start transferring your playlists"}
             {canProceed &&
@@ -521,7 +523,7 @@ export default function Hero() {
         <div className="inline-flex gap-2 items-center px-4 py-2 bg-gray-800/50 rounded-full border border-gray-700">
           <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
           <p className="text-sm">
-            <span className="font-bold text-green-400">100+</span> playlists
+            <span className="font-bold text-green-400">{numPlaylistTransfered}+</span> playlists
             transferred today
           </p>
         </div>

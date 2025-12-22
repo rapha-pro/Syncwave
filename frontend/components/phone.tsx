@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { CheckCircle, ArrowRightLeft, TvMinimalPlay } from "lucide-react";
+import { CheckCircle, ArrowRightLeft, TvMinimalPlay, CircleUser,  } from "lucide-react";
 import { gsap } from "gsap";
 
 import Logo from "./logo";
@@ -9,6 +9,7 @@ import Logo from "./logo";
 import { areaProps } from "@/types";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
+import { courgette, kaushanScript } from "@/utils/fonts";
 
 export default function Phone(area: areaProps) {
   const { width = 280, height = 500 } = area;
@@ -83,7 +84,7 @@ export default function Phone(area: areaProps) {
             {/* App Header */}
             <div className="p-4 border-b border-gray-800 flex justify-between items-center">
               <Logo height={8} size={14} text_size="text-md" width={8} />
-              <div className="h-6 w-6 rounded-full bg-gray-800" />
+              <CircleUser className="text-gray-600"/>
             </div>
 
             {/* App Body */}
@@ -92,7 +93,7 @@ export default function Phone(area: areaProps) {
               <div className="rounded-lg bg-red-900/20 border border-red-800/50 p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <TvMinimalPlay className="text-red-500" size={20} />
-                  <span className="text-red-200 font-medium">
+                  <span className={`text-red-200 font-light text-base ${kaushanScript.className}`}>
                     {playlistDescription}
                   </span>
                 </div>
@@ -117,7 +118,7 @@ export default function Phone(area: areaProps) {
               <div className="rounded-lg bg-green-900/20 border border-green-800/50 p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <SpotifyIcon className="text-green-500" size={20} />
-                  <span className="text-green-200 font-medium">
+                  <span className={`text-red-200 font-light text-sm ${kaushanScript.className}`}>
                     {playlistDescription}
                   </span>
                 </div>

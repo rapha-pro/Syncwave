@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { featuresData } from "@/utils/features-data";
 import { killAnimations } from "@/utils/cleaning_animations";
+import { kaushanScript } from "@/utils/fonts";
 
 export default function Features() {
   const featureRef = useRef<HTMLDivElement>(null);
@@ -68,7 +69,7 @@ export default function Features() {
     >
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${kaushanScript.className}`}>
             Why Choose{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-purple-500">
               Syncwave
