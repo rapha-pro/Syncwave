@@ -138,93 +138,9 @@ sequenceDiagram
 - Google Cloud Project with YouTube Data API enabled
 - Spotify Developer Account
 
-## Installation
+## Quick Start
 
-### 1. Clone Repository
-```bash
-git clone https://github.com/your-username/syncwave.git
-cd syncwave
-```
-
-### 2. Backend Setup
-
-#### Install Dependencies
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate    #Linux: source venv/bin/activate
-pip install -r requirements.txt
-```
-
-#### Environment Configuration
-Create `backend/.env`:
-```env
-# YouTube API Configuration
-YOUTUBE_CLIENT_JSON=path/to/client_secret.json
-YOUTUBE_SCOPE=https://www.googleapis.com/auth/youtube.readonly
-
-# Spotify API Configuration
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-SPOTIFY_REDIRECT_URI=http://localhost:8080/callback
-SPOTIFY_SCOPE=playlist-modify-public playlist-modify-private
-
-# Application Configuration
-API_BASE_URL=http://localhost:8000
-```
-
-#### API Credentials Setup
-
-**Google Cloud (YouTube)**:
-1. Create project at [Google Cloud Console](https://console.cloud.google.com)
-2. Enable YouTube Data API v3
-3. Create OAuth credentials
-4. Download client secret JSON file
-
-**Spotify**:
-1. Create app at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Add redirect URI: `http://localhost:8080/callback`
-3. Copy Client ID and Client Secret
-
-### 3. Frontend Setup
-
-#### Install Dependencies
-```bash
-cd frontend
-pnpm install
-```
-
-#### Environment Configuration
-Create `frontend/.env`:
-```env
-# Frontend
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
-
-# OAuth Variables
-NEXT_PUBLIC_SPOTIFY_CLIENT_ID=...
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=... .apps.googleusercontent.com
-
-# OAuth Redirect URIs for Web (add these)
-SPOTIFY_WEB_REDIRECT_URI=http://localhost:3000/auth/spotify/callback
-GOOGLE_WEB_REDIRECT_URI=http://localhost:3000/auth/youtube/callback
-```
-
-## Development
-
-### Start Backend Server
-```bash
-cd backend
-venv\Scripts\activate    #Linux: source venv/bin/activate
-uvicorn main:app --reload --port 8000
-```
-
-### Start Frontend Development Server
-```bash
-cd frontend
-pnpm dev
-```
-
-Access the application at `http://localhost:3000`
+For detailed installation and running instructions, please see [RUNNING.md](RUNNING.md).
 
 ## API Documentation
 
@@ -361,15 +277,13 @@ minimum_confidence = 0.6  # Adjust as needed
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are currently not accepted as this is a proprietary project. If you're interested in using or collaborating on this project, please contact us at contact@syncwave.com.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is proprietary software. All rights reserved. See the [LICENSE](LICENSE) file for details.
+
+For licensing inquiries, please contact: contact@syncwave.com
 
 ## Acknowledgments
 
