@@ -47,10 +47,6 @@ export default function Hero() {
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("heroAnimated");
 
-    if (hasPlayedAnimation) {
-      return;
-    }
-
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
       // Enhanced title animation with rotation and scale

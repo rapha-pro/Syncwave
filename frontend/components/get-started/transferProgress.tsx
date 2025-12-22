@@ -119,10 +119,6 @@ export default function TransferProgress({
   }, []); // Only run once on mount
 
   useEffect(() => {
-    if (!isTransferring) {
-      return;
-    }
-
     // Realistic progress simulation
     const progressSteps = [
       {

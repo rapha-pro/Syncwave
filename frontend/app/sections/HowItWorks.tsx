@@ -17,10 +17,6 @@ export default function HowItWorks() {
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("howItWorksAnimated");
 
-    if (hasPlayedAnimation) {
-      return;
-    }
-
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
       const steps = document.querySelectorAll(".step-card");

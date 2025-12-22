@@ -190,15 +190,11 @@ export const tokenManager = {
    * This is a placeholder for future implementation
    */
   refreshSpotifyToken: async (): Promise<boolean> => {
-    if (isRefreshingSpotify) {
-      return false;
-    }
+    if (isRefreshingSpotify) return false;
 
     const refreshToken = localStorage.getItem("spotify_refresh_token");
 
-    if (!refreshToken) {
-      return false;
-    }
+    if (!refreshToken) return false;
 
     try {
       isRefreshingSpotify = true;
@@ -221,15 +217,11 @@ export const tokenManager = {
    * This is a placeholder for future implementation
    */
   refreshYouTubeToken: async (): Promise<boolean> => {
-    if (isRefreshingYouTube) {
-      return false;
-    }
+    if (isRefreshingYouTube) return false;
 
     const refreshToken = localStorage.getItem("youtube_refresh_token");
 
-    if (!refreshToken) {
-      return false;
-    }
+    if (!refreshToken) return false;
 
     try {
       isRefreshingYouTube = true;

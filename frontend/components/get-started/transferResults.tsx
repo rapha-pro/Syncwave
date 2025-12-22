@@ -159,6 +159,7 @@ export default function TransferResults({
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (error) {
       // Failed to copy to clipboard
+      console.error("failed to copy to clipboard: ", error);
     }
   };
 
