@@ -88,8 +88,8 @@ export default function Features() {
             return (
               <Card
                 key={feature.id}
-                className="feature-card bg-gray-800/50 border border-gray-700 p-6 hover:border-green-500/50 transition-all duration-300 hover:-translate-y-2"
-                style={{ opacity: 1, transform: "translateY(0px)" }} // Ensure cards are always visible
+                className="feature-card bg-gray-800/50 border border-gray-700 p-6 hover:-translate-y-3 hover:border-green-500/50 transition-all duration-300"
+                style={{ opacity: 1 }} // Ensure cards are always visible
               >
                 <div
                   className={`h-12 w-12 rounded-lg ${feature.bgColor} flex items-center justify-center mb-4`}
