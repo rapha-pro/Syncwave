@@ -225,23 +225,6 @@ pnpm start
 
 ## Environment Variables Reference
 
-### Backend (.env)
-```env
-YOUTUBE_CLIENT_JSON=credentials/client_secret.json
-SPOTIFY_CLIENT_ID=<your_client_id>
-SPOTIFY_CLIENT_SECRET=<your_client_secret>
-SPOTIFY_REDIRECT_URI=http://localhost:8080/callback
-SPOTIFY_SCOPE=playlist-modify-public playlist-modify-private
-API_BASE_URL=http://localhost:8000
-```
-
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
-NEXT_PUBLIC_SPOTIFY_CLIENT_ID=<your_client_id>
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=<your_client_id>.apps.googleusercontent.com
-```
-
 ## Port Configuration
 
 - Backend: 8000 (configurable via `--port` flag)
@@ -249,12 +232,44 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=<your_client_id>.apps.googleusercontent.com
 
 Make sure these ports are not in use by other applications.
 
-## Next Steps
 
-1. Test the authentication flow with both Spotify and YouTube
-2. Try transferring a small playlist (5-10 songs) first
-3. Check the results page for any failed songs
-4. Review the backend logs for any errors
+## Configuration
+
+### Timeout Settings
+Default API timeout is 120 seconds for transfer operations. Adjust in `frontend/utils/api_routes/api.ts`:
+
+```typescript
+const api = axios.create({
+  timeout: 120000, // 2 minutes
+});
+```
+
+### Matching Algorithm
+Confidence threshold for song matching is 60%. Modify in `backend/services/spotify_api.py`:
+
+```python
+minimum_confidence = 0.6  # Adjust as needed
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Transfer Timeout**
+- Increase timeout in API configuration
+- Check network connectivity
+- Verify API rate limits
+
+**Authentication Errors**
+- Verify API credentials in `.env` files
+- Check redirect URI configuration
+- Ensure required OAuth scopes are granted
+
+**Song Matching Issues**
+- Review confidence threshold settings
+- Check YouTube title parsing logic
+- Verify Spotify search query generation
+
 
 ## Need Help?
 
@@ -267,4 +282,4 @@ If you encounter issues:
 
 ---
 
-**Last Updated**: 2025-12-20
+**Last Updated**: 2025-12-23

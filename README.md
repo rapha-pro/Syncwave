@@ -110,6 +110,8 @@ sequenceDiagram
 + **Spotify playlist creation** and bulk song addition happens efficiently using batch operations
 + **Comprehensive results delivery** includes transfer statistics, individual song status, and performance metrics
 
+------
+
 ## Technology Stack
 
 ### Frontend
@@ -142,46 +144,6 @@ sequenceDiagram
 
 For detailed installation and running instructions, please see [RUNNING.md](RUNNING.md).
 
-## API Documentation
-
-### Transfer Endpoint
-```http
-POST /transfer
-Content-Type: application/json
-
-{
-  "playlist_url": "https://www.youtube.com/playlist?list=...",
-  "playlist_name": "My Transferred Playlist",
-  "is_public": true,
-  "description": "Transferred from YouTube"
-}
-```
-
-### Response Format
-```json
-{
-  "success": true,
-  "playlist_id": "spotify_playlist_id",
-  "playlist_url": "https://open.spotify.com/playlist/...",
-  "total_songs": 25,
-  "transferred_songs": 22,
-  "failed_songs": 3,
-  "songs": [
-    {
-      "id": "song_1",
-      "title": "Song Title",
-      "artist": "Artist Name",
-      "album": "Album Name",
-      "status": "success",
-      "spotify_url": "https://open.spotify.com/track/...",
-      "youtube_url": "https://www.youtube.com/watch?v=...",
-      "thumbnail": "https://i.scdn.co/image/..."
-    }
-  ],
-  "transfer_duration": 45.7,
-  "created_at": "2024-01-15T10:30:00Z"
-}
-```
 
 ## Project Structure
 
@@ -238,46 +200,9 @@ syncwave/
 - Form validation and error handling
 - Progress visualization
 
-## Configuration
-
-### Timeout Settings
-Default API timeout is 120 seconds for transfer operations. Adjust in `frontend/utils/api_routes/api.ts`:
-
-```typescript
-const api = axios.create({
-  timeout: 120000, // 2 minutes
-});
-```
-
-### Matching Algorithm
-Confidence threshold for song matching is 60%. Modify in `backend/services/spotify_api.py`:
-
-```python
-minimum_confidence = 0.6  # Adjust as needed
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Transfer Timeout**
-- Increase timeout in API configuration
-- Check network connectivity
-- Verify API rate limits
-
-**Authentication Errors**
-- Verify API credentials in `.env` files
-- Check redirect URI configuration
-- Ensure required OAuth scopes are granted
-
-**Song Matching Issues**
-- Review confidence threshold settings
-- Check YouTube title parsing logic
-- Verify Spotify search query generation
 
 ## Contributing
-
-Contributions are currently not accepted as this is a proprietary project. If you're interested in using or collaborating on this project, please contact us at contact@syncwave.com.
+see the [Contributing guide](CONTRIBUTING.md)
 
 ## License
 
