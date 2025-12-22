@@ -110,6 +110,8 @@ sequenceDiagram
 + **Spotify playlist creation** and bulk song addition happens efficiently using batch operations
 + **Comprehensive results delivery** includes transfer statistics, individual song status, and performance metrics
 
+------
+
 ## Technology Stack
 
 ### Frontend
@@ -138,134 +140,10 @@ sequenceDiagram
 - Google Cloud Project with YouTube Data API enabled
 - Spotify Developer Account
 
-## Installation
+## Quick Start
 
-### 1. Clone Repository
-```bash
-git clone https://github.com/your-username/syncwave.git
-cd syncwave
-```
+For detailed installation and running instructions, please see [RUNNING.md](RUNNING.md).
 
-### 2. Backend Setup
-
-#### Install Dependencies
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate    #Linux: source venv/bin/activate
-pip install -r requirements.txt
-```
-
-#### Environment Configuration
-Create `backend/.env`:
-```env
-# YouTube API Configuration
-YOUTUBE_CLIENT_JSON=path/to/client_secret.json
-YOUTUBE_SCOPE=https://www.googleapis.com/auth/youtube.readonly
-
-# Spotify API Configuration
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-SPOTIFY_REDIRECT_URI=http://localhost:8080/callback
-SPOTIFY_SCOPE=playlist-modify-public playlist-modify-private
-
-# Application Configuration
-API_BASE_URL=http://localhost:8000
-```
-
-#### API Credentials Setup
-
-**Google Cloud (YouTube)**:
-1. Create project at [Google Cloud Console](https://console.cloud.google.com)
-2. Enable YouTube Data API v3
-3. Create OAuth credentials
-4. Download client secret JSON file
-
-**Spotify**:
-1. Create app at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Add redirect URI: `http://localhost:8080/callback`
-3. Copy Client ID and Client Secret
-
-### 3. Frontend Setup
-
-#### Install Dependencies
-```bash
-cd frontend
-pnpm install
-```
-
-#### Environment Configuration
-Create `frontend/.env`:
-```env
-# Frontend
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
-
-# OAuth Variables
-NEXT_PUBLIC_SPOTIFY_CLIENT_ID=...
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=... .apps.googleusercontent.com
-
-# OAuth Redirect URIs for Web (add these)
-SPOTIFY_WEB_REDIRECT_URI=http://localhost:3000/auth/spotify/callback
-GOOGLE_WEB_REDIRECT_URI=http://localhost:3000/auth/youtube/callback
-```
-
-## Development
-
-### Start Backend Server
-```bash
-cd backend
-venv\Scripts\activate    #Linux: source venv/bin/activate
-uvicorn main:app --reload --port 8000
-```
-
-### Start Frontend Development Server
-```bash
-cd frontend
-pnpm dev
-```
-
-Access the application at `http://localhost:3000`
-
-## API Documentation
-
-### Transfer Endpoint
-```http
-POST /transfer
-Content-Type: application/json
-
-{
-  "playlist_url": "https://www.youtube.com/playlist?list=...",
-  "playlist_name": "My Transferred Playlist",
-  "is_public": true,
-  "description": "Transferred from YouTube"
-}
-```
-
-### Response Format
-```json
-{
-  "success": true,
-  "playlist_id": "spotify_playlist_id",
-  "playlist_url": "https://open.spotify.com/playlist/...",
-  "total_songs": 25,
-  "transferred_songs": 22,
-  "failed_songs": 3,
-  "songs": [
-    {
-      "id": "song_1",
-      "title": "Song Title",
-      "artist": "Artist Name",
-      "album": "Album Name",
-      "status": "success",
-      "spotify_url": "https://open.spotify.com/track/...",
-      "youtube_url": "https://www.youtube.com/watch?v=...",
-      "thumbnail": "https://i.scdn.co/image/..."
-    }
-  ],
-  "transfer_duration": 45.7,
-  "created_at": "2024-01-15T10:30:00Z"
-}
-```
 
 ## Project Structure
 
@@ -322,54 +200,15 @@ syncwave/
 - Form validation and error handling
 - Progress visualization
 
-## Configuration
-
-### Timeout Settings
-Default API timeout is 120 seconds for transfer operations. Adjust in `frontend/utils/api_routes/api.ts`:
-
-```typescript
-const api = axios.create({
-  timeout: 120000, // 2 minutes
-});
-```
-
-### Matching Algorithm
-Confidence threshold for song matching is 60%. Modify in `backend/services/spotify_api.py`:
-
-```python
-minimum_confidence = 0.6  # Adjust as needed
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Transfer Timeout**
-- Increase timeout in API configuration
-- Check network connectivity
-- Verify API rate limits
-
-**Authentication Errors**
-- Verify API credentials in `.env` files
-- Check redirect URI configuration
-- Ensure required OAuth scopes are granted
-
-**Song Matching Issues**
-- Review confidence threshold settings
-- Check YouTube title parsing logic
-- Verify Spotify search query generation
 
 ## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+see the [Contributing guide](CONTRIBUTING.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is proprietary software. All rights reserved. See the [LICENSE](LICENSE) file for details.
+
+For licensing inquiries, please contact: contact@syncwave.com
 
 ## Acknowledgments
 

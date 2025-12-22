@@ -188,6 +188,33 @@ export default function PrivacyPolicy() {
               </section>
 
               <section className="space-y-4">
+                <h2 className="text-2xl font-bold text-white">Your Choices</h2>
+                <p className="text-gray-300">
+                  You have control over your personal information:
+                </p>
+                <ul className="text-gray-300 space-y-2 ml-6">
+                  <li>
+                    • <strong>Data Deletion:</strong> You may contact us at any
+                    time to request deletion of any identifying information we
+                    hold about you, including your name and email address
+                  </li>
+                  <li>
+                    • <strong>Access Your Data:</strong> Request a copy of the
+                    data we have collected about you
+                  </li>
+                  <li>
+                    • <strong>Update Your Information:</strong> Request
+                    corrections to any inaccurate data we may hold
+                  </li>
+                </ul>
+                <p className="text-gray-300 mt-4">
+                  To exercise any of these rights, please contact us at{" "}
+                  <span className="text-blue-400">{emailAddress}</span>. We will
+                  respond to your request within 30 days.
+                </p>
+              </section>
+
+              <section className="space-y-4">
                 <h2 className="text-2xl font-bold text-white">Contact Us</h2>
                 <p className="text-gray-300">
                   If you have questions about this Privacy Policy, please

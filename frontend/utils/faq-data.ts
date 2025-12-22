@@ -6,13 +6,13 @@ export const faqData: FaqItemProps[] = [
   {
     id: "is-service-free",
     question: "Is this service free?",
-    answer: "Yes, Syncwave is completely free",
+    answer: "Yes, Syncwave is completely free. That said, If you find value in what we offer and want to leave a thank you, please consider visiting our support page above 🙂",
   },
   {
     id: "store-credentials",
     question: "Do you store my login credentials?",
     answer:
-      "No, we use OAuth for authentication, which means we never see or store your passwords. We only request the minimum permissions needed to transfer your playlists.",
+      "No, we use OAuth for authentication, which means we never see or store your passwords. We only request the minimum permissions needed to transfer your playlists. You can read more on our privacy policy",
   },
   {
     id: "songs-not-found",

@@ -1,4 +1,3 @@
-import { createLogger } from "../useLogger";
 import { rateLimiter } from "../rate-limiter";
 
 import { tokenManager } from "./token-manager";
@@ -7,8 +6,6 @@ import {
   PlaylistTransferRequestProps,
   TransferResultResponseProps,
 } from "@/types";
-
-const logger = createLogger("utils/api/transfer");
 
 /**
  * Transfer API functions
@@ -21,7 +18,6 @@ export const transferAPI = {
   directTransfer: async (
     data: PlaylistTransferRequestProps,
   ): Promise<TransferResultResponseProps> => {
-    logger.info("[transferAPI] - Sending transfer request");
 
     // Check rate limit before proceeding
     if (!rateLimiter.checkLimit("transfer")) {
@@ -60,8 +56,6 @@ export const transferAPI = {
         },
       },
     );
-
-    logger.success("[transferAPI] - Backend response received");
 
     // Backend returns the exact format we need
     const backendData = response.data;

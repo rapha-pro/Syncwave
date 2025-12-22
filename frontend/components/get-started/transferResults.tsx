@@ -15,7 +15,6 @@ import {
 import { gsap } from "gsap";
 
 import { TransferResultResponseProps } from "@/types";
-import { useLogger } from "@/utils/useLogger";
 
 interface TransferResultsProps {
   results: TransferResultResponseProps;
@@ -29,16 +28,19 @@ export default function TransferResults({
   const containerRef = useRef<HTMLDivElement>(null);
   const [showAllSongs, setShowAllSongs] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const logger = useLogger("components/get-started/TransferResults");
+
+  // Animation constants
+  const CONFETTI_PARTICLE_COUNT = 30;
+  const CONFETTI_COLORS = ["#22c55e", "#3b82f6", "#a855f7", "#eab308", "#ef4444"];
 
   useEffect(() => {
     // Reset GSAP context and clear any existing animations
     const ctx = gsap.context(() => {
       // Kill any existing animations on these elements
-      gsap.killTweensOf([".success-header", ".stats-card", ".song-item"]);
+      gsap.killTweensOf([".success-header", ".stats-card", ".song-item", ".action-buttons"]);
 
       // Reset elements to visible state first
-      gsap.set([".success-header", ".stats-card", ".song-item"], {
+      gsap.set([".success-header", ".stats-card", ".song-item", ".action-buttons"], {
         opacity: 1,
         x: 0,
         y: 0,
@@ -46,41 +48,64 @@ export default function TransferResults({
         clearProps: "all",
       });
 
-      // Then animate them in
+      // Enhanced success header animation with bounce
       gsap.fromTo(
         ".success-header",
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1, ease: "back.out(1.7)" },
+        { scale: 0.7, opacity: 0, rotationZ: -10 },
+        { 
+          scale: 1, 
+          opacity: 1, 
+          rotationZ: 0,
+          duration: 1.2, 
+          ease: "elastic.out(1, 0.5)" 
+        },
       );
 
+      // Enhanced stats cards with 3D effect
       gsap.fromTo(
         ".stats-card",
-        { y: 50, opacity: 0 },
+        { y: 60, opacity: 0, rotationX: -15 },
+        {
+          y: 0,
+          opacity: 1,
+          rotationX: 0,
+          duration: 0.9,
+          stagger: 0.12,
+          delay: 0.3,
+          ease: "back.out(1.4)",
+        },
+      );
+
+      // Enhanced song items animation
+      gsap.fromTo(
+        ".song-item",
+        { x: -40, opacity: 0, scale: 0.95 },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.05,
+          delay: 0.6,
+          ease: "back.out(1.2)",
+        },
+      );
+
+      // Action buttons animation
+      gsap.fromTo(
+        ".action-buttons",
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 0.8,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: "power3.out",
-        },
-      );
-
-      gsap.fromTo(
-        ".song-item",
-        { x: -30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          delay: 0.6,
+          delay: 0.8,
           ease: "power3.out",
         },
       );
     }, containerRef);
 
-    // Celebration particles effect
+    // Enhanced celebration particles effect
     createCelebrationEffect();
 
     // Cleanup function
@@ -92,25 +117,37 @@ export default function TransferResults({
 
     if (!container) return;
 
-    for (let i = 0; i < 20; i++) {
+    // Create confetti-like particles with multiple colors
+    for (let i = 0; i < CONFETTI_PARTICLE_COUNT; i++) {
       const particle = document.createElement("div");
+      const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
 
-      particle.className =
-        "absolute w-2 h-2 bg-green-400 rounded-full opacity-0";
+      particle.className = "absolute w-3 h-3 rounded-full opacity-0";
+      particle.style.backgroundColor = color;
       particle.style.left = "50%";
-      particle.style.top = "20%";
+      particle.style.top = "10%";
+      particle.style.pointerEvents = "none";
       container.appendChild(particle);
 
+      // Random trajectory with rotation
       gsap.to(particle, {
-        x: (Math.random() - 0.5) * 400,
-        y: Math.random() * 300 + 100,
+        x: (Math.random() - 0.5) * 600,
+        y: Math.random() * 400 + 200,
         opacity: 1,
-        scale: Math.random() * 2 + 0.5,
-        duration: Math.random() * 2 + 1,
+        scale: Math.random() * 2.5 + 0.5,
+        rotation: Math.random() * 720,
+        duration: Math.random() * 2.5 + 1.5,
         ease: "power2.out",
         onComplete: () => {
           particle.remove();
         },
+      });
+
+      // Fade out as they fall
+      gsap.to(particle, {
+        opacity: 0,
+        delay: Math.random() * 1 + 1,
+        duration: 0.5,
       });
     }
   };
@@ -121,7 +158,8 @@ export default function TransferResults({
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (error) {
-      logger.error("Failed to copy to clipboard:", error);
+      // Failed to copy to clipboard
+      console.error("failed to copy to clipboard: ", error);
     }
   };
 
@@ -222,7 +260,7 @@ export default function TransferResults({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <div className="action-buttons flex flex-col sm:flex-row gap-4 justify-center">
         <Button
           className="group"
           color="success"

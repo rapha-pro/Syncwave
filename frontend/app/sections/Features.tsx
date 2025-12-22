@@ -7,27 +7,18 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { featuresData } from "@/utils/features-data";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
+import { kaushanScript } from "@/utils/fonts";
 
 export default function Features() {
   const featureRef = useRef<HTMLDivElement>(null);
 
-  // instantiate logger
-  const logger = useLogger("sections/Features");
-
-  // TODO: Remove '[Feature]' in logger output
   useEffect(() => {
-    logger.log("[Features] - Component mounted/remounted");
     gsap.registerPlugin(ScrollTrigger);
 
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("featuresAnimated");
 
     if (hasPlayedAnimation) {
-      logger.log(
-        "[Features] - Animation already played this session, skipping",
-      );
-
       return;
     }
 
@@ -36,8 +27,6 @@ export default function Features() {
       const features = document.querySelectorAll(".feature-card");
 
       if (features.length > 0) {
-        logger.info(`[Features] - Animating ${features.length} feature cards`);
-
         features.forEach((feature, index) => {
           // Then animate from the desired start state
           gsap.fromTo(
@@ -80,7 +69,7 @@ export default function Features() {
     >
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${kaushanScript.className}`}>
             Why Choose{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-purple-500">
               Syncwave
@@ -99,8 +88,8 @@ export default function Features() {
             return (
               <Card
                 key={feature.id}
-                className="feature-card bg-gray-800/50 border border-gray-700 p-6 hover:border-green-500/50 transition-colors"
-                style={{ opacity: 1, transform: "translateY(0px)" }} // Ensure cards are always visible
+                className="feature-card bg-gray-800/50 border border-gray-700 p-6 hover:-translate-y-3 hover:border-green-500/50 transition-all duration-300"
+                style={{ opacity: 1 }} // Ensure cards are always visible
               >
                 <div
                   className={`h-12 w-12 rounded-lg ${feature.bgColor} flex items-center justify-center mb-4`}

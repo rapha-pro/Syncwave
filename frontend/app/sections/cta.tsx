@@ -1,3 +1,4 @@
+import { kaushanScript } from "@/utils/fonts";
 import { Button } from "@heroui/react";
 import { Rocket } from "lucide-react";
 
@@ -11,7 +12,7 @@ export default function Cta() {
   return (
     <section className="py-20 bg-gradient-to-b from-black to-gray-900">
       <div className="container mx-auto px-4 max-w-4xl text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">
+        <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${kaushanScript.className}`}>
           Ready to Transfer Your Music?
         </h2>
         <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">

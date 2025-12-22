@@ -12,12 +12,14 @@ import Phone from "@/components/phone";
 import { authAPI, tokenManager, oauthFlow } from "@/utils/api";
 import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
 import { inactivityTracker } from "@/utils/inactivity-tracker";
+import { numPlaylistTransfered } from "@/utils/site";
+import { badScript, courgette, kaushanScript, merienda } from "@/utils/fonts";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const celebrationRef = useRef<HTMLDivElement>(null);
+  const musicNotesRef = useRef<HTMLDivElement>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>({
     spotify: false,
     youtube: false,
@@ -33,11 +35,12 @@ export default function Hero() {
   } | null>(null);
 
   const router = useRouter();
-  // instantiate logger
-  const logger = useLogger("sections/Hero");
+
+  // Animation constants
+  const MUSIC_NOTES_COUNT = 8;
+  const MUSIC_NOTE_SYMBOLS = ["♪", "♫", "♬", "♩"];
 
   useEffect(() => {
-    logger.log("[Hero] - Component mounted, checking auth status");
     gsap.registerPlugin(ScrollTrigger);
 
     // Check authentication status
@@ -46,21 +49,17 @@ export default function Hero() {
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("heroAnimated");
 
-    if (hasPlayedAnimation) {
-      logger.log("[Hero] - Animation already played this session, skipping");
-
-      return;
-    }
-
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
+      // Enhanced title animation with rotation and scale
       gsap.fromTo(
         ".hero-title",
-        { y: 50, opacity: 0 },
+        { y: 50, opacity: 0, rotationX: -15 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          rotationX: 0,
+          duration: 1,
           delay: 0.2,
           ease: "power3.out",
         },
@@ -78,43 +77,105 @@ export default function Hero() {
         },
       );
 
+      // Stagger animation for buttons
       gsap.fromTo(
-        ".hero-buttons",
-        { y: 50, opacity: 0 },
+        ".hero-buttons > div",
+        { x: -30, opacity: 0, scale: 0.9 },
         {
-          y: 0,
+          x: 0,
           opacity: 1,
-          duration: 0.8,
+          scale: 1,
+          duration: 0.6,
           delay: 0.6,
-          ease: "power3.out",
+          stagger: 0.1,
+          ease: "back.out(1.4)",
         },
       );
 
+      // Enhanced phone animation with rotation
       gsap.fromTo(
         ".hero-image",
-        { scale: 0.8, opacity: 0 },
+        { scale: 0.7, opacity: 0, rotationY: -20 },
         {
           scale: 1,
           opacity: 1,
-          duration: 1,
-          delay: 0.4,
-          ease: "elastic.out(1, 0.75)",
+          rotationY: 0,
+          duration: 1.2,
+          delay: 0.5,
+          ease: "elastic.out(1, 0.6)",
         },
       );
 
+      // Animate gradient orbs with pulsing effect
+      gsap.fromTo(
+        ".gradient-orb",
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5,
+          delay: 0.3,
+          stagger: 0.2,
+          ease: "power2.out",
+        },
+      );
+
+      // Create floating music notes
+      if (musicNotesRef.current) {
+        for (let i = 0; i < MUSIC_NOTES_COUNT; i++) {
+          const note = document.createElement("div");
+          const noteSymbol = MUSIC_NOTE_SYMBOLS[Math.floor(Math.random() * MUSIC_NOTE_SYMBOLS.length)];
+          
+          note.className = "absolute text-2xl opacity-0 pointer-events-none music-note";
+          note.textContent = noteSymbol;
+          note.style.left = `${Math.random() * 100}%`;
+          note.style.top = `${Math.random() * 100}%`;
+          note.style.color = i % 2 === 0 ? "#22c55e" : "#ef4444";
+          
+          musicNotesRef.current.appendChild(note);
+
+          // Animate notes floating across
+          gsap.to(note, {
+            x: (Math.random() - 0.5) * 400,
+            y: (Math.random() - 0.5) * 300 - 100,
+            opacity: 0.6,
+            rotation: Math.random() * 360,
+            duration: 3 + Math.random() * 2,
+            delay: 1 + i * 0.2,
+            ease: "power1.inOut",
+            repeat: -1,
+            repeatDelay: 2,
+            onRepeat: () => {
+              // Reset position
+              gsap.set(note, {
+                x: 0,
+                y: 0,
+                opacity: 0,
+              });
+            },
+          });
+        }
+      }
+
       // Mark animation as played in session storage
-      sessionStorage.setItem("heroAnimated", "true");
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem("heroAnimated", "true");
+      }
     }, 100);
 
     return () => {
       clearTimeout(timeoutId);
-      logger.log("[Hero] - Cleaning up animations");
 
-      ["hero-title", "hero-description", "hero-buttons", "hero-image"].forEach(
+      ["hero-title", "hero-description", "hero-buttons", "hero-image", "gradient-orb", "music-note"].forEach(
         (selector) => {
           killAnimations(selector);
         },
       );
+      
+      // Clean up music notes
+      if (musicNotesRef.current) {
+        musicNotesRef.current.innerHTML = "";
+      }
     };
   }, []);
 
@@ -200,8 +261,6 @@ export default function Hero() {
   };
 
   const checkAuthStatus = async () => {
-    logger.log("[Hero] - Checking authentication status");
-
     // Check local storage for tokens
     const localAuthStatus = tokenManager.getAuthStatus();
 
@@ -210,7 +269,6 @@ export default function Hero() {
     // Start inactivity tracking if user is authenticated
     // Note: start() has internal guard to prevent multiple timers
     if (localAuthStatus.spotify || localAuthStatus.youtube) {
-      logger.log("[Hero] - User authenticated, starting inactivity tracker");
       inactivityTracker.start();
     }
 
@@ -219,33 +277,28 @@ export default function Hero() {
       const status = await authAPI.checkStatus();
 
       setBackendStatus(status);
-      logger.info("[Hero] - Backend OAuth status:", status);
     } catch (error) {
-      logger.error("[Hero] - Failed to check backend OAuth status:", error);
+      // Backend OAuth status check failed
     }
   };
 
   const handleSpotifyLogin = async () => {
-    logger.log("[Hero] - Starting Spotify OAuth flow");
     setIsLoading((prev) => ({ ...prev, spotify: true }));
 
     try {
       oauthFlow.startSpotifyAuth();
     } catch (error) {
-      logger.error("[Hero] - Spotify OAuth error:", error);
       setIsLoading((prev) => ({ ...prev, spotify: false }));
       alert("Failed to start Spotify login. Please check your configuration.");
     }
   };
 
   const handleYouTubeLogin = async () => {
-    logger.log("[Hero] - Starting YouTube OAuth flow");
     setIsLoading((prev) => ({ ...prev, youtube: true }));
 
     try {
       oauthFlow.startYouTubeAuth();
     } catch (error) {
-      logger.error("[Hero] - YouTube OAuth error:", error);
       setIsLoading((prev) => ({ ...prev, youtube: false }));
       alert("Failed to start YouTube login. Please check your configuration.");
     }
@@ -259,8 +312,6 @@ export default function Hero() {
       event.stopPropagation(); // Prevent button click propagation
     }
 
-    logger.info(`[Hero] - Logging out from ${service}`);
-
     if (service === "spotify") {
       tokenManager.clearSpotifyTokens();
     } else {
@@ -271,9 +322,6 @@ export default function Hero() {
     const authStatus = tokenManager.getAuthStatus();
 
     if (!authStatus.spotify && !authStatus.youtube) {
-      logger.log(
-        "[Hero] - All services logged out, stopping inactivity tracker",
-      );
       inactivityTracker.stop();
       // Clear celebration flag so user can see the animation again if they reconnect
       sessionStorage.removeItem("heroAuthenticationCelebrationPlayed");
@@ -322,7 +370,7 @@ export default function Hero() {
               Spotify
             </span>
           </h1>
-          <p className="hero-description text-gray-300 text-lg md:text-xl mb-8">
+          <p className={`hero-description text-gray-400 text-lg md:text-xl mb-8 tracking-widest ${badScript.className}`}>
             Seamlessly migrate your music collections between platforms with
             just a few clicks. No more manual searching and rebuilding
             playlists.
@@ -446,7 +494,7 @@ export default function Hero() {
           </div>
 
           {/* Help Text */}
-          <p className="text-gray-400 text-sm mt-4 mb-16 lg:mb-0 heartbeat-text">
+          <p className="text-gray-400 text-sm mt-4 mb-16 lg:mb-0 animate-pulse">
             {!canProceed &&
               "Connect both accounts to start transferring your playlists"}
             {canProceed &&
@@ -456,8 +504,13 @@ export default function Hero() {
 
         <div className="hero-image relative">
           <div className="relative h-[400px] w-full">
-            <div className="absolute top-0 right-0 h-64 w-64 bg-green-500/20 rounded-full filter blur-3xl animate-pulse" />
-            <div className="absolute bottom-0 left-0 h-64 w-64 bg-red-500/20 rounded-full filter blur-3xl animate-pulse" />
+            {/* Enhanced gradient orbs with class for animation */}
+            <div className="gradient-orb absolute top-0 right-0 h-64 w-64 bg-green-500/20 rounded-full filter blur-3xl" />
+            <div className="gradient-orb absolute bottom-0 left-0 h-64 w-64 bg-red-500/20 rounded-full filter blur-3xl" />
+            <div className="gradient-orb absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-48 w-48 bg-purple-500/20 rounded-full filter blur-3xl" />
+            
+            {/* Music notes container */}
+            <div ref={musicNotesRef} className="absolute inset-0 overflow-hidden pointer-events-none" />
 
             <div className="absolute inset-0 flex items-center justify-center">
               <Phone />
@@ -470,7 +523,7 @@ export default function Hero() {
         <div className="inline-flex gap-2 items-center px-4 py-2 bg-gray-800/50 rounded-full border border-gray-700">
           <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
           <p className="text-sm">
-            <span className="font-bold text-green-400">100+</span> playlists
+            <span className="font-bold text-green-400">{numPlaylistTransfered}+</span> playlists
             transferred today
           </p>
         </div>

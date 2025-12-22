@@ -6,11 +6,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { siteConfig } from "@/utils/site";
-import { useLogger } from "@/utils/useLogger";
 import socialLinks from "@/utils/socialLinks";
+import { kaushanScript } from "@/utils/fonts";
 
 export default function Footer() {
-  const logger = useLogger("sections/Footer");
   const router = useRouter();
   const sloganRef = useRef<HTMLParagraphElement>(null);
 
@@ -95,13 +94,15 @@ export default function Footer() {
     };
   }, []);
 
-  const handleNavClick = (href: string) => {
-    logger.info("[Footer] - Nav clicked:", href);
-    router.push(href);
+  const handleNavClick = (href: string, openInNewTab: boolean = false) => {
+    if (openInNewTab) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    } else {
+      router.push(href);
+    }
   };
 
   const handleLogoClick = () => {
-    logger.log("[Footer] - Logo clicked, navigating to home");
     if (window.location.pathname === "/")
       window.scrollTo({ top: 0, behavior: "smooth" });
     else router.push("/");
@@ -115,7 +116,7 @@ export default function Footer() {
           <div className="text-center md:text-left mb-6 md:mb-0 italic">
             <p
               ref={sloganRef}
-              className="text-gray-400 text-sm max-w-xs select-none cursor-default"
+              className={`text-gray-400 text-sm max-w-xs select-none tracking-wider cursor-default ${kaushanScript.className}`}
             >
               {siteConfig.slogan}
             </p>
@@ -156,9 +157,9 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+      <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
         <p>© {new Date().getFullYear()} Syncwave. All rights reserved.</p>
-        <div className="flex justify-center gap-6 mt-4">
+        <div className="flex justify-center text-blue-500 gap-6 mt-4">
           <button
             className="hover:text-gray-300 transition-colors"
             onClick={() => handleNavClick("/privacy")}
@@ -176,6 +177,12 @@ export default function Footer() {
             onClick={() => handleNavClick("/support")}
           >
             Support
+          </button>
+          <button
+            className="hover:text-gray-300 transition-colors"
+            onClick={() => handleNavClick("https://merge.picbreezy.com/en", true)}
+          >
+            Discover PicBreezy
           </button>
         </div>
       </div>

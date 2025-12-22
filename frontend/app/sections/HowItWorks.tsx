@@ -9,34 +9,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
 import { killAnimations } from "@/utils/cleaning_animations";
-import { useLogger } from "@/utils/useLogger";
+import { courgette, kaushanScript } from "@/utils/fonts";
 
 export default function HowItWorks() {
-  // instantiate logger
-  const logger = useLogger("sections/HowItWorks");
-
   useEffect(() => {
-    logger.log("[HowItWorks] - Component mounted/remounted");
     gsap.registerPlugin(ScrollTrigger);
 
     // Check if animation has already played in this session
     const hasPlayedAnimation = sessionStorage.getItem("howItWorksAnimated");
-
-    if (hasPlayedAnimation) {
-      logger.log(
-        "[HowItWorks] - Animation already played this session, skipping",
-      );
-
-      return;
-    }
 
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
       const steps = document.querySelectorAll(".step-card");
 
       if (steps.length > 0) {
-        logger.info(`[HowItWorks] - Animating ${steps.length} step cards`);
-
         steps.forEach((step, index) => {
           // Reset element state first
           gsap.set(step, {
@@ -74,7 +60,6 @@ export default function HowItWorks() {
     // Cleanup function
     return () => {
       clearTimeout(timeoutId);
-      logger.log("[HowItWorks] - Cleaning up animations");
       killAnimations("step-card");
     };
   }, []);
@@ -87,7 +72,7 @@ export default function HowItWorks() {
     >
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${kaushanScript.className}`}>How It Works</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Three simple steps to transfer your music collections
           </p>

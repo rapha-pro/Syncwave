@@ -23,14 +23,6 @@ Authentication operations automatically retry up to 3 times with exponential bac
 - Expired tokens are cleared and require re-authentication
 - 5-minute buffer before actual expiry to prevent mid-request expiration
 
-### User-Friendly Error Messages
-All errors are translated to user-friendly messages:
-- Network errors
-- Timeout errors
-- Authentication failures
-- Server errors
-- CSRF attack detection
-
 ## Usage
 
 ### Basic Import
@@ -96,3 +88,44 @@ All API operations include comprehensive error handling:
 - Detailed logging for debugging
 - CSRF protection validation
 
+
+## API Documentation
+
+### Transfer Endpoint
+```http
+POST /transfer
+Content-Type: application/json
+
+{
+  "playlist_url": "https://www.youtube.com/playlist?list=...",
+  "playlist_name": "My Transferred Playlist",
+  "is_public": true,
+  "description": "Transferred from YouTube"
+}
+```
+
+### Response Format
+```json
+{
+  "success": true,
+  "playlist_id": "spotify_playlist_id",
+  "playlist_url": "https://open.spotify.com/playlist/...",
+  "total_songs": 25,
+  "transferred_songs": 22,
+  "failed_songs": 3,
+  "songs": [
+    {
+      "id": "song_1",
+      "title": "Song Title",
+      "artist": "Artist Name",
+      "album": "Album Name",
+      "status": "success",
+      "spotify_url": "https://open.spotify.com/track/...",
+      "youtube_url": "https://www.youtube.com/watch?v=...",
+      "thumbnail": "https://i.scdn.co/image/..."
+    }
+  ],
+  "transfer_duration": 45.7,
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```

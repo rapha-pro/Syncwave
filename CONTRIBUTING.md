@@ -1,0 +1,1 @@
+Contributions are currently not accepted as this is a proprietary project. If you're interested in using or collaborating on this project, please contact us at contact@syncwave.com.
