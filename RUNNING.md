@@ -214,16 +214,13 @@ uvicorn backend.main:app --reload --port 8000
 
 ```bash
 # Development server
-npm run dev
-
-# Linting
-npm run lint
+pnpm dev
 
 # Build for production
-npm run build
+pnpm build
 
 # Start production server
-npm run start
+pnpm start
 ```
 
 ## Environment Variables Reference

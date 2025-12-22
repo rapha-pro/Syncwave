@@ -23,14 +23,6 @@ Authentication operations automatically retry up to 3 times with exponential bac
 - Expired tokens are cleared and require re-authentication
 - 5-minute buffer before actual expiry to prevent mid-request expiration
 
-### User-Friendly Error Messages
-All errors are translated to user-friendly messages:
-- Network errors
-- Timeout errors
-- Authentication failures
-- Server errors
-- CSRF attack detection
-
 ## Usage
 
 ### Basic Import

@@ -6,7 +6,7 @@ export const faqData: FaqItemProps[] = [
   {
     id: "is-service-free",
     question: "Is this service free?",
-    answer: "Yes, Syncwave is completely free",
+    answer: "Yes, Syncwave is completely free. If you find value in what we offer and want to leave a thank you, visit our support page above",
   },
   {
     id: "store-credentials",
