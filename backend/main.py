@@ -1,6 +1,31 @@
-from fastapi import FastAPI
+import os
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import RedirectResponse
 from backend.api import youtube, spotify, transfer, auth
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables
+backend_dir = Path(__file__).parent.resolve()
+load_dotenv(backend_dir / ".env")
+
+
+# HTTPS redirect middleware for production
+class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # Only enforce HTTPS in production
+        if os.getenv("ENVIRONMENT") == "production":
+            # Check if request is HTTP (not HTTPS)
+            if request.url.scheme == "http":
+                # Redirect to HTTPS
+                url = request.url.replace(scheme="https")
+                return RedirectResponse(url, status_code=301)
+        
+        response = await call_next(request)
+        return response
 
 
 tags_metadata = [
@@ -30,13 +55,49 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
+# Get allowed origins from environment variable or use defaults
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
+
+# Add HTTPS redirect middleware for production
+app.add_middleware(HTTPSRedirectMiddleware)
+
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add trusted host middleware for production
+if os.getenv("ENVIRONMENT") == "production":
+    from urllib.parse import urlparse
+    
+    # Extract hostnames from allowed origins
+    allowed_hosts = []
+    for origin in allowed_origins:
+        parsed = urlparse(origin)
+        # Get hostname from netloc (proper URLs) or fall back to path (malformed URLs)
+        # Only proceed if the URL has a valid scheme or netloc
+        if parsed.scheme or parsed.netloc:
+            hostname = parsed.netloc if parsed.netloc else parsed.path
+            # Remove port if present
+            hostname = hostname.split(":")[0] if ":" in hostname else hostname
+            if hostname and hostname not in allowed_hosts:
+                allowed_hosts.append(hostname)
+        else:
+            # Log warning for malformed URL but don't crash
+            import logging
+            logging.warning(f"Malformed origin URL ignored in ALLOWED_ORIGINS: {origin}")
+    
+    # Add render.com for backend health checks
+    if not any(host.endswith(".onrender.com") or host == "onrender.com" for host in allowed_hosts):
+        allowed_hosts.append("*.onrender.com")
+    
+    if allowed_hosts:
+        app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 # Include routers
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])

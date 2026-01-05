@@ -30,6 +30,35 @@ if not logger.handlers:
 backend_dir = Path(__file__).parent.parent
 load_dotenv(backend_dir / ".env")
 
+def get_client_config() -> dict:
+    """
+    Get YouTube client configuration from environment variable or file.
+    
+    Returns:
+        dict: Client configuration data
+    """
+    # Try to get from environment variable first (for production/serverless)
+    client_config_json = os.getenv("YOUTUBE_CLIENT_CONFIG")
+    if client_config_json:
+        try:
+            return json.loads(client_config_json)
+        except json.JSONDecodeError as e:
+            logger.error(f"[YouTubeAPI] - Failed to parse YOUTUBE_CLIENT_CONFIG environment variable: {e}")
+            raise ValueError(f"Invalid JSON format in YOUTUBE_CLIENT_CONFIG: {str(e)}")
+    
+    # Fallback to file for local development
+    client_json_env = os.getenv("YOUTUBE_CLIENT_JSON")
+    if not client_json_env:
+        raise ValueError("Neither YOUTUBE_CLIENT_CONFIG nor YOUTUBE_CLIENT_JSON environment variable is set")
+    
+    client_secrets_file = backend_dir / client_json_env
+    if not client_secrets_file.exists():
+        raise FileNotFoundError(f"YouTube client secrets not found at: {client_json_env}")
+    
+    with open(client_secrets_file, 'r') as f:
+        return json.load(f)
+
+
 def get_authenticated_service_with_token(access_token: str) -> Resource:
     """
     Creates a YouTube API service instance using the user's access token.
@@ -43,13 +72,13 @@ def get_authenticated_service_with_token(access_token: str) -> Resource:
     try:
         logger.info(f"[YouTubeAPI] - Creating service with user access token")
         
-        # Load client configuration for token refresh capability
-        client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON")
-        
-        with open(client_secrets_file, 'r') as f:
-            client_config = json.load(f)
-        
+        # Load client configuration
+        client_config = get_client_config()
         client_info = client_config.get("web") or client_config.get("installed")
+        
+        if not client_info:
+            logger.error("[YouTubeAPI] - Invalid client configuration format")
+            return None
         
         # Create credentials object from the access token
         # Note: For refresh capability, we'd need the refresh token too
@@ -94,12 +123,11 @@ def create_credentials_from_token_data(token_data: dict) -> Credentials:
     Returns:
         Credentials: Google OAuth2 credentials object
     """
-    client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON")
-    
-    with open(client_secrets_file, 'r') as f:
-        client_config = json.load(f)
-    
+    client_config = get_client_config()
     client_info = client_config.get("web") or client_config.get("installed")
+    
+    if not client_info:
+        raise ValueError("Invalid client configuration format")
     
     return Credentials(
         token=token_data.get("access_token"),

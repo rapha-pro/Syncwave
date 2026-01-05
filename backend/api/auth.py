@@ -16,6 +16,7 @@ from backend.models.oauth import (
     UserInfo,
     OAuthError
 )
+from backend.services.youtube_api import get_client_config
 
 import logging
 
@@ -70,9 +71,15 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
         if not response.ok:
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
             logger.error(f"[SpotifyOAuth] - Token exchange failed: {response.status_code}, {error_data}")
+            
+            # Only expose detailed errors in development
+            error_message = "Failed to authenticate with Spotify"
+            if os.getenv("ENVIRONMENT") == "development":
+                error_message = f"Spotify token exchange failed: {error_data.get('error_description', response.text)}"
+            
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Spotify token exchange failed: {error_data.get('error_description', response.text)}"
+                detail=error_message
             )
         
         token_response = response.json()
@@ -111,9 +118,15 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
         raise
     except Exception as e:
         logger.error(f"[SpotifyOAuth] - Unexpected error: {e}")
+        
+        # Only expose detailed errors in development
+        error_message = "An error occurred during authentication"
+        if os.getenv("ENVIRONMENT") == "development":
+            error_message = f"OAuth callback failed: {str(e)}"
+        
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OAuth callback failed: {str(e)}"
+            detail=error_message
         )
 
 @router.post("/youtube/callback", response_model=YouTubeTokenResponse)
@@ -128,32 +141,21 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
     try:
         logger.info(f"[YouTubeOAuth] - Received callback request: code={request.code[:10]}..., redirect_uri={request.redirect_uri}")
         
-        # Load Google client secrets (resolve relative paths to backend_dir)
-        google_secrets_env = os.getenv("YOUTUBE_CLIENT_JSON")
-        if not google_secrets_env:
+        # Load Google client secrets using shared function
+        try:
+            google_secrets = get_client_config()
+        except (FileNotFoundError, ValueError) as e:
+            logger.error(f"[YouTubeOAuth] - Failed to load client config: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Google client secrets file not configured"
+                detail="Google client configuration not available"
             )
-
-        client_json_path = Path(google_secrets_env)
-        if not client_json_path.is_absolute():
-            client_json_path = backend_dir / client_json_path
-
-        if not client_json_path.exists():
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Google client secrets file not found: {client_json_path}"
-            )
-
-        with open(client_json_path, 'r', encoding='utf-8') as f:
-            google_secrets = json.load(f)
         
         client_info = google_secrets.get("web") or google_secrets.get("installed")
         if not client_info:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Invalid Google client secrets format"
+                detail="Invalid Google client configuration format"
             )
         
         # Google token exchange endpoint
@@ -176,9 +178,15 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
         if not response.ok:
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
             logger.error(f"[YouTubeOAuth] - Token exchange failed: {response.status_code}, {error_data}")
+            
+            # Only expose detailed errors in development
+            error_message = "Failed to authenticate with YouTube"
+            if os.getenv("ENVIRONMENT") == "development":
+                error_message = f"Google token exchange failed: {error_data.get('error_description', response.text)}"
+            
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Google token exchange failed: {error_data.get('error_description', response.text)}"
+                detail=error_message
             )
         
         token_response = response.json()
@@ -217,9 +225,15 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
         raise
     except Exception as e:
         logger.error(f"[YouTubeOAuth] - Unexpected error: {e}")
+        
+        # Only expose detailed errors in development
+        error_message = "An error occurred during authentication"
+        if os.getenv("ENVIRONMENT") == "development":
+            error_message = f"OAuth callback failed: {str(e)}"
+        
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OAuth callback failed: {str(e)}"
+            detail=error_message
         )
 
 @router.get("/status")
@@ -228,9 +242,19 @@ async def auth_status():
     Check if OAuth credentials are configured correctly
     """
     try:
+        # Check YouTube configuration (either file or environment variable)
+        youtube_configured = False
+        if os.getenv("YOUTUBE_CLIENT_CONFIG"):
+            # Serverless configuration via environment variable
+            youtube_configured = True
+        elif os.getenv("YOUTUBE_CLIENT_JSON"):
+            # File-based configuration
+            client_json_path = os.getenv("YOUTUBE_CLIENT_JSON", "")
+            youtube_configured = bool(client_json_path and os.path.exists(client_json_path))
+        
         status_info = {
             "spotify_configured": bool(os.getenv("SPOTIFY_CLIENT_ID") and os.getenv("SPOTIFY_CLIENT_SECRET")),
-            "youtube_configured": bool(os.getenv("YOUTUBE_CLIENT_JSON") and os.path.exists(os.getenv("YOUTUBE_CLIENT_JSON", ""))),
+            "youtube_configured": youtube_configured,
             "message": "OAuth configuration status"
         }
         
@@ -239,7 +263,13 @@ async def auth_status():
         
     except Exception as e:
         logger.error(f"[AuthStatus] - Error checking status: {e}")
+        
+        # Only expose detailed errors in development
+        error_message = "Failed to check authentication status"
+        if os.getenv("ENVIRONMENT") == "development":
+            error_message = f"Failed to check auth status: {str(e)}"
+        
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to check auth status: {str(e)}"
+            detail=error_message
         )
