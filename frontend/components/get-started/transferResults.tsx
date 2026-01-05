@@ -31,33 +31,47 @@ export default function TransferResults({
 
   // Animation constants
   const CONFETTI_PARTICLE_COUNT = 30;
-  const CONFETTI_COLORS = ["#22c55e", "#3b82f6", "#a855f7", "#eab308", "#ef4444"];
+  const CONFETTI_COLORS = [
+    "#22c55e",
+    "#3b82f6",
+    "#a855f7",
+    "#eab308",
+    "#ef4444",
+  ];
 
   useEffect(() => {
     // Reset GSAP context and clear any existing animations
     const ctx = gsap.context(() => {
       // Kill any existing animations on these elements
-      gsap.killTweensOf([".success-header", ".stats-card", ".song-item", ".action-buttons"]);
+      gsap.killTweensOf([
+        ".success-header",
+        ".stats-card",
+        ".song-item",
+        ".action-buttons",
+      ]);
 
       // Reset elements to visible state first
-      gsap.set([".success-header", ".stats-card", ".song-item", ".action-buttons"], {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        clearProps: "all",
-      });
+      gsap.set(
+        [".success-header", ".stats-card", ".song-item", ".action-buttons"],
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          clearProps: "all",
+        },
+      );
 
       // Enhanced success header animation with bounce
       gsap.fromTo(
         ".success-header",
         { scale: 0.7, opacity: 0, rotationZ: -10 },
-        { 
-          scale: 1, 
-          opacity: 1, 
+        {
+          scale: 1,
+          opacity: 1,
           rotationZ: 0,
-          duration: 1.2, 
-          ease: "elastic.out(1, 0.5)" 
+          duration: 1.2,
+          ease: "elastic.out(1, 0.5)",
         },
       );
 
@@ -120,7 +134,8 @@ export default function TransferResults({
     // Create confetti-like particles with multiple colors
     for (let i = 0; i < CONFETTI_PARTICLE_COUNT; i++) {
       const particle = document.createElement("div");
-      const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+      const color =
+        CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
 
       particle.className = "absolute w-3 h-3 rounded-full opacity-0";
       particle.style.backgroundColor = color;

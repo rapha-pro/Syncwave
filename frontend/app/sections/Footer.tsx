@@ -96,7 +96,7 @@ export default function Footer() {
 
   const handleNavClick = (href: string, openInNewTab: boolean = false) => {
     if (openInNewTab) {
-      window.open(href, '_blank', 'noopener,noreferrer');
+      window.open(href, "_blank", "noopener,noreferrer");
     } else {
       router.push(href);
     }
@@ -180,7 +180,9 @@ export default function Footer() {
           </button>
           <button
             className="hover:text-gray-300 transition-colors"
-            onClick={() => handleNavClick("https://merge.picbreezy.com/en", true)}
+            onClick={() =>
+              handleNavClick("https://merge.picbreezy.com/en", true)
+            }
           >
             Discover PicBreezy
           </button>

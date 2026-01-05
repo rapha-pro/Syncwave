@@ -45,7 +45,6 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   const [isTestingConnection, setIsTestingConnection] = useState(false);
 
   useEffect(() => {
-
     // Force reset with new object reference
     setFormData(createInitialFormData());
     setErrors({});
@@ -66,14 +65,14 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
         gsap.fromTo(
           ".form-field",
           { y: 30, opacity: 0, scale: 0.95, rotationX: -10 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            scale: 1, 
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
             rotationX: 0,
-            duration: 0.7, 
-            stagger: 0.15, 
-            ease: "back.out(1.4)" 
+            duration: 0.7,
+            stagger: 0.15,
+            ease: "back.out(1.4)",
           },
         );
       }
@@ -82,12 +81,12 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
         gsap.fromTo(
           ".form-card",
           { scale: 0.9, opacity: 0, y: 20 },
-          { 
-            scale: 1, 
-            opacity: 1, 
+          {
+            scale: 1,
+            opacity: 1,
             y: 0,
-            duration: 0.9, 
-            ease: "back.out(1.5)" 
+            duration: 0.9,
+            ease: "back.out(1.5)",
           },
         );
       }

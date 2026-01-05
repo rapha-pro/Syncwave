@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { CheckCircle, ArrowRightLeft, TvMinimalPlay, CircleUser,  } from "lucide-react";
+import {
+  CheckCircle,
+  ArrowRightLeft,
+  TvMinimalPlay,
+  CircleUser,
+} from "lucide-react";
 import { gsap } from "gsap";
 
 import Logo from "./logo";
@@ -9,7 +14,7 @@ import Logo from "./logo";
 import { areaProps } from "@/types";
 import { SpotifyIcon } from "@/components/icons";
 import { playlistDescription } from "@/utils/site";
-import { courgette, kaushanScript } from "@/utils/fonts";
+import { kaushanScript } from "@/utils/fonts";
 
 export default function Phone(area: areaProps) {
   const { width = 280, height = 500 } = area;
@@ -23,23 +28,23 @@ export default function Phone(area: areaProps) {
 
   useEffect(() => {
     // Check if animation has already played
-    const hasPlayedAnimation = typeof window !== 'undefined' 
-      ? sessionStorage.getItem("phoneAnimated") 
-      : null;
+    const hasPlayedAnimation =
+      typeof window !== "undefined"
+        ? sessionStorage.getItem("phoneAnimated")
+        : null;
 
     if (hasPlayedAnimation) return;
 
     // Animate transfer icon with rotation and pulse (spins 3 times)
     if (transferIconRef.current) {
       const tl = gsap.timeline({ repeat: 2 });
-      
+
       tl.to(transferIconRef.current, {
         rotation: 180,
         scale: 1.2,
         duration: 1,
         ease: "power2.inOut",
-      })
-      .to(transferIconRef.current, {
+      }).to(transferIconRef.current, {
         rotation: 360,
         scale: 1,
         duration: 1,
@@ -62,13 +67,13 @@ export default function Phone(area: areaProps) {
             ease: "back.out(1.7)",
             repeat: -1,
             repeatDelay: 3,
-          }
+          },
         );
       }
     });
 
     // Mark as animated
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       sessionStorage.setItem("phoneAnimated", "true");
     }
   }, []);
@@ -84,7 +89,7 @@ export default function Phone(area: areaProps) {
             {/* App Header */}
             <div className="p-4 border-b border-gray-800 flex justify-between items-center">
               <Logo height={8} size={14} text_size="text-md" width={8} />
-              <CircleUser className="text-gray-600"/>
+              <CircleUser className="text-gray-600" />
             </div>
 
             {/* App Body */}
@@ -93,7 +98,9 @@ export default function Phone(area: areaProps) {
               <div className="rounded-lg bg-red-900/20 border border-red-800/50 p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <TvMinimalPlay className="text-red-500" size={20} />
-                  <span className={`text-red-200 font-light text-base ${kaushanScript.className}`}>
+                  <span
+                    className={`text-red-200 font-light text-base ${kaushanScript.className}`}
+                  >
                     {playlistDescription}
                   </span>
                 </div>
@@ -106,7 +113,7 @@ export default function Phone(area: areaProps) {
 
               {/* Transfer Animation */}
               <div className="flex justify-center my-2">
-                <div 
+                <div
                   ref={transferIconRef}
                   className="relative h-10 w-10 bg-purple-900/30 rounded-full flex items-center justify-center"
                 >
@@ -118,30 +125,38 @@ export default function Phone(area: areaProps) {
               <div className="rounded-lg bg-green-900/20 border border-green-800/50 p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <SpotifyIcon className="text-green-500" size={20} />
-                  <span className={`text-red-200 font-light text-sm ${kaushanScript.className}`}>
+                  <span
+                    className={`text-red-200 font-light text-sm ${kaushanScript.className}`}
+                  >
                     {playlistDescription}
                   </span>
                 </div>
                 <div className="space-y-2">
                   <div className="h-6 bg-green-800/30 rounded-md w-full flex items-center">
-                    <div 
-                      ref={(el) => { checkIconsRef.current[0] = el; }}
+                    <div
+                      ref={(el) => {
+                        checkIconsRef.current[0] = el;
+                      }}
                       className="ml-auto mr-2 flex items-center gap-1"
                     >
                       <CheckCircle className="text-green-400" size={16} />
                     </div>
                   </div>
                   <div className="h-6 bg-green-800/30 rounded-md w-[85%] flex items-center">
-                    <div 
-                      ref={(el) => { checkIconsRef.current[1] = el; }}
+                    <div
+                      ref={(el) => {
+                        checkIconsRef.current[1] = el;
+                      }}
                       className="ml-auto mr-2 flex items-center gap-1"
                     >
                       <CheckCircle className="text-green-400" size={16} />
                     </div>
                   </div>
                   <div className="h-6 bg-green-800/30 rounded-md w-[90%] flex items-center">
-                    <div 
-                      ref={(el) => { checkIconsRef.current[2] = el; }}
+                    <div
+                      ref={(el) => {
+                        checkIconsRef.current[2] = el;
+                      }}
                       className="ml-auto mr-2 flex items-center gap-1"
                     >
                       <CheckCircle className="text-green-400" size={16} />
