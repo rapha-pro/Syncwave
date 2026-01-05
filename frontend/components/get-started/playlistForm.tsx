@@ -363,14 +363,11 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
             {/* Submit Button */}
             <div className="form-field pt-4">
               <Button
-                className="submit-button w-full group"
-                classNames={{
-                  base: `bg-gradient-to-r ${
-                    backendStatus === "connected"
-                      ? "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-                      : "from-gray-500 to-gray-600"
-                  } shadow-lg`,
-                }}
+                className={`submit-button w-full group bg-gradient-to-r ${
+                  backendStatus === "connected"
+                    ? "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                    : "from-gray-500 to-gray-600"
+                } shadow-lg`}
                 color="primary"
                 endContent={
                   !isLoading &&
@@ -383,7 +380,6 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                 }
                 isDisabled={backendStatus !== "connected"}
                 isLoading={isLoading}
-                loadingText="Starting Transfer..."
                 size="lg"
                 type="submit"
               >
