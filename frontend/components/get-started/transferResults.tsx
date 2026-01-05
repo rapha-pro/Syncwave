@@ -172,9 +172,8 @@ export default function TransferResults({
       await navigator.clipboard.writeText(results.playlistUrl);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
-    } catch (error) {
-      // Failed to copy to clipboard
-      console.error("failed to copy to clipboard: ", error);
+    } catch (_error) {
+      // Failed to copy to clipboard - silently fail
     }
   };
 
@@ -346,7 +345,7 @@ export default function TransferResults({
           </div>
 
           <div className="space-y-3">
-            {displayedSongs.map((song, index) => (
+            {displayedSongs.map((song) => (
               <div
                 key={song.id}
                 className="song-item flex items-center gap-4 p-4 rounded-lg bg-gray-700/60 hover:bg-gray-600/70 transition-colors border border-gray-600/40 backdrop-blur-sm"
