@@ -79,11 +79,18 @@ if os.getenv("ENVIRONMENT") == "production":
     allowed_hosts = []
     for origin in allowed_origins:
         parsed = urlparse(origin)
-        hostname = parsed.netloc if parsed.netloc else parsed.path
-        # Remove port if present
-        hostname = hostname.split(":")[0] if ":" in hostname else hostname
-        if hostname and hostname not in allowed_hosts:
-            allowed_hosts.append(hostname)
+        # Get hostname from netloc (proper URLs) or fall back to path (malformed URLs)
+        # Only proceed if the URL has a valid scheme or netloc
+        if parsed.scheme or parsed.netloc:
+            hostname = parsed.netloc if parsed.netloc else parsed.path
+            # Remove port if present
+            hostname = hostname.split(":")[0] if ":" in hostname else hostname
+            if hostname and hostname not in allowed_hosts:
+                allowed_hosts.append(hostname)
+        else:
+            # Log warning for malformed URL but don't crash
+            import logging
+            logging.warning(f"Malformed origin URL ignored in ALLOWED_ORIGINS: {origin}")
     
     # Add render.com for backend health checks
     if not any(host.endswith(".onrender.com") or host == "onrender.com" for host in allowed_hosts):

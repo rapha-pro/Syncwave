@@ -43,8 +43,8 @@ def get_client_config() -> dict:
         try:
             return json.loads(client_config_json)
         except json.JSONDecodeError as e:
-            logger.error(f"[YouTubeAPI] - Failed to parse YOUTUBE_CLIENT_CONFIG: {e}")
-            raise ValueError("Invalid YOUTUBE_CLIENT_CONFIG format")
+            logger.error(f"[YouTubeAPI] - Failed to parse YOUTUBE_CLIENT_CONFIG environment variable: {e}")
+            raise ValueError(f"Invalid JSON format in YOUTUBE_CLIENT_CONFIG: {str(e)}")
     
     # Fallback to file for local development
     client_json_env = os.getenv("YOUTUBE_CLIENT_JSON")

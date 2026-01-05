@@ -5,6 +5,8 @@ services:
     region: oregon
     plan: free
     buildCommand: "pip install -r requirements.txt"
+    # Note: Render automatically sets the working directory to the repository root
+    # The module path 'backend.main:app' is correct when running from the repo root
     startCommand: "uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: SPOTIFY_CLIENT_ID
