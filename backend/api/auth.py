@@ -242,9 +242,19 @@ async def auth_status():
     Check if OAuth credentials are configured correctly
     """
     try:
+        # Check YouTube configuration (either file or environment variable)
+        youtube_configured = False
+        if os.getenv("YOUTUBE_CLIENT_CONFIG"):
+            # Serverless configuration via environment variable
+            youtube_configured = True
+        elif os.getenv("YOUTUBE_CLIENT_JSON"):
+            # File-based configuration
+            client_json_path = os.getenv("YOUTUBE_CLIENT_JSON", "")
+            youtube_configured = bool(client_json_path and os.path.exists(client_json_path))
+        
         status_info = {
             "spotify_configured": bool(os.getenv("SPOTIFY_CLIENT_ID") and os.getenv("SPOTIFY_CLIENT_SECRET")),
-            "youtube_configured": bool(os.getenv("YOUTUBE_CLIENT_JSON") and os.path.exists(os.getenv("YOUTUBE_CLIENT_JSON", ""))),
+            "youtube_configured": youtube_configured,
             "message": "OAuth configuration status"
         }
         

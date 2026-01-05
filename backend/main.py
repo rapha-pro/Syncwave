@@ -79,7 +79,9 @@ if os.getenv("ENVIRONMENT") == "production":
     allowed_hosts = []
     for origin in allowed_origins:
         parsed = urlparse(origin)
-        hostname = parsed.netloc or parsed.path.split(":")[0]
+        hostname = parsed.netloc if parsed.netloc else parsed.path
+        # Remove port if present
+        hostname = hostname.split(":")[0] if ":" in hostname else hostname
         if hostname and hostname not in allowed_hosts:
             allowed_hosts.append(hostname)
     
