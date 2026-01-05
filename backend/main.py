@@ -86,7 +86,7 @@ if os.getenv("ENVIRONMENT") == "production":
             allowed_hosts.append(hostname)
     
     # Add render.com for backend health checks
-    if not any("onrender.com" in host for host in allowed_hosts):
+    if not any(host.endswith(".onrender.com") or host == "onrender.com" for host in allowed_hosts):
         allowed_hosts.append("*.onrender.com")
     
     if allowed_hosts:
