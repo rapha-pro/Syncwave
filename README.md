@@ -144,6 +144,19 @@ sequenceDiagram
 
 For detailed installation and running instructions, please see [RUNNING.md](RUNNING.md).
 
+## Production Deployment
+
+Ready to deploy your Syncwave app to production? Check out our comprehensive [Deployment Guide](DEPLOYMENT.md) which covers:
+
+- Setting up OAuth applications (Spotify & Google/YouTube)
+- Deploying backend to Render, Railway, or Fly.io
+- Deploying frontend to Vercel
+- Environment variable configuration
+- Security best practices
+- Troubleshooting common issues
+
+**Recommended Setup**: Vercel (Frontend) + Render (Backend) - both offer generous free tiers!
+
 
 ## Project Structure
 
