@@ -47,9 +47,13 @@ def get_client_config() -> dict:
             raise ValueError("Invalid YOUTUBE_CLIENT_CONFIG format")
     
     # Fallback to file for local development
-    client_secrets_file = backend_dir / os.getenv("YOUTUBE_CLIENT_JSON", "credentials/youtube_client_secret.json")
+    client_json_env = os.getenv("YOUTUBE_CLIENT_JSON")
+    if not client_json_env:
+        raise ValueError("Neither YOUTUBE_CLIENT_CONFIG nor YOUTUBE_CLIENT_JSON environment variable is set")
+    
+    client_secrets_file = backend_dir / client_json_env
     if not client_secrets_file.exists():
-        raise FileNotFoundError(f"YouTube client secrets not found: {client_secrets_file}")
+        raise FileNotFoundError(f"YouTube client secrets not found at: {client_json_env}")
     
     with open(client_secrets_file, 'r') as f:
         return json.load(f)

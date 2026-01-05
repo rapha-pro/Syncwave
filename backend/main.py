@@ -73,11 +73,13 @@ app.add_middleware(
 
 # Add trusted host middleware for production
 if os.getenv("ENVIRONMENT") == "production":
+    from urllib.parse import urlparse
+    
     # Extract hostnames from allowed origins
     allowed_hosts = []
     for origin in allowed_origins:
-        # Remove http:// or https:// and extract hostname
-        hostname = origin.replace("https://", "").replace("http://", "").split(":")[0]
+        parsed = urlparse(origin)
+        hostname = parsed.netloc or parsed.path.split(":")[0]
         if hostname and hostname not in allowed_hosts:
             allowed_hosts.append(hostname)
     

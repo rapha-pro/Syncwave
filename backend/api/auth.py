@@ -72,9 +72,9 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
             logger.error(f"[SpotifyOAuth] - Token exchange failed: {response.status_code}, {error_data}")
             
-            # Don't expose internal error details in production
+            # Only expose detailed errors in development
             error_message = "Failed to authenticate with Spotify"
-            if os.getenv("ENVIRONMENT") != "production":
+            if os.getenv("ENVIRONMENT") == "development":
                 error_message = f"Spotify token exchange failed: {error_data.get('error_description', response.text)}"
             
             raise HTTPException(
@@ -119,9 +119,9 @@ async def spotify_oauth_callback(request: OAuthCallbackRequest):
     except Exception as e:
         logger.error(f"[SpotifyOAuth] - Unexpected error: {e}")
         
-        # Don't expose internal error details in production
+        # Only expose detailed errors in development
         error_message = "An error occurred during authentication"
-        if os.getenv("ENVIRONMENT") != "production":
+        if os.getenv("ENVIRONMENT") == "development":
             error_message = f"OAuth callback failed: {str(e)}"
         
         raise HTTPException(
@@ -179,9 +179,9 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
             logger.error(f"[YouTubeOAuth] - Token exchange failed: {response.status_code}, {error_data}")
             
-            # Don't expose internal error details in production
+            # Only expose detailed errors in development
             error_message = "Failed to authenticate with YouTube"
-            if os.getenv("ENVIRONMENT") != "production":
+            if os.getenv("ENVIRONMENT") == "development":
                 error_message = f"Google token exchange failed: {error_data.get('error_description', response.text)}"
             
             raise HTTPException(
@@ -226,9 +226,9 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
     except Exception as e:
         logger.error(f"[YouTubeOAuth] - Unexpected error: {e}")
         
-        # Don't expose internal error details in production
+        # Only expose detailed errors in development
         error_message = "An error occurred during authentication"
-        if os.getenv("ENVIRONMENT") != "production":
+        if os.getenv("ENVIRONMENT") == "development":
             error_message = f"OAuth callback failed: {str(e)}"
         
         raise HTTPException(
@@ -254,9 +254,9 @@ async def auth_status():
     except Exception as e:
         logger.error(f"[AuthStatus] - Error checking status: {e}")
         
-        # Don't expose internal error details in production
+        # Only expose detailed errors in development
         error_message = "Failed to check authentication status"
-        if os.getenv("ENVIRONMENT") != "production":
+        if os.getenv("ENVIRONMENT") == "development":
             error_message = f"Failed to check auth status: {str(e)}"
         
         raise HTTPException(
