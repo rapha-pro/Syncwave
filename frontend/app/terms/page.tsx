@@ -242,10 +242,9 @@ export default function TermsOfService() {
 
               <div className="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
                 <p>
-                  These Terms of Service are effective as of{" "}
-                  {termsUpdateDate} and will remain in effect
-                  except with respect to any changes in its provisions in the
-                  future.
+                  These Terms of Service are effective as of {termsUpdateDate}{" "}
+                  and will remain in effect except with respect to any changes
+                  in its provisions in the future.
                 </p>
               </div>
             </div>

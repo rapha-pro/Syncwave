@@ -39,8 +39,7 @@ export const featuresData: FeatureCardProps[] = [
     iconColor: "text-purple-400",
     bgColor: "bg-purple-900/30",
     title: `${successfulTransferPercent}% Match Rate`,
-    description:
-      "Our optimized algorithm ensures nearly perfect matching",
+    description: "Our optimized algorithm ensures nearly perfect matching",
   },
   {
     id: "youtube-integration",

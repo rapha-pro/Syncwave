@@ -45,7 +45,6 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   const [isTestingConnection, setIsTestingConnection] = useState(false);
 
   useEffect(() => {
-
     // Force reset with new object reference
     setFormData(createInitialFormData());
     setErrors({});
@@ -66,14 +65,14 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
         gsap.fromTo(
           ".form-field",
           { y: 30, opacity: 0, scale: 0.95, rotationX: -10 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            scale: 1, 
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
             rotationX: 0,
-            duration: 0.7, 
-            stagger: 0.15, 
-            ease: "back.out(1.4)" 
+            duration: 0.7,
+            stagger: 0.15,
+            ease: "back.out(1.4)",
           },
         );
       }
@@ -82,12 +81,12 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
         gsap.fromTo(
           ".form-card",
           { scale: 0.9, opacity: 0, y: 20 },
-          { 
-            scale: 1, 
-            opacity: 1, 
+          {
+            scale: 1,
+            opacity: 1,
             y: 0,
-            duration: 0.9, 
-            ease: "back.out(1.5)" 
+            duration: 0.9,
+            ease: "back.out(1.5)",
           },
         );
       }
@@ -364,14 +363,11 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
             {/* Submit Button */}
             <div className="form-field pt-4">
               <Button
-                className="submit-button w-full group"
-                classNames={{
-                  base: `bg-gradient-to-r ${
-                    backendStatus === "connected"
-                      ? "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-                      : "from-gray-500 to-gray-600"
-                  } shadow-lg`,
-                }}
+                className={`submit-button w-full group bg-gradient-to-r ${
+                  backendStatus === "connected"
+                    ? "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                    : "from-gray-500 to-gray-600"
+                } shadow-lg`}
                 color="primary"
                 endContent={
                   !isLoading &&
@@ -384,7 +380,6 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                 }
                 isDisabled={backendStatus !== "connected"}
                 isLoading={isLoading}
-                loadingText="Starting Transfer..."
                 size="lg"
                 type="submit"
               >

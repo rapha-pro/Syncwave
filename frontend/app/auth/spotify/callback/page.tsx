@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardBody, Spinner } from "@heroui/react";
 import { CheckCircle, XCircle, ArrowLeft } from "lucide-react";
@@ -8,7 +8,7 @@ import { CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 import { callbackHandlers } from "@/utils/api";
 import { useLogger } from "@/utils/useLogger";
 
-export default function SpotifyCallback() {
+function SpotifyCallbackContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading",
@@ -129,5 +129,28 @@ export default function SpotifyCallback() {
         </CardBody>
       </Card>
     </div>
+  );
+}
+
+export default function SpotifyCallback() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+          <Card className="max-w-md w-full bg-gray-800/50 border border-gray-700">
+            <CardBody className="p-8 text-center">
+              <div className="flex flex-col items-center gap-4">
+                <Spinner color="success" size="lg" />
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  Loading...
+                </h2>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      }
+    >
+      <SpotifyCallbackContent />
+    </Suspense>
   );
 }
