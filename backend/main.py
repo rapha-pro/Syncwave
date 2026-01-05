@@ -1,6 +1,13 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api import youtube, spotify, transfer, auth
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables
+backend_dir = Path(__file__).parent.resolve()
+load_dotenv(backend_dir / ".env")
 
 
 tags_metadata = [
@@ -30,9 +37,13 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
+# Get allowed origins from environment variable or use defaults
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

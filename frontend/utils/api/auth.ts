@@ -166,7 +166,7 @@ export const authAPI = {
   generateSpotifyAuthUrl: (state: string): string => {
 
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
-    const redirectUri = `http://127.0.0.1:3000/auth/spotify/callback`;
+    const redirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI || `http://127.0.0.1:3000/auth/spotify/callback`;
     const scopes = [
       "playlist-modify-public",
       "playlist-modify-private",
@@ -194,7 +194,7 @@ export const authAPI = {
    */
   generateYouTubeAuthUrl: (state: string): string => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const redirectUri = `http://127.0.0.1:3000/auth/youtube/callback`;
+    const redirectUri = process.env.NEXT_PUBLIC_YOUTUBE_REDIRECT_URI || `http://127.0.0.1:3000/auth/youtube/callback`;
     const scopes = ["https://www.googleapis.com/auth/youtube.readonly"].join(
       " ",
     );
