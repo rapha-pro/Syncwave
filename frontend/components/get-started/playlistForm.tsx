@@ -249,7 +249,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
               </div>
             </div>
             <Button
-              className="min-w-fit"
+              className="min-w-fit text-gray-300"
               isLoading={isTestingConnection}
               size="sm"
               variant="bordered"

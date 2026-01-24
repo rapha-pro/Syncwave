@@ -98,7 +98,7 @@ export default function Features() {
                 >
                   <IconComponent className={feature.iconColor} size={20} />
                 </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <h3 className="text-xl font-bold text-gray-300 mb-2">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>
               </Card>
             );
