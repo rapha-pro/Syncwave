@@ -26,7 +26,7 @@ export const siteConfig = {
 // Get current season based on month
 function getCurrentSeason(): string {
   const month = new Date().getMonth(); // 0-11
-  
+
   // December, January, February = Winter
   if (month === 11 || month === 0 || month === 1) {
     return "Winter Chill";
@@ -48,4 +48,4 @@ function getCurrentSeason(): string {
 export const successfulTransferPercent = 80;
 export const playlistDescription = `${getCurrentSeason()} ${new Date().getFullYear()}`;
 export const termsUpdateDate = "09/01/2025";
-export const numPlaylistTransfered = 100
+export const numPlaylistTransfered = 100;

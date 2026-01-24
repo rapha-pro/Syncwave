@@ -14,7 +14,7 @@ import { AuthStatus } from "@/types";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { inactivityTracker } from "@/utils/inactivity-tracker";
 import { numPlaylistTransfered } from "@/utils/site";
-import { badScript, courgette, kaushanScript, merienda } from "@/utils/fonts";
+import { badScript } from "@/utils/fonts";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -124,14 +124,18 @@ export default function Hero() {
       if (musicNotesRef.current) {
         for (let i = 0; i < MUSIC_NOTES_COUNT; i++) {
           const note = document.createElement("div");
-          const noteSymbol = MUSIC_NOTE_SYMBOLS[Math.floor(Math.random() * MUSIC_NOTE_SYMBOLS.length)];
-          
-          note.className = "absolute text-2xl opacity-0 pointer-events-none music-note";
+          const noteSymbol =
+            MUSIC_NOTE_SYMBOLS[
+              Math.floor(Math.random() * MUSIC_NOTE_SYMBOLS.length)
+            ];
+
+          note.className =
+            "absolute text-2xl opacity-0 pointer-events-none music-note";
           note.textContent = noteSymbol;
           note.style.left = `${Math.random() * 100}%`;
           note.style.top = `${Math.random() * 100}%`;
           note.style.color = i % 2 === 0 ? "#22c55e" : "#ef4444";
-          
+
           musicNotesRef.current.appendChild(note);
 
           // Animate notes floating across
@@ -158,7 +162,7 @@ export default function Hero() {
       }
 
       // Mark animation as played in session storage
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         sessionStorage.setItem("heroAnimated", "true");
       }
     }, 100);
@@ -166,12 +170,17 @@ export default function Hero() {
     return () => {
       clearTimeout(timeoutId);
 
-      ["hero-title", "hero-description", "hero-buttons", "hero-image", "gradient-orb", "music-note"].forEach(
-        (selector) => {
-          killAnimations(selector);
-        },
-      );
-      
+      [
+        "hero-title",
+        "hero-description",
+        "hero-buttons",
+        "hero-image",
+        "gradient-orb",
+        "music-note",
+      ].forEach((selector) => {
+        killAnimations(selector);
+      });
+
       // Clean up music notes
       if (musicNotesRef.current) {
         musicNotesRef.current.innerHTML = "";
@@ -370,7 +379,9 @@ export default function Hero() {
               Spotify
             </span>
           </h1>
-          <p className={`hero-description text-gray-400 text-lg md:text-xl mb-8 tracking-widest ${badScript.className}`}>
+          <p
+            className={`hero-description text-gray-400 text-lg md:text-xl mb-8 tracking-widest ${badScript.className}`}
+          >
             Seamlessly migrate your music collections between platforms with
             just a few clicks. No more manual searching and rebuilding
             playlists.
@@ -508,9 +519,12 @@ export default function Hero() {
             <div className="gradient-orb absolute top-0 right-0 h-64 w-64 bg-green-500/20 rounded-full filter blur-3xl" />
             <div className="gradient-orb absolute bottom-0 left-0 h-64 w-64 bg-red-500/20 rounded-full filter blur-3xl" />
             <div className="gradient-orb absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-48 w-48 bg-purple-500/20 rounded-full filter blur-3xl" />
-            
+
             {/* Music notes container */}
-            <div ref={musicNotesRef} className="absolute inset-0 overflow-hidden pointer-events-none" />
+            <div
+              ref={musicNotesRef}
+              className="absolute inset-0 overflow-hidden pointer-events-none"
+            />
 
             <div className="absolute inset-0 flex items-center justify-center">
               <Phone />
@@ -523,8 +537,10 @@ export default function Hero() {
         <div className="inline-flex gap-2 items-center px-4 py-2 bg-gray-800/50 rounded-full border border-gray-700">
           <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
           <p className="text-sm">
-            <span className="font-bold text-green-400">{numPlaylistTransfered}+</span> playlists
-            transferred today
+            <span className="font-bold text-green-400">
+              {numPlaylistTransfered}+
+            </span>{" "}
+            playlists transferred today
           </p>
         </div>
       </div>

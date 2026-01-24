@@ -105,14 +105,16 @@ export default function PrivacyPolicy() {
                     • OAuth tokens from Spotify and YouTube (stored temporarily
                     during transfer)
                   </li>
+                  <li>• Playlist metadata (names, descriptions)</li>
                   <li>
-                    • Playlist metadata (names, descriptions)
+                    • Basic usage analytics (anonymous transfer statistics like
+                    page views, performance metrics, etc..) to provide
+                    reliability of our service
                   </li>
                   <li>
-                    • Basic usage analytics (anonymous transfer statistics like page views, 
-                    performance metrics, etc..) to provide reliability of our service
+                    • User Profile data (name, email) used in the transfer
+                    process
                   </li>
-                  <li>• User Profile data (name, email) used in the transfer process</li>
                 </ul>
               </section>
 
@@ -227,10 +229,9 @@ export default function PrivacyPolicy() {
 
               <div className="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
                 <p>
-                  This Privacy Policy is effective as of{" "}
-                  {termsUpdateDate} and will remain in effect
-                  except with respect to any changes in its provisions in the
-                  future.
+                  This Privacy Policy is effective as of {termsUpdateDate} and
+                  will remain in effect except with respect to any changes in
+                  its provisions in the future.
                 </p>
               </div>
             </div>

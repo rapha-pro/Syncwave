@@ -9,8 +9,7 @@ export const testimonials = [
   },
   {
     id: 2,
-    quote:
-      "This saved me so much time! Moving my entire playlist was easy",
+    quote: "This saved me so much time! Moving my entire playlist was easy",
     name: "Mike R.",
     title: "user",
     icon: "🎵",
