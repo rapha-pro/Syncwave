@@ -271,7 +271,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                   input: "text-white",
                   inputWrapper:
                     "border-gray-600 bg-gray-700/50 hover:border-gray-500 focus-within:border-blue-500",
-                  label: "text-gray-300",
+                  label: "text-gray-300 mb-2",
                 }}
                 endContent={
                   isValidatingUrl && (
@@ -296,7 +296,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                   input: "text-white",
                   inputWrapper:
                     "border-gray-600 bg-gray-700/50 hover:border-gray-500 focus-within:border-blue-500",
-                  label: "text-gray-300",
+                  label: "text-gray-300 mb-2",
                 }}
                 errorMessage={errors.name}
                 isInvalid={!!errors.name}
