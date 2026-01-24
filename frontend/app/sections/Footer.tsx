@@ -116,7 +116,7 @@ export default function Footer() {
           <div className="text-center md:text-left mb-6 md:mb-0 italic">
             <p
               ref={sloganRef}
-              className={`text-gray-400 text-sm max-w-xs select-none tracking-wider cursor-default ${kaushanScript.className}`}
+              className={`text-gray-400 text-sm max-w-xs select-none tracking-wider cursor-default`}
             >
               {siteConfig.slogan}
             </p>

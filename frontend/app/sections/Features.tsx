@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { featuresData } from "@/utils/features-data";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { kaushanScript } from "@/utils/fonts";
+import { siteConfig } from "@/utils/site";
 
 export default function Features() {
   const featureRef = useRef<HTMLDivElement>(null);
@@ -74,7 +75,7 @@ export default function Features() {
           >
             Why Choose{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-purple-500">
-              Syncwave
+              {siteConfig.name}
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">

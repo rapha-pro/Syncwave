@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Syncwave",
+  name: "FloTunes",
   description: "Transfer your YouTube playlists to Spotify in seconds.",
   slogan: "Anywhere, everywhere — keep your vibe",
   navItems: [
