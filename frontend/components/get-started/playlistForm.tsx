@@ -102,9 +102,18 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   }, []); // Remove dependencies to only run on mount
 
   const testBackendConnection = async () => {
+    // Skip backend check in production
+    if (process.env.NODE_ENV === "production") {
+      setBackendStatus("connected");
+
+      return;
+    }
+
     setIsTestingConnection(true);
     try {
-      const response = await fetch("http://localhost:8000/", {
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -154,8 +163,11 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Check backend connection before submitting
-    if (backendStatus !== "connected") {
+    // Check backend connection before submitting (development only)
+    if (
+      process.env.NODE_ENV === "development" &&
+      backendStatus !== "connected"
+    ) {
       setErrors({
         url: "Backend server is not connected. Please check if your FastAPI server is running.",
       });
@@ -227,39 +239,41 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
       className="max-w-2xl mx-auto"
       style={{ display: "block", visibility: "visible", opacity: 1 }}
     >
-      {/* Connection Status Card */}
-      <Card className="mb-6 bg-gray-800/30 border border-gray-700">
-        <CardBody className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {backendStatus === "connected" ? (
-                <Wifi className="text-green-400" size={20} />
-              ) : (
-                <WifiOff className="text-red-400" size={20} />
-              )}
-              <div>
-                <p className={`font-medium ${getConnectionStatusColor()}`}>
-                  {getConnectionStatusText()}
-                </p>
-                <p className="text-gray-400 text-sm">
-                  {backendStatus === "connected"
-                    ? "Ready to transfer playlists"
-                    : "Make sure FastAPI server is running on port 8000"}
-                </p>
+      {/* Connection Status Card - Development Only */}
+      {process.env.NODE_ENV === "development" && (
+        <Card className="mb-6 bg-gray-800/30 border border-gray-700">
+          <CardBody className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {backendStatus === "connected" ? (
+                  <Wifi className="text-green-400" size={20} />
+                ) : (
+                  <WifiOff className="text-red-400" size={20} />
+                )}
+                <div>
+                  <p className={`font-medium ${getConnectionStatusColor()}`}>
+                    {getConnectionStatusText()}
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    {backendStatus === "connected"
+                      ? "Ready to transfer playlists"
+                      : "Make sure FastAPI server is running on port 8000"}
+                  </p>
+                </div>
               </div>
+              <Button
+                className="min-w-fit text-gray-300"
+                isLoading={isTestingConnection}
+                size="sm"
+                variant="bordered"
+                onPress={testBackendConnection}
+              >
+                {isTestingConnection ? "Testing..." : "Test"}
+              </Button>
             </div>
-            <Button
-              className="min-w-fit text-gray-300"
-              isLoading={isTestingConnection}
-              size="sm"
-              variant="bordered"
-              onPress={testBackendConnection}
-            >
-              {isTestingConnection ? "Testing..." : "Test"}
-            </Button>
-          </div>
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
+      )}
 
       <Card className="form-card bg-gray-800/50 backdrop-blur-sm border border-gray-700">
         <CardBody className="p-8">
@@ -364,40 +378,47 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
             <div className="form-field pt-4">
               <Button
                 className={`submit-button w-full group bg-gradient-to-r ${
-                  backendStatus === "connected"
-                    ? "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-                    : "from-gray-500 to-gray-600"
+                  process.env.NODE_ENV === "development" &&
+                  backendStatus !== "connected"
+                    ? "from-gray-500 to-gray-600"
+                    : "from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
                 } shadow-lg`}
                 color="primary"
                 endContent={
                   !isLoading &&
-                  backendStatus === "connected" && (
+                  (process.env.NODE_ENV === "production" ||
+                    backendStatus === "connected") && (
                     <ArrowRight
                       className="group-hover:translate-x-1 transition-transform"
                       size={18}
                     />
                   )
                 }
-                isDisabled={backendStatus !== "connected"}
+                isDisabled={
+                  process.env.NODE_ENV === "development" &&
+                  backendStatus !== "connected"
+                }
                 isLoading={isLoading}
                 size="lg"
                 type="submit"
               >
                 {isLoading
                   ? "Starting Transfer..."
-                  : backendStatus === "connected"
-                    ? "Start Transfer"
-                    : "Backend Disconnected"}
+                  : process.env.NODE_ENV === "development" &&
+                      backendStatus !== "connected"
+                    ? "Backend Disconnected"
+                    : "Start Transfer"}
               </Button>
 
-              {backendStatus === "disconnected" && (
-                <p className="text-red-400 text-sm mt-2 text-center">
-                  Start your FastAPI server:{" "}
-                  <code className="bg-gray-700 px-2 py-1 rounded">
-                    uvicorn main:app --reload
-                  </code>
-                </p>
-              )}
+              {process.env.NODE_ENV === "development" &&
+                backendStatus === "disconnected" && (
+                  <p className="text-red-400 text-sm mt-2 text-center">
+                    Start your FastAPI server:{" "}
+                    <code className="bg-gray-700 px-2 py-1 rounded">
+                      uvicorn main:app --reload
+                    </code>
+                  </p>
+                )}
             </div>
           </form>
         </CardBody>
