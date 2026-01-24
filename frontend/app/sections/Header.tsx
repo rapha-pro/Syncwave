@@ -98,7 +98,7 @@ export default function Header() {
           {siteConfig.navItems.map((item) => (
             <button
               key={item.href}
-              className="flex items-center gap-2 hover:text-green-400 transition-colors"
+              className="flex items-center gap-2 text-gray-300 hover:text-green-400 transition-colors"
               onClick={() => handleNavClick(item.href)}
             >
               {iconMap[item.icon as keyof typeof iconMap]}

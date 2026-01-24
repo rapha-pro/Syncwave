@@ -49,7 +49,7 @@ export default function PrivacyPolicy() {
       <header className="page-header relative z-10 pt-8 pb-4 px-4">
         <div className="container mx-auto max-w-4xl pt-20">
           <Button
-            className="group mb-6"
+            className="group mb-6 text-gray-300"
             startContent={
               <ArrowLeft
                 className="group-hover:-translate-x-1 transition-transform"

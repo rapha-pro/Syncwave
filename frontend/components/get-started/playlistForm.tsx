@@ -249,7 +249,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
               </div>
             </div>
             <Button
-              className="min-w-fit"
+              className="min-w-fit text-gray-300"
               isLoading={isTestingConnection}
               size="sm"
               variant="bordered"
@@ -271,7 +271,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                   input: "text-white",
                   inputWrapper:
                     "border-gray-600 bg-gray-700/50 hover:border-gray-500 focus-within:border-blue-500",
-                  label: "text-gray-300",
+                  label: "text-gray-300 mb-2",
                 }}
                 endContent={
                   isValidatingUrl && (
@@ -296,7 +296,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                   input: "text-white",
                   inputWrapper:
                     "border-gray-600 bg-gray-700/50 hover:border-gray-500 focus-within:border-blue-500",
-                  label: "text-gray-300",
+                  label: "text-gray-300 mb-2",
                 }}
                 errorMessage={errors.name}
                 isInvalid={!!errors.name}
@@ -316,7 +316,7 @@ export default function PlaylistForm({ onSubmit }: PlaylistFormProps) {
                   input: "text-white",
                   inputWrapper:
                     "border-gray-600 bg-gray-700/50 hover:border-gray-500 focus-within:border-blue-500",
-                  label: "text-gray-300",
+                  label: "text-gray-300 mb-2",
                 }}
                 label="Description (Optional)"
                 minRows={3}
