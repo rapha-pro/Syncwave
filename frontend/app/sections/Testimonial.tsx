@@ -117,7 +117,7 @@ export default function Testimonial() {
       style={{ opacity: 1, transform: "translateY(0px)" }} // Ensure section is always visible
     >
       <div className="container mx-auto px-4 max-w-4xl">
-        <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 p-8 md:p-10">
+        <Card className="bg-gray-800/50 border border-gray-700 p-8 md:p-10">
           <div
             ref={contentRef}
             className="flex flex-col items-center text-center"
