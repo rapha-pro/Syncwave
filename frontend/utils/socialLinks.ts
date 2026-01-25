@@ -4,6 +4,7 @@ import { TwitterIcon } from "@/components/icons";
 
 export const emailAddress = "contact@FloTunes.com";
 export const twitterUsername = "rapha_pro_";
+export const buyMeCoffeeLink = "https://buymeacoffee.com/rapha_pro"
 
 const socialLinks = [
   {

@@ -210,9 +210,8 @@ export default function PrivacyPolicy() {
                   </li>
                 </ul>
                 <p className="text-gray-300 mt-4">
-                  To exercise any of these rights, please contact us at{" "}
-                  <span className="text-blue-400">{emailAddress}</span>. We will
-                  respond to your request within 30 days.
+                  To exercise any of these rights, please contact us. We typically
+                  respond within 3 days.
                 </p>
               </section>
 
@@ -223,7 +222,7 @@ export default function PrivacyPolicy() {
                   contact us at:
                 </p>
                 <div className="bg-gray-700/50 p-4 rounded-lg">
-                  <p className="text-white">{emailAddress}</p>
+                  <a href={`mailto:nathonana01@gmail.com`} className="text-white hover:underline hover:text-blue-400 transition-colors">{emailAddress}</a>
                 </div>
               </section>
 

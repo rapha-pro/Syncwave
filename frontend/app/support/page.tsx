@@ -15,7 +15,7 @@ import {
 import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
 
-import { emailAddress, twitterUsername } from "@/utils/socialLinks";
+import { buyMeCoffeeLink, emailAddress, twitterUsername } from "@/utils/socialLinks";
 import Logo from "@/components/logo";
 import { siteConfig } from "@/utils/site";
 
@@ -229,7 +229,7 @@ export default function Support() {
                 className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold px-8 py-3 text-lg"
                 size="lg"
                 onPress={() =>
-                  openExternal("https://buymeacoffee.com/yourusername")
+                  openExternal(`${buyMeCoffeeLink}`)
                 }
               >
                 <Coffee className="mr-2" size={20} />
@@ -254,7 +254,7 @@ export default function Support() {
                   className="flex items-center gap-3"
                   size="lg"
                   variant="bordered"
-                  onPress={() => openExternal(`mailto:${emailAddress}`)}
+                  onPress={() => openExternal(`mailto:nathonana01@mail.com`)}
                 >
                   <Mail className="text-blue-400" size={20} />
                   <span>{emailAddress}</span>

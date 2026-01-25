@@ -222,8 +222,9 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-gray-300">
                   We reserve the right to modify or replace these Terms at any
-                  time. If a revision is material, we will try to provide at
-                  least 30 days notice prior to any new terms taking effect.
+                  time. 
+                  {/* If a revision is material, we will try to provide at
+                  least 7 days notice prior to any new terms taking effect. */}
                 </p>
               </section>
 
@@ -236,7 +237,7 @@ export default function TermsOfService() {
                   contact us at:
                 </p>
                 <div className="bg-gray-700/50 p-4 rounded-lg">
-                  <p className="text-white">{emailAddress}</p>
+                  <a href={`mailto:nathonana01@gmail.com`} className="text-white hover:underline hover:text-blue-400 transition-colors">{emailAddress}</a>
                 </div>
               </section>
 
