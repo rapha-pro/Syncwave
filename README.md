@@ -178,7 +178,6 @@ see the [Contributing guide](CONTRIBUTING.md)
 This project is proprietary software. All rights reserved. See the [LICENSE](LICENSE) file for details.
 
 For licensing inquiries, please contact: contact@FloTunes.com
-For licensing inquiries, please contact: contact@FloTunes.com
 
 ## Acknowledgments
 
