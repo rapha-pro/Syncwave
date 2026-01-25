@@ -61,7 +61,7 @@ graph TB
 + **Data persistence** happens through response caching and comprehensive transfer logging
 + **Results flow back** through the API client to display rich analytics and transfer status to users
 
-## Transfer Flow, Sequence Diagram.
+## Transfer Sequence Diagram.
 
 ```mermaid
 sequenceDiagram
