@@ -4,7 +4,7 @@ A production-ready full-stack application for seamlessly transferring YouTube pl
 
 ![App Preview](./frontend/public/flotunes.png)
 
-## System Architecture. Sequence Flow Diagram
+## System Architecture
 
 ```mermaid
 graph TB
@@ -61,7 +61,7 @@ graph TB
 + **Data persistence** happens through response caching and comprehensive transfer logging
 + **Results flow back** through the API client to display rich analytics and transfer status to users
 
-## Transfer Flow
+## Transfer Flow, Sequence Diagram.
 
 ```mermaid
 sequenceDiagram
