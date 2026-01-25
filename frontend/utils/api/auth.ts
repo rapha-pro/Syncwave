@@ -1,7 +1,6 @@
 import { rateLimiter } from "../rate-limiter";
+import { website_url } from "../socialLinks";
 
-
-const WEBSITE_URL = "https://flotunes.com"
 
 /**
  * Retry configuration for OAuth token exchange
@@ -170,7 +169,7 @@ export const authAPI = {
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri =
       process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI ||
-      `${WEBSITE_URL}/auth/spotify/callback`;
+      `${website_url}/auth/spotify/callback`;
     const scopes = [
       "playlist-modify-public",
       "playlist-modify-private",

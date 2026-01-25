@@ -87,7 +87,7 @@ function getUserFriendlyErrorMessage(error: any): string {
     const data = error.response.data;
 
     if (status === 400) {
-      return "Invalid authorization code. Please try authenticating again.";
+      return "happens sometime. Please try authenticating again.";
     } else if (status === 401) {
       return "Authentication failed. Please check your credentials and try again.";
     } else if (status === 403) {
