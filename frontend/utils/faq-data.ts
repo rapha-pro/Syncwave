@@ -6,7 +6,7 @@ export const faqData: FaqItemProps[] = [
     id: "is-service-free",
     question: "Is this service free?",
     answer:
-      `Yes, ${siteConfig.name} is completely free. That said, If you find value in what we offer and want to leave a thank you, please consider visiting our support page above 🙂`,
+      `Yes, ${siteConfig.name} is completely free. That said, If you find value in what we offer and want to leave a thank you, please consider visiting our support page below 🙂`,
   },
   {
     id: "store-credentials",
