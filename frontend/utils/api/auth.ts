@@ -1,5 +1,8 @@
 import { rateLimiter } from "../rate-limiter";
 
+
+const WEBSITE_URL = "https://flotunes.com"
+
 /**
  * Retry configuration for OAuth token exchange
  */
@@ -167,7 +170,7 @@ export const authAPI = {
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri =
       process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI ||
-      `http://127.0.0.1:3000/auth/spotify/callback`;
+      `${WEBSITE_URL}/auth/spotify/callback`;
     const scopes = [
       "playlist-modify-public",
       "playlist-modify-private",
@@ -197,7 +200,7 @@ export const authAPI = {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     const redirectUri =
       process.env.NEXT_PUBLIC_YOUTUBE_REDIRECT_URI ||
-      `http://127.0.0.1:3000/auth/youtube/callback`;
+      `${WEBSITE_URL}/auth/youtube/callback`;
     const scopes = ["https://www.googleapis.com/auth/youtube.readonly"].join(
       " ",
     );
