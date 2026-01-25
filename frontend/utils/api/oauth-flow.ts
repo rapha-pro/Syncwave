@@ -56,6 +56,12 @@ export const oauthFlow = {
 
     const redirectUri = `${window.location.origin}/auth/${platform}/callback`;
 
+    // Add debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[OAuth Flow] Redirect URI:', redirectUri);
+      console.log('[OAuth Flow] Authorization code received');
+    }
+
     try {
       let tokenData;
 
