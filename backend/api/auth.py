@@ -171,6 +171,8 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
         }
         
         logger.info(f"[YouTubeOAuth] - Exchanging code for token with Google")
+        logger.info(f"[YouTubeOAuth] - Redirect URI: {request.redirect_uri}")
+        logger.info(f"[YouTubeOAuth] - Client ID: {client_info['client_id'][:20]}...")
         
         # Exchange code for token
         response = requests.post(token_url, data=token_data)
@@ -178,6 +180,7 @@ async def youtube_oauth_callback(request: OAuthCallbackRequest):
         if not response.ok:
             error_data = response.json() if response.headers.get('content-type') == 'application/json' else {}
             logger.error(f"[YouTubeOAuth] - Token exchange failed: {response.status_code}, {error_data}")
+            logger.error(f"[YouTubeOAuth] - Request data: client_id={token_data['client_id'][:20]}..., redirect_uri={token_data['redirect_uri']}")
             
             # Only expose detailed errors in development
             error_message = "Failed to authenticate with YouTube"
