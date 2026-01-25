@@ -59,7 +59,7 @@ export const oauthFlow = {
     // Add debug logging
     if (process.env.NODE_ENV === 'development') {
       console.log('[OAuth Flow] Redirect URI:', redirectUri);
-      console.log('[OAuth Flow] Code:', code.substring(0, 10) + '...');
+      console.log('[OAuth Flow] Authorization code received');
     }
 
     try {
