@@ -48,7 +48,7 @@ tags_metadata = [
 ]
 
 app = FastAPI(
-    title="Syncwave API",
+    title="FloTunes API",
     description="Transfer playlists from YouTube to Spotify",
     version="1.0.0",
     tags_metadata=tags_metadata,
@@ -107,4 +107,4 @@ app.include_router(transfer.router, prefix="/transfer", tags=["Transfer"])
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the Syncwave API"}
+    return {"message": "Welcome to the FloTunes API"}

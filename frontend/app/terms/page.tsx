@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
 
 import { emailAddress } from "@/utils/socialLinks";
-import { termsUpdateDate } from "@/utils/site";
+import { siteConfig, termsUpdateDate } from "@/utils/site";
 
 export default function TermsOfService() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,7 @@ export default function TermsOfService() {
               </span>
             </h1>
             <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              The terms and conditions for using Syncwave
+              The terms and conditions for using FloTune
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function TermsOfService() {
                   </h2>
                 </div>
                 <p className="text-gray-300">
-                  By accessing and using Syncwave, you accept and agree to be
+                  By accessing and using {siteConfig.name}, you accept and agree to be
                   bound by the terms and provision of this agreement. If you do
                   not agree to abide by the above, please do not use this
                   service.
@@ -109,7 +109,7 @@ export default function TermsOfService() {
                   Service Description
                 </h2>
                 <p className="text-gray-300">
-                  Syncwave is a free service that allows users to transfer
+                  {siteConfig.name} is a free service that allows users to transfer
                   playlists between YouTube and Spotify. The service requires
                   users to authenticate with both platforms to access their
                   playlist data.
@@ -121,7 +121,7 @@ export default function TermsOfService() {
                   User Responsibilities
                 </h2>
                 <p className="text-gray-300">
-                  When using Syncwave, you agree to:
+                  When using {siteConfig.name}, you agree to:
                 </p>
                 <ul className="text-gray-300 space-y-2 ml-6">
                   <li>
@@ -166,7 +166,7 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-gray-300">
                   The service and its original content, features, and
-                  functionality are owned by Syncwave and are protected by
+                  functionality are owned by {siteConfig.name} and are protected by
                   international copyright, trademark, patent, trade secret, and
                   other intellectual property laws.
                 </p>
@@ -178,7 +178,7 @@ export default function TermsOfService() {
                   <h2 className="text-2xl font-bold text-white">Disclaimers</h2>
                 </div>
                 <p className="text-gray-300">
-                  Syncwave is provided &quot;as is&quot; without any
+                  {siteConfig.name} is provided &quot;as is&quot; without any
                   representations or warranties:
                 </p>
                 <ul className="text-gray-300 space-y-2 ml-6">
@@ -200,7 +200,7 @@ export default function TermsOfService() {
                   Limitation of Liability
                 </h2>
                 <p className="text-gray-300">
-                  In no event shall Syncwave be liable for any indirect,
+                  In no event shall {siteConfig.name} be liable for any indirect,
                   incidental, special, consequential, or punitive damages,
                   including without limitation, loss of profits, data, use,
                   goodwill, or other intangible losses.

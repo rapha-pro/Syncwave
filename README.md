@@ -1,8 +1,8 @@
-# Syncwave
+# FloTunes
 
 A production-ready full-stack application for seamlessly transferring YouTube playlists to Spotify with intelligent song matching and comprehensive transfer analytics.
 
-![App Preview](./frontend/public/syncwave.png)
+![App Preview](./frontend/public/flotunes.png)
 
 ## System Architecture
 
@@ -116,7 +116,7 @@ sequenceDiagram
 ## Project Structure
 
 ```
-syncwave/
+FloTunes/
 ├── backend/
 │   ├── api/
 │   │   └── transfer.py              # API route handlers
@@ -176,7 +176,7 @@ see the [Contributing guide](CONTRIBUTING.md)
 
 This project is proprietary software. All rights reserved. See the [LICENSE](LICENSE) file for details.
 
-For licensing inquiries, please contact: contact@syncwave.com
+For licensing inquiries, please contact: contact@FloTunes.com
 
 ## Acknowledgments
 

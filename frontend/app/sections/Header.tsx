@@ -86,7 +86,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <button
-          aria-label="Syncwave"
+          aria-label={siteConfig.name}
           className="cursor-pointer"
           onClick={handleLogoClick}
         >
@@ -110,7 +110,7 @@ export default function Header() {
           <div className="ml-4 pl-4 border-l border-gray-600">
             <button
               className="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors group"
-              title="Support Syncwave"
+              title={"Support " + siteConfig.name}
               onClick={() => handleNavClick("/support")}
             >
               <div className="relative">

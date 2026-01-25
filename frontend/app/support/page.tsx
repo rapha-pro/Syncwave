@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 import { emailAddress, twitterUsername } from "@/utils/socialLinks";
 import Logo from "@/components/logo";
+import { siteConfig } from "@/utils/site";
 
 export default function Support() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -138,7 +139,7 @@ export default function Support() {
             </div>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-pink-500">
-                Support Syncwave
+                Support {siteConfig.name}
               </span>
             </h1>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -158,7 +159,7 @@ export default function Support() {
                 Why We Need Your Support
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                Syncwave is provided completely free to users worldwide because
+                {siteConfig.name} is provided completely free to users worldwide because
                 we believe everyone should have easy access to their music,
                 regardless of which platform they prefer. This app is made
                 possible by a dedicated team that maintains and improves the
@@ -169,7 +170,7 @@ export default function Support() {
                 this service and enable us to add exciting new features, improve
                 performance, and expand compatibility with more music platforms.
                 Every contribution, no matter how small, makes a meaningful
-                difference in keeping Syncwave running smoothly for everyone.
+                difference in keeping FloTunes running smoothly for everyone.
               </p>
             </CardBody>
           </Card>
@@ -204,7 +205,7 @@ export default function Support() {
                   <strong>Every dollar counts!</strong> Even a small donation of
                   $1 helps cover server costs and shows that you value this free
                   service. Your support directly impacts our ability to keep
-                  Syncwave running and evolving.
+                  {siteConfig.name} running and evolving.
                 </p>
               </div>
             </CardBody>
@@ -220,7 +221,7 @@ export default function Support() {
                 Buy Me a Coffee
               </h2>
               <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-                The easiest way to show your appreciation and help keep Syncwave
+                The easiest way to show your appreciation and help keep FloTunes
                 running. Every coffee helps fund server costs and development
                 time.
               </p>
@@ -285,7 +286,7 @@ export default function Support() {
                 Thank You for Your Support
               </h3>
               <p className="text-gray-300 text-lg leading-relaxed">
-                Whether you donate, share Syncwave with friends, or simply use
+                Whether you donate, share FloTunes with friends, or simply use
                 the service, you&apos;re helping us build something meaningful
                 for the music community. Every playlist transferred is a
                 testament to the power of making music more accessible across

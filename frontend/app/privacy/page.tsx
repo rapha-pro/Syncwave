@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 import { useRouter } from "next/navigation";
 
 import { emailAddress } from "@/utils/socialLinks";
-import { termsUpdateDate } from "@/utils/site";
+import { siteConfig, termsUpdateDate } from "@/utils/site";
 
 export default function PrivacyPolicy() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +97,7 @@ export default function PrivacyPolicy() {
                   </h2>
                 </div>
                 <p className="text-gray-300">
-                  Syncwave only collects the minimum data necessary to provide
+                   {siteConfig.name} only collects the minimum data necessary to provide
                   our playlist transfer service:
                 </p>
                 <ul className="text-gray-300 space-y-2 ml-6">
