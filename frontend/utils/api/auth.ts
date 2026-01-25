@@ -198,10 +198,13 @@ export const authAPI = {
   generateYouTubeAuthUrl: (state: string): string => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     
-    // Use environment variable, or fallback to current origin
+    // Use environment variable, or fallback to current origin (client-side only)
+    // For server-side rendering, use the production URL as fallback
     const redirectUri =
       process.env.NEXT_PUBLIC_YOUTUBE_REDIRECT_URI ||
-      (typeof window !== 'undefined' ? `${window.location.origin}/auth/youtube/callback` : '');
+      (typeof window !== 'undefined' 
+        ? `${window.location.origin}/auth/youtube/callback` 
+        : `${website_url}/auth/youtube/callback`);
     
     const scopes = ["https://www.googleapis.com/auth/youtube.readonly"].join(
       " ",
