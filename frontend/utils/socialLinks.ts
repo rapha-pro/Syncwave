@@ -2,7 +2,7 @@ import { Mail } from "lucide-react";
 
 import { TwitterIcon } from "@/components/icons";
 
-export const emailAddress = "contact@syncwave.com";
+export const emailAddress = "contact@FloTunes.com";
 export const twitterUsername = "rapha_pro_";
 
 const socialLinks = [

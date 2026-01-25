@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { SpotifyIcon } from "@/components/icons";
-import { playlistDescription } from "@/utils/site";
+import { playlistDescription, siteConfig } from "@/utils/site";
 import { killAnimations } from "@/utils/cleaning_animations";
 import { kaushanScript } from "@/utils/fonts";
 
@@ -96,7 +96,7 @@ export default function HowItWorks() {
               <p className="text-gray-400">
                 Login with your Google account. You should see an alert like so:
                 <span className="italic text-gray-500 font-bold block mt-2 mb-1">
-                  &quot;Syncwave wants to access your account.&quot;
+                  &quot;{siteConfig.name} wants to access your account.&quot;
                 </span>
                 Click Authorize. Do not worry, we only require read-only access
                 find your playlists in your account.

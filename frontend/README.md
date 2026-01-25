@@ -1,6 +1,6 @@
-# Syncwave Project
+# FloTunes Project
 
-Syncwave is a web application that allows users to seamlessly transfer their music playlists between YouTube and Spotify. This project is built using Next.js and TypeScript, providing a modern and efficient user experience.
+FloTunes is a web application that allows users to seamlessly transfer their music playlists between YouTube and Spotify. This project is built using Next.js and TypeScript, providing a modern and efficient user experience.
 
 ## Features
 

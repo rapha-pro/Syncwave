@@ -158,7 +158,7 @@ export default function Footer() {
       </div>
 
       <div className="w-full border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-        <p>© {new Date().getFullYear()} Syncwave. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} FloTunes. All rights reserved.</p>
         <div className="flex justify-center text-blue-500 gap-6 mt-4">
           <button
             className="hover:text-gray-300 transition-colors"
