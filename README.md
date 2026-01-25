@@ -117,7 +117,6 @@ sequenceDiagram
 
 ```
 FloTunes/
-FloTunes/
 ├── backend/
 │   ├── api/
 │   │   └── transfer.py              # API route handlers
