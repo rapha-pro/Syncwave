@@ -1,4 +1,5 @@
 # FloTunes
+# FloTunes
 
 A production-ready full-stack application for seamlessly transferring YouTube playlists to Spotify with intelligent song matching and comprehensive transfer analytics.
 
@@ -117,6 +118,7 @@ sequenceDiagram
 
 ```
 FloTunes/
+FloTunes/
 ├── backend/
 │   ├── api/
 │   │   └── transfer.py              # API route handlers
@@ -176,6 +178,7 @@ see the [Contributing guide](CONTRIBUTING.md)
 
 This project is proprietary software. All rights reserved. See the [LICENSE](LICENSE) file for details.
 
+For licensing inquiries, please contact: contact@FloTunes.com
 For licensing inquiries, please contact: contact@FloTunes.com
 
 ## Acknowledgments
