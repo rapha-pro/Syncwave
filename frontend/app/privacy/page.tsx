@@ -133,7 +133,7 @@ export default function PrivacyPolicy() {
                   <li>
                     • OAuth tokens are stored securely and deleted after use
                   </li>
-                  <li>• We NEVER store your Spotify or YouTube passwords</li>
+                  <li>• We NEVER store any account passwords</li>
                   <li>• Regular security audits and updates</li>
                 </ul>
               </section>
