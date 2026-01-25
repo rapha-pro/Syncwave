@@ -1,6 +1,6 @@
 # Production Deployment Guide
 
-This guide will help you deploy the Syncwave app to production using Vercel (frontend) and Render (backend).
+This guide will help you deploy the FloTunes app to production using Vercel (frontend) and Render (backend).
 
 ## Prerequisites
 
@@ -60,7 +60,7 @@ Before deploying, ensure you have:
 2. Click **New** → **Web Service**
 3. Connect your GitHub repository
 4. Configure the service:
-   - **Name**: `syncwave-backend`
+   - **Name**: `FloTunes-backend`
    - **Region**: Choose closest to your users
    - **Branch**: `main`
    - **Root Directory**: Leave empty (or set to repository root)
@@ -97,7 +97,7 @@ print(json.dumps(config, separators=(',', ':')))
 ### Note Your Backend URL
 
 After deployment, Render will provide you with a URL like:
-- `https://syncwave-backend.onrender.com`
+- `https://FloTunes-backend.onrender.com`
 
 **Important**: Free tier services on Render will spin down after 15 minutes of inactivity. The first request after spinning down may take 30-60 seconds.
 
@@ -112,7 +112,7 @@ npm i -g vercel
 
 2. Navigate to your project:
 ```bash
-cd /path/to/Syncwave
+cd /path/to/FloTunes
 ```
 
 3. Login to Vercel:
@@ -129,14 +129,14 @@ vercel
    - **Set up and deploy?** Yes
    - **Which scope?** Select your account
    - **Link to existing project?** No
-   - **Project name?** syncwave (or your preferred name)
+   - **Project name?** FloTunes (or your preferred name)
    - **Directory?** `./frontend`
    - **Override settings?** No
 
 6. Add environment variables:
 ```bash
 vercel env add NEXT_PUBLIC_API_BASE_URL
-# Enter: https://syncwave-backend.onrender.com (your Render backend URL)
+# Enter: https://FloTunes-backend.onrender.com (your Render backend URL)
 
 vercel env add NEXT_PUBLIC_SPOTIFY_CLIENT_ID
 # Enter: your_spotify_client_id
@@ -175,7 +175,7 @@ Add these in the Vercel dashboard under **Settings** → **Environment Variables
 
 | Variable Name | Value | Environment |
 |--------------|-------|-------------|
-| `NEXT_PUBLIC_API_BASE_URL` | `https://syncwave-backend.onrender.com` | Production |
+| `NEXT_PUBLIC_API_BASE_URL` | `https://FloTunes-backend.onrender.com` | Production |
 | `NEXT_PUBLIC_SPOTIFY_CLIENT_ID` | Your Spotify Client ID | Production |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Your Google Client ID | Production |
 | `NEXT_PUBLIC_SPOTIFY_REDIRECT_URI` | `https://your-app.vercel.app/auth/spotify/callback` | Production |
@@ -364,4 +364,4 @@ After successful deployment:
 
 ---
 
-**Congratulations!** 🎉 Your Syncwave app is now live in production!
+**Congratulations!** 🎉 Your FloTunes app is now live in production!

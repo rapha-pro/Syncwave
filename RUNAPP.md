@@ -1,26 +1,47 @@
-# Running Syncwave - Complete Guide
+# Running FloTunes - Complete Guide
 
-This guide provides step-by-step instructions for running Syncwave locally.
+This guide provides step-by-step instructions for running FloTunes locally.
+
+## Technology Stack
+
+### Frontend
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS with HeroUI components
+- **Animations**: GSAP
+- **HTTP Client**: Axios
+
+### Backend
+- **Framework**: FastAPI
+- **Language**: Python 3.11+
+- **YouTube Integration**: Google API Client
+- **Spotify Integration**: Spotipy
+- **Environment**: Python-dotenv
+- **Logging**: Rich (Console) + Python logging
+
+### APIs
+- **YouTube Data API v3**: Playlist and video metadata extraction
+- **Spotify Web API**: Playlist creation and song search
 
 ## Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+ and npm/pnpm (preferred)
 - Python 3.11+
-- Spotify Developer Account
 - Google Cloud Project with YouTube Data API enabled
+- Spotify Developer Account
 
 ## Backend Setup
 
 ### 1. Install Python Dependencies
 
 ```bash
-cd /path/to/Syncwave
+cd /path/to/FloTunes
 pip install -r requirements.txt
 ```
 
 ### 2. Configure Environment Variables
 
-Create a `.env` file in the `backend` directory:
+Create a `.env` file in the `backend` directory. It should mirror the .env.example file:
 
 ```env
 # YouTube API Configuration
@@ -56,7 +77,7 @@ API_BASE_URL=http://localhost:8000
 
 **From the project root directory**:
 ```bash
-cd /path/to/Syncwave
+cd /path/to/FloTunes
 uvicorn backend.main:app --reload --port 8000
 ```
 
@@ -87,12 +108,12 @@ You should see the API documentation and a welcome message.
 
 ```bash
 cd frontend
-npm install
+pnpm install or npm install
 ```
 
 ### 2. Configure Environment Variables
 
-Create a `.env.local` file in the `frontend` directory:
+Create a `.env` file in the `frontend` directory. It should mirror the .env.example file.
 
 ```env
 # Backend API
@@ -109,7 +130,7 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 
 ```bash
 cd frontend
-npm run dev
+pnpm dev or npm run dev
 ```
 
 The frontend should now be running at `http://localhost:3000`
@@ -118,7 +139,7 @@ The frontend should now be running at `http://localhost:3000`
 
 Open your browser and go to: http://localhost:3000
 
-You should see the Syncwave landing page.
+You should see the FloTunes landing page.
 
 ## Using the Application
 
@@ -146,7 +167,7 @@ On the homepage:
 **Issue**: `ModuleNotFoundError: No module named 'backend'`
 **Solution**: Make sure you're running `uvicorn` from the project root directory:
 ```bash
-cd /path/to/Syncwave
+cd /path/to/FloTunes
 uvicorn backend.main:app --reload --port 8000
 ```
 
@@ -206,7 +227,7 @@ pip install -r requirements.txt
 uvicorn backend.main:app --reload --port 8000
 
 # From project root, not from backend directory!
-cd /path/to/Syncwave
+cd /path/to/FloTunes
 uvicorn backend.main:app --reload --port 8000
 ```
 

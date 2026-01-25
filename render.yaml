@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: syncwave-backend
+    name: flotunes-backend
     runtime: python
     region: oregon
     plan: free

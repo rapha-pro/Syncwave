@@ -112,51 +112,6 @@ sequenceDiagram
 
 ------
 
-## Technology Stack
-
-### Frontend
-- **Framework**: Next.js
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS with HeroUI components
-- **Animations**: GSAP
-- **HTTP Client**: Axios
-
-### Backend
-- **Framework**: FastAPI
-- **Language**: Python 3.11+
-- **YouTube Integration**: Google API Client
-- **Spotify Integration**: Spotipy
-- **Environment**: Python-dotenv
-- **Logging**: Rich (Console) + Python logging
-
-### APIs
-- **YouTube Data API v3**: Playlist and video metadata extraction
-- **Spotify Web API**: Playlist creation and song search
-
-## Prerequisites
-
-- Node.js 18+ and npm/pnpm (preferred)
-- Python 3.11+
-- Google Cloud Project with YouTube Data API enabled
-- Spotify Developer Account
-
-## Quick Start
-
-For detailed installation and running instructions, please see [RUNNING.md](RUNNING.md).
-
-## Production Deployment
-
-Ready to deploy your Syncwave app to production? Check out our comprehensive [Deployment Guide](DEPLOYMENT.md) which covers:
-
-- Setting up OAuth applications (Spotify & Google/YouTube)
-- Deploying backend to Render, Railway, or Fly.io
-- Deploying frontend to Vercel
-- Environment variable configuration
-- Security best practices
-- Troubleshooting common issues
-
-**Recommended Setup**: Vercel (Frontend) + Render (Backend) - both offer generous free tiers!
-
 
 ## Project Structure
 
