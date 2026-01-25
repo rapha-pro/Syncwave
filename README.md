@@ -1,11 +1,10 @@
 # FloTunes
-# FloTunes
 
 A production-ready full-stack application for seamlessly transferring YouTube playlists to Spotify with intelligent song matching and comprehensive transfer analytics.
 
 ![App Preview](./frontend/public/flotunes.png)
 
-## System Architecture
+## System Architecture. Sequence Flow Diagram
 
 ```mermaid
 graph TB
